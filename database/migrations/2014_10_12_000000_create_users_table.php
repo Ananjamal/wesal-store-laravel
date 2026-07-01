@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone')->nullable();
+            $table->unsignedInteger('loyalty_points_balance')->default(0);
+            $table->string('referral_code')->unique()->nullable();
+            $table->foreignId('referred_by_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
