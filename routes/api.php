@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +20,13 @@ Route::prefix('auth')->name('auth.')->group(function () {
     // Google OAuth
     Route::get('google/redirect',  [SocialAuthController::class, 'redirect'])->name('google.redirect');
     Route::get('google/callback',  [SocialAuthController::class, 'callback'])->name('google.callback');
+});
+
+// Public catalog routes
+Route::prefix('catalog')->name('catalog.')->group(function () {
+    Route::get('categories',          [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('products',            [ProductController::class, 'index'])->name('products.index');
+    Route::get('products/{product}',  [ProductController::class, 'show'])->name('products.show');
 });
 
 // Protected routes (Sanctum token required)
