@@ -2,9 +2,20 @@
 
 namespace App\Enums;
 
-enum ProductStatus: string
+use Filament\Support\Contracts\HasLabel;
+
+enum ProductStatus: string implements HasLabel
 {
     case Draft = 'draft';
     case Published = 'published';
     case Archived = 'archived';
+
+    public function getLabel(): ?string
+    {
+        return match ($this) {
+            self::Draft => 'مسودّة',
+            self::Published => 'نشط / منشور',
+            self::Archived => 'مؤرشف',
+        };
+    }
 }

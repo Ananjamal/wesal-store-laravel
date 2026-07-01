@@ -16,7 +16,10 @@ class CouponResource extends Resource
     protected static ?string $model = Coupon::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationGroup = 'Marketing';
+    protected static ?string $navigationLabel = 'الكوبونات';
+    protected static ?string $pluralModelLabel = 'الكوبونات';
+    protected static ?string $modelLabel = 'كوبون';
+    protected static ?string $navigationGroup = 'التسويق';
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -24,34 +27,38 @@ class CouponResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('code')
+                    ->label('كود الخصم')
                     ->required()
                     ->maxLength(100)
                     ->unique(Coupon::class, 'code', ignoreRecord: true)
                     ->placeholder('SAVE20'),
                 Forms\Components\Select::make('type')
+                    ->label('نوع الكوبون')
                     ->options(CouponType::class)
                     ->required()
                     ->live(),
                 Forms\Components\TextInput::make('value')
+                    ->label('قيمة الخصم')
                     ->required()
                     ->numeric()
                     ->helperText(fn(Forms\Get $get) => match ($get('type')) {
-                        'percentage'   => 'Enter percentage (0-100)',
-                        'fixed'        => 'Enter value in cents',
-                        'free_shipping' => 'No value needed (set 0)',
+                        'percentage'   => 'أدخل النسبة المئوية (0-100)',
+                        'fixed'        => 'أدخل القيمة بالهللة (مثال: 5000 تعني 50 ريال)',
+                        'free_shipping' => 'لا يتطلب قيمة (سيتم تعيينها 0 تلقائياً)',
                         default        => '',
                     }),
                 Forms\Components\TextInput::make('min_order_cents')
-                    ->label('Min Order (¢)')
+                    ->label('الحد الأدنى لقيمة الطلب (بالهللة)')
                     ->numeric()
                     ->default(0),
                 Forms\Components\TextInput::make('max_uses')
-                    ->label('Max Uses')
+                    ->label('أقصى عدد مرات استخدام ومشاركة')
                     ->numeric()
-                    ->placeholder('Leave empty for unlimited'),
+                    ->placeholder('اتركه فارغاً لعدد غير محدود'),
                 Forms\Components\DateTimePicker::make('expires_at')
-                    ->label('Expires At'),
+                    ->label('تاريخ وتوقيت الانتهاء'),
                 Forms\Components\Toggle::make('is_active')
+                    ->label('مرئي ونشط للعملاء')
                     ->default(true)
                     ->required(),
             ])->columns(2);
@@ -62,10 +69,12 @@ class CouponResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
+                    ->label('كود الخصم')
                     ->searchable()
                     ->sortable()
                     ->copyable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label('النوع')
                     ->badge()
                     ->color(fn(CouponType $state): string => match ($state) {
                         CouponType::Fixed        => 'info',
@@ -74,31 +83,35 @@ class CouponResource extends Resource
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('value')
+                    ->label('القيمة للخصم')
                     ->formatStateUsing(fn($state, Coupon $record) => match ($record->type) {
                         CouponType::Fixed        => number_format($state / 100, 2) . ' SAR',
                         CouponType::Percentage   => $state . '%',
-                        CouponType::FreeShipping => 'Free Shipping',
+                        CouponType::FreeShipping => 'شحن مجاني',
                     }),
                 Tables\Columns\TextColumn::make('users_count')
                     ->counts('users')
-                    ->label('Uses')
+                    ->label('عدد مرات الاستخدام')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('max_uses')
-                    ->label('Max Uses')
+                    ->label('الحد الأقصى للاستخدام')
                     ->placeholder('∞'),
                 Tables\Columns\TextColumn::make('expires_at')
+                    ->label('تاريخ الانتهاء')
                     ->dateTime()
                     ->sortable()
                     ->color(fn($state) => $state && $state < now() ? 'danger' : null),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('نشط')
                     ->boolean()
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
+                    ->label('النوع')
                     ->options(CouponType::class),
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('Active')
+                    ->label('الحالة نشطة')
                     ->boolean(),
             ])
             ->actions([

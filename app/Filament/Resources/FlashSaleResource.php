@@ -15,7 +15,10 @@ class FlashSaleResource extends Resource
     protected static ?string $model = FlashSale::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
-    protected static ?string $navigationGroup = 'Marketing';
+    protected static ?string $navigationLabel = 'التخفيضات السريعة';
+    protected static ?string $pluralModelLabel = 'التخفيضات السريعة';
+    protected static ?string $modelLabel = 'تخفيض سريع';
+    protected static ?string $navigationGroup = 'التسويق';
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -23,14 +26,18 @@ class FlashSaleResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('اسم العرض الترويجي')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('starts_at')
+                    ->label('تاريخ وتوقيت البدء')
                     ->required(),
                 Forms\Components\DateTimePicker::make('ends_at')
+                    ->label('تاريخ وتوقيت الانتهاء')
                     ->required()
                     ->after('starts_at'),
                 Forms\Components\Toggle::make('is_active')
+                    ->label('نشط ومرئي للعملاء')
                     ->default(true)
                     ->required(),
             ])->columns(2);
@@ -41,20 +48,23 @@ class FlashSaleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('اسم العرض')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('starts_at')
+                    ->label('تاريخ البدء')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ends_at')
+                    ->label('تاريخ الانتهاء')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('نشط')
                     ->boolean()
-                    ->label('Active')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_running')
-                    ->label('Live Now')
+                    ->label('نشط الآن (مباشر)')
                     ->boolean()
                     ->getStateUsing(
                         fn(FlashSale $record): bool =>
@@ -69,6 +79,7 @@ class FlashSaleResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('نشط')
                     ->boolean(),
             ])
             ->actions([
