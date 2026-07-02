@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('3.5rem')
             ->favicon(asset('images/photo_2_2026-07-02_10-36-46.jpg'))
             ->viteTheme('resources/css/filament/admin/theme.css')
+            // ->topNavigation()
             ->colors([
                 'primary' => Color::hex('#467389'),
             ])
