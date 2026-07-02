@@ -32,6 +32,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('✦ وِصال')
+            ->brandLogo(fn() => view('filament.brand'))
+            ->brandLogoHeight('2.5rem')
             ->favicon(asset('favicon.ico'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
@@ -40,6 +42,16 @@ class AdminPanelProvider extends PanelProvider
             ->font('Noto Kufi Arabic', provider: \Filament\FontProviders\GoogleFontProvider::class)
             ->maxContentWidth(MaxWidth::Full)
             ->databaseNotifications()
+            ->navigationGroups([
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('الكتالوج'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('التقارير'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('التسويق'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('العمليات'),
+            ])
             ->userMenuItems([
                 MenuItem::make()
                     ->label('زيارة المتجر')

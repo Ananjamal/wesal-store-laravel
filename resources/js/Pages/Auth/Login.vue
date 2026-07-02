@@ -57,7 +57,7 @@ const submit = () => {
             </div>
 
             <!-- Bottom caption -->
-            <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;relative z-10;">
+            <p class="relative z-10" style="color:rgba(255,255,255,0.4);font-size:0.75rem;">
                 © {{ new Date().getFullYear() }} متجر وِصال · جميع الحقوق محفوظة
             </p>
         </div>
