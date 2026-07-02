@@ -32,22 +32,14 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('✦ وِصال')
-            ->brandLogo(fn() => view('filament.brand'))
-            ->brandLogoHeight('3rem')
             ->favicon(asset('favicon.ico'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
-                'primary'  => Color::hex('#467389'),
-                'gray'     => Color::Slate,
-                'info'     => Color::Sky,
-                'success'  => Color::Emerald,
-                'warning'  => Color::Amber,
-                'danger'   => Color::Rose,
+                'primary' => Color::hex('#467389'),
             ])
             ->font('Noto Kufi Arabic', provider: \Filament\FontProviders\GoogleFontProvider::class)
             ->maxContentWidth(MaxWidth::Full)
             ->databaseNotifications()
-            ->databaseNotificationsPolling('30s')
             ->userMenuItems([
                 MenuItem::make()
                     ->label('زيارة المتجر')
