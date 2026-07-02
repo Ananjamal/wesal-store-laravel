@@ -1,38 +1,34 @@
 {
-  "_WButton-DVdd9ckC.js": {
-    "file": "assets/WButton-DVdd9ckC.js",
-    "name": "WButton",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
   "resources/css/app.css": {
-    "file": "assets/app-tZz6vXPa.css",
+    "file": "assets/app-CS1m8bSc.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-YL_tIrjU.css",
+    "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true
+  },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-MtOc9Xc0.js",
+    "file": "assets/Login-CgD7osf1.js",
     "name": "Login",
     "src": "resources/js/Pages/Auth/Login.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js",
-      "_WButton-DVdd9ckC.js"
+      "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-dnTkSZT_.js",
+    "file": "assets/Register-BjY53Vb8.js",
     "name": "Register",
     "src": "resources/js/Pages/Auth/Register.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js",
-      "_WButton-DVdd9ckC.js"
+      "resources/js/app.js"
     ]
   },
   "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome-vkfvx0pa.js",
+    "file": "assets/Welcome-DnpB2eXN.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.vue",
     "isDynamicEntry": true,
@@ -41,7 +37,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BWLOWdln.js",
+    "file": "assets/app-DL6FlZ9c.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
