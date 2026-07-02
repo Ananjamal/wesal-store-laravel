@@ -1,0 +1,60 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+/* ========================================
+   WISAL ADMIN — CLEAN PROFESSIONAL THEME
+   ======================================== */
+
+/* ---- WELCOME BANNER ---- */
+.fi-wi-welcome-banner {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 2rem !important;
+    border-radius: 1.25rem !important;
+    background: linear-gradient(135deg, #467389 0%, #2a4e62 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 30px rgba(70, 115, 137, 0.3) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Decorative blob */
+.fi-wi-welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    pointer-events: none;
+}
+
+.fi-wi-welcome-banner .kpi-card {
+    background-color: rgba(255, 255, 255, 0.13) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 0.875rem !important;
+    padding: 1rem 1.25rem !important;
+    transition: background-color 0.2s, transform 0.2s !important;
+}
+
+.fi-wi-welcome-banner .kpi-card:hover {
+    background-color: rgba(255, 255, 255, 0.22) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* ---- STATS CARDS POLISH ---- */
+.fi-wi-stats-overview-stat {
+    border-radius: 1rem !important;
+    border: 1px solid rgba(70, 115, 137, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    box-shadow: 0 6px 20px rgba(70, 115, 137, 0.12) !important;
+    transform: translateY(-1px) !important;
+}
