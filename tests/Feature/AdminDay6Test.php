@@ -30,4 +30,11 @@ class AdminDay6Test extends TestCase
             ->get(PostResource::getUrl('index'))
             ->assertSuccessful();
     }
+
+    public function test_admin_can_access_reports_page(): void
+    {
+        $this->actingAs($this->admin)
+            ->get(\App\Filament\Pages\ReportsPage::getUrl())
+            ->assertSuccessful();
+    }
 }
