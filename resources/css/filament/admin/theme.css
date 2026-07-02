@@ -1,3 +1,24 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 
 @config 'tailwind.config.js';
+
+/* Custom luxury branding for logo */
+.fi-logo, 
+.fi-sidebar-header img,
+.fi-topbar img,
+img[src*="photo_4"] {
+    border-radius: 0.75rem !important;
+    border: 2px solid #D1CBB4 !important; /* Beige Heritage accent border for high contrast and premium feel */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    background-color: #467389 !important; /* Aqua Blue background fallback */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    object-fit: cover !important;
+}
+
+.fi-sidebar-header img:hover,
+.fi-topbar img:hover,
+img[src*="photo_4"]:hover {
+    transform: scale(1.03);
+    border-color: #467389 !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+}

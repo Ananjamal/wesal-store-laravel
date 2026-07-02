@@ -36,6 +36,13 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::hex('#467389'),
             ])
             ->font('Noto Kufi Arabic', provider: \Filament\FontProviders\GoogleFontProvider::class)
+            ->databaseNotifications()
+            ->userMenuItems([
+                'visit-store' => \Filament\Navigation\MenuItem::make()
+                    ->label('زيارة المتجر')
+                    ->url('/')
+                    ->icon('heroicon-o-globe-alt'),
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
