@@ -27,9 +27,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('وِصال')
+            ->brandLogo(asset('images/photo_4_2026-07-02_10-36-46.jpg'))
+            ->brandLogoHeight('3.5rem')
+            ->favicon(asset('images/photo_2_2026-07-02_10-36-46.jpg'))
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
-                'primary' => '#467389',
+                'primary' => Color::hex('#467389'),
             ])
+            ->font('Noto Kufi Arabic', provider: \Filament\FontProviders\GoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
