@@ -13,6 +13,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -28,21 +29,10 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
-            ->brandName('وِصال')
-            ->brandLogo(asset('images/photo_4_2026-07-02_10-36-46.jpg'))
-            ->brandLogoHeight('3.5rem')
             ->favicon(asset('images/photo_2_2026-07-02_10-36-46.jpg'))
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::hex('#467389'),
-            ])
-            ->font('Noto Kufi Arabic', provider: \Filament\FontProviders\GoogleFontProvider::class)
-            ->databaseNotifications()
-            ->userMenuItems([
-                'visit-store' => \Filament\Navigation\MenuItem::make()
-                    ->label('زيارة المتجر')
-                    ->url('/')
-                    ->icon('heroicon-o-globe-alt'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

@@ -20,3 +20,28 @@ img[src*="photo_4"]:hover {
     border-color: #467389 !important;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
 }
+
+/* Custom Welcome Banner Styling */
+.fi-wi-welcome-banner {
+    padding: 1.5rem !important;
+    border-radius: 1rem !important;
+    background: linear-gradient(135deg, #467389 0%, #2f5468 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.fi-wi-welcome-banner .kpi-card {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    backdrop-filter: blur(4px) !important;
+    border-radius: 0.75rem !important;
+    padding: 1rem !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.fi-wi-welcome-banner .kpi-card:hover {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    transform: translateY(-1px);
+}
+
