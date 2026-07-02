@@ -37,4 +37,18 @@ class AdminDay6Test extends TestCase
             ->get(\App\Filament\Pages\ReportsPage::getUrl())
             ->assertSuccessful();
     }
+
+    public function test_admin_can_access_store_settings(): void
+    {
+        $this->actingAs($this->admin)
+            ->get(\App\Filament\Resources\StoreSettingResource::getUrl('index'))
+            ->assertSuccessful();
+    }
+
+    public function test_admin_can_access_audit_logs(): void
+    {
+        $this->actingAs($this->admin)
+            ->get(\App\Filament\Resources\AuditLogResource::getUrl('index'))
+            ->assertSuccessful();
+    }
 }
