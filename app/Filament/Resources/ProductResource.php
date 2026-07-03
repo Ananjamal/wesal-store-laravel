@@ -16,11 +16,24 @@ class ProductResource extends Resource
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-    protected static ?string $navigationLabel = 'المنتجات';
-    protected static ?string $pluralModelLabel = 'المنتجات';
-    protected static ?string $modelLabel = 'منتج';
-    protected static ?string $navigationGroup = 'الكتالوج';
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.products');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('resource.product');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.products');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('nav.catalog');
+    }
 
     public static function form(Form $form): Form
     {
@@ -53,12 +66,12 @@ class ProductResource extends Resource
                 Forms\Components\Section::make('التسعير والمخزون')
                     ->schema([
                         Forms\Components\TextInput::make('price_cents')
-                            ->label('السعر (بالهللة)')
+                            ->label('السعر ')
                             ->numeric()
                             ->required()
                             ->suffix('¢'),
                         Forms\Components\TextInput::make('compare_at_price_cents')
-                            ->label('السعر قبل الخصم (بالهللة)')
+                            ->label('السعر قبل الخصم ')
                             ->numeric()
                             ->suffix('¢'),
                         Forms\Components\TextInput::make('stock_quantity')
@@ -111,7 +124,7 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price_cents')
                     ->label('السعر')
-                    ->formatStateUsing(fn($state) => number_format($state / 100, 2) . ' SAR')
+                    ->formatStateUsing(fn($state) => app(\App\Services\CurrencyService::class)->format($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stock_quantity')
                     ->label('المخزون')

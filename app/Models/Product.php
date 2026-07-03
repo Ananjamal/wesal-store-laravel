@@ -72,7 +72,12 @@ class Product extends Model implements HasMedia
 
     public function getPriceAttribute(): float
     {
-        return $this->price_cents / 100;
+        return app(\App\Services\CurrencyService::class)->convert($this->price_cents);
+    }
+
+    public function getFormattedPriceAttribute(): string
+    {
+        return app(\App\Services\CurrencyService::class)->format($this->price_cents);
     }
 
     public function scopePublished($query)

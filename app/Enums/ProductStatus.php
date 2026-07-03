@@ -13,9 +13,9 @@ enum ProductStatus: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Draft => 'مسودّة',
-            self::Published => 'نشط / منشور',
-            self::Archived => 'مؤرشف',
+            self::Draft => __('status.draft'),
+            self::Published => __('status.published'),
+            self::Archived => __('status.archived'),
         };
     }
 }

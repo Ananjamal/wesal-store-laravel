@@ -42,6 +42,20 @@ class DatabaseSeeder extends Seeder
             $admin->assignRole($adminRole);
         }
 
+        // 2.5. Create Default Currencies
+        $currencies = [
+            ['code' => 'SAR', 'name' => 'Saudi Riyal', 'symbol' => 'ر.س', 'exchange_rate' => 1.000000, 'is_default' => false, 'is_active' => true],
+            ['code' => 'USD', 'name' => 'US Dollar', 'symbol' => '$', 'exchange_rate' => 0.266667, 'is_default' => false, 'is_active' => true],
+            ['code' => 'EGP', 'name' => 'Egyptian Pound', 'symbol' => 'ج.م', 'exchange_rate' => 12.800000, 'is_default' => false, 'is_active' => true],
+            ['code' => 'EUR', 'name' => 'Euro', 'symbol' => '€', 'exchange_rate' => 12.800000, 'is_default' => false, 'is_active' => true],
+            ['code' => 'ILS', 'name' => 'Israeli Shekel', 'symbol' => '₪', 'exchange_rate' => 12.800000, 'is_default' => true, 'is_active' => true],
+
+        ];
+
+        foreach ($currencies as $currency) {
+            \App\Models\Currency::firstOrCreate(['code' => $currency['code']], $currency);
+        }
+
         // 3. Create Store Settings
         $settings = [
             ['key' => 'store_name', 'value' => 'Wisal Store', 'type' => 'string'],
@@ -66,12 +80,12 @@ class DatabaseSeeder extends Seeder
 
         // 5. Create Categories & Products
         $notebookCategory = Category::factory()->create([
-            'name' => 'Notebooks',
+            'name' => 'دفاتر ومذكرات',
             'slug' => 'notebooks',
         ]);
 
         $stickerCategory = Category::factory()->create([
-            'name' => 'Stickers',
+            'name' => 'ملصقات',
             'slug' => 'stickers',
         ]);
 

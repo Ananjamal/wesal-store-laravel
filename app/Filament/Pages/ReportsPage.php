@@ -7,10 +7,22 @@ use Filament\Pages\Page;
 class ReportsPage extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
-    protected static ?string $navigationLabel = 'تقارير المبيعات والأداء';
-    protected static ?string $title = 'تقارير المبيعات والأداء';
-    protected static ?string $navigationGroup = 'التقارير';
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('reports.title');
+    }
+
+    public function getTitle(): string
+    {
+        return __('reports.title');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('reports.group');
+    }
 
     protected static string $view = 'filament.pages.reports-page';
 
@@ -22,7 +34,7 @@ class ReportsPage extends Page
             \App\Enums\OrderStatus::Refunded->value
         ])->sum('total_cents');
 
-        $totalRevenue = number_format($totalRevenueCents / 100, 2);
+        $totalRevenue = number_format(app(\App\Services\CurrencyService::class)->convert($totalRevenueCents), 2);
 
         // 2. Total Orders count
         $totalOrdersCount = \App\Models\Order::count();
@@ -53,6 +65,7 @@ class ReportsPage extends Page
             'statusCounts' => $statusCounts,
             'topProducts' => $topProducts,
             'recentOrders' => $recentOrders,
+            'currencySymbol' => app(\App\Services\CurrencyService::class)->symbol(),
         ];
     }
 }

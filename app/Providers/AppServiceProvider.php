@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Review;
 use App\Policies\OrderPolicy;
 use App\Policies\ReviewPolicy;
+use App\Services\CurrencyService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(CurrencyService::class, fn() => new CurrencyService());
     }
 
     /**

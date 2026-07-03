@@ -13,9 +13,9 @@ enum CouponType: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Fixed => 'مبلغ ثابت',
-            self::Percentage => 'نسبة مئوية',
-            self::FreeShipping => 'شحن مجاني',
+            self::Fixed => __('coupon.fixed'),
+            self::Percentage => __('coupon.percentage'),
+            self::FreeShipping => __('coupon.free_shipping'),
         };
     }
 }

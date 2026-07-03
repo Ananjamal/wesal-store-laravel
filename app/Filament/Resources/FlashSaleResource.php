@@ -15,29 +15,42 @@ class FlashSaleResource extends Resource
     protected static ?string $model = FlashSale::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
-    protected static ?string $navigationLabel = 'التخفيضات السريعة';
-    protected static ?string $pluralModelLabel = 'التخفيضات السريعة';
-    protected static ?string $modelLabel = 'تخفيض سريع';
-    protected static ?string $navigationGroup = 'التسويق';
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.flash_sales');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('resource.flash_sale');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.flash_sales');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('nav.marketing');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('اسم العرض الترويجي')
+                    ->label(__('field.promos_name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('starts_at')
-                    ->label('تاريخ وتوقيت البدء')
+                    ->label(__('field.starts_at'))
                     ->required(),
                 Forms\Components\DateTimePicker::make('ends_at')
-                    ->label('تاريخ وتوقيت الانتهاء')
+                    ->label(__('field.ends_at'))
                     ->required()
                     ->after('starts_at'),
                 Forms\Components\Toggle::make('is_active')
-                    ->label('نشط ومرئي للعملاء')
+                    ->label(__('field.is_active'))
                     ->default(true)
                     ->required(),
             ])->columns(2);
@@ -48,23 +61,23 @@ class FlashSaleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('اسم العرض')
+                    ->label(__('field.name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('starts_at')
-                    ->label('تاريخ البدء')
+                    ->label(__('field.starts_at'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ends_at')
-                    ->label('تاريخ الانتهاء')
+                    ->label(__('field.ends_at'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('نشط')
+                    ->label(__('field.is_active'))
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_running')
-                    ->label('نشط الآن (مباشر)')
+                    ->label(__('messages.live_now'))
                     ->boolean()
                     ->getStateUsing(
                         fn(FlashSale $record): bool =>
@@ -79,7 +92,7 @@ class FlashSaleResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('نشط')
+                    ->label(__('field.is_active'))
                     ->boolean(),
             ])
             ->actions([

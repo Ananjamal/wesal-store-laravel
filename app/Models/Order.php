@@ -69,26 +69,31 @@ class Order extends Model
 
     public function getSubtotalAttribute(): float
     {
-        return $this->subtotal_cents / 100;
+        return app(\App\Services\CurrencyService::class)->convert($this->subtotal_cents);
     }
 
     public function getShippingAttribute(): float
     {
-        return $this->shipping_cents / 100;
+        return app(\App\Services\CurrencyService::class)->convert($this->shipping_cents);
     }
 
     public function getTaxAttribute(): float
     {
-        return $this->tax_cents / 100;
+        return app(\App\Services\CurrencyService::class)->convert($this->tax_cents);
     }
 
     public function getDiscountAttribute(): float
     {
-        return $this->discount_cents / 100;
+        return app(\App\Services\CurrencyService::class)->convert($this->discount_cents);
     }
 
     public function getTotalAttribute(): float
     {
-        return $this->total_cents / 100;
+        return app(\App\Services\CurrencyService::class)->convert($this->total_cents);
+    }
+
+    public function getFormattedTotalAttribute(): string
+    {
+        return app(\App\Services\CurrencyService::class)->format($this->total_cents);
     }
 }

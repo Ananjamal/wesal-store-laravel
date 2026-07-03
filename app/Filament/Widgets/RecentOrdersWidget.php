@@ -14,7 +14,10 @@ class RecentOrdersWidget extends BaseWidget
 
     protected int | string | array $columnSpan = 'full';
 
-    protected static ?string $heading = 'آخر الطلبات';
+    public function getHeading(): string
+    {
+        return __('widgets.recent_orders_title');
+    }
 
     public function table(Table $table): Table
     {
@@ -27,23 +30,23 @@ class RecentOrdersWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('order_number')
-                    ->label('رقم الطلب')
+                    ->label(__('field.order_number'))
                     ->searchable()
                     ->copyable()
                     ->weight(\Filament\Support\Enums\FontWeight::Bold),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('العميل')
+                    ->label(__('field.customer'))
                     ->searchable()
                     ->icon('heroicon-m-user'),
 
                 Tables\Columns\TextColumn::make('total_cents')
-                    ->label('الإجمالي')
-                    ->formatStateUsing(fn($state) => number_format($state / 100, 2) . ' ر.س')
+                    ->label(__('field.total'))
+                    ->formatStateUsing(fn($state) => app(\App\Services\CurrencyService::class)->format($state))
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('الحالة')
+                    ->label(__('field.status'))
                     ->badge()
                     ->color(fn(OrderStatus $state): string => match ($state) {
                         OrderStatus::Pending    => 'warning',
@@ -55,14 +58,14 @@ class RecentOrdersWidget extends BaseWidget
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('التاريخ')
+                    ->label(__('field.created_at'))
                     ->dateTime('d M Y - H:i')
                     ->sortable()
                     ->color('gray'),
             ])
             ->actions([
                 Tables\Actions\Action::make('view')
-                    ->label('عرض')
+                    ->label(__('action.view'))
                     ->icon('heroicon-m-eye')
                     ->url(fn(Order $record): string => route('filament.admin.resources.orders.edit', $record)),
             ])

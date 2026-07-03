@@ -16,43 +16,56 @@ class OrderResource extends Resource
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
-    protected static ?string $navigationLabel = 'الطلبات';
-    protected static ?string $pluralModelLabel = 'الطلبات';
-    protected static ?string $modelLabel = 'طلب';
-    protected static ?string $navigationGroup = 'العمليات';
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.orders');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('resource.order');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.orders');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('nav.operations');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('معلومات الطلب')
+                Forms\Components\Section::make(__('field.order'))
                     ->schema([
                         Forms\Components\Select::make('user_id')
-                            ->label('العميل')
+                            ->label(__('field.customer'))
                             ->relationship('user', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('status')
-                            ->label('حالة الطلب')
+                            ->label(__('field.order_status'))
                             ->options(OrderStatus::class)
                             ->required(),
                         Forms\Components\TextInput::make('order_number')
-                            ->label('رقم الطلب')
+                            ->label(__('field.order_number'))
                             ->maxLength(255),
                         Forms\Components\Textarea::make('notes')
-                            ->label('ملاحظات')
+                            ->label(__('field.notes'))
                             ->columnSpanFull(),
                     ])->columns(2),
 
-                Forms\Components\Section::make('التسعير')
+                Forms\Components\Section::make(__('field.price'))
                     ->schema([
-                        Forms\Components\TextInput::make('subtotal_cents')->label('المجموع الفرعي (بالهللة)')->numeric()->required(),
-                        Forms\Components\TextInput::make('shipping_cents')->label('تكلفة الشحن (بالهللة)')->numeric()->default(0),
-                        Forms\Components\TextInput::make('tax_cents')->label('الضريبة (بالهللة)')->numeric()->default(0),
-                        Forms\Components\TextInput::make('discount_cents')->label('الخصم (بالهللة)')->numeric()->default(0),
-                        Forms\Components\TextInput::make('total_cents')->label('المجموع الإجمالي (بالهللة)')->numeric()->required(),
+                        Forms\Components\TextInput::make('subtotal_cents')->label(__('field.subtotal'))->numeric()->required(),
+                        Forms\Components\TextInput::make('shipping_cents')->label(__('field.shipping_cost'))->numeric()->default(0),
+                        Forms\Components\TextInput::make('tax_cents')->label(__('field.tax'))->numeric()->default(0),
+                        Forms\Components\TextInput::make('discount_cents')->label(__('field.discount'))->numeric()->default(0),
+                        Forms\Components\TextInput::make('total_cents')->label(__('field.total'))->numeric()->required(),
                     ])->columns(2),
             ]);
     }
@@ -62,19 +75,19 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('order_number')
-                    ->label('رقم الطلب')
+                    ->label(__('field.order_number'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('العميل')
+                    ->label(__('field.customer'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_cents')
-                    ->label('المجموع الكلي')
-                    ->formatStateUsing(fn($state) => number_format($state / 100, 2) . ' SAR')
+                    ->label(__('field.total'))
+                    ->formatStateUsing(fn($state) => app(\App\Services\CurrencyService::class)->format($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('حالة الطلب')
+                    ->label(__('field.order_status'))
                     ->badge()
                     ->color(fn(OrderStatus $state): string => match ($state) {
                         OrderStatus::Pending    => 'warning',
@@ -86,14 +99,14 @@ class OrderResource extends Resource
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('تاريخ الطلب')
+                    ->label(__('field.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('الحالة')
+                    ->label(__('filter.status'))
                     ->options(OrderStatus::class),
             ])
             ->actions([
@@ -109,9 +122,7 @@ class OrderResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
