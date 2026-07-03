@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuthStore } from '~/stores/auth'
-import { useRouter } from '#app'
+import { useAuthStore } from '@/stores/auth'
+import { router } from '@inertiajs/vue3'
 
 const auth = useAuthStore()
-const router = useRouter()
+
 const form = ref({ name: '', email: '', password: '', password_confirmation: '' })
 const loading = ref(false)
 const error = ref('')
@@ -14,7 +14,7 @@ async function onSubmit() {
   error.value = ''
   try {
     await auth.register(form.value)
-    router.push('/')
+    router.visit('/')
   } catch (e: any) {
     error.value = e.response?._data?.message || $t('auth.register_failed')
   } finally {
@@ -74,7 +74,7 @@ async function onSubmit() {
       
       <div class="mt-6 text-center text-sm text-gray-500">
         {{ $t('auth.have_account') }}
-        <NuxtLink to="/login" class="text-wisal-aqua hover:underline font-medium">{{ $t('auth.login_link') }}</NuxtLink>
+        <Link href="/login" class="text-wisal-aqua hover:underline font-medium">{{ $t('auth.login_link') }}</Link>
       </div>
     </WCard>
   </div>
