@@ -1,0 +1,54 @@
+name: Deploy — Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to Production Server
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, bcmath, pdo_mysql, intl
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_PORT || 22 }}
+          script: |
+            cd ${{ secrets.PROD_PATH }}
+
+            # Enable maintenance mode
+            php artisan down --secret="${{ secrets.MAINTENANCE_SECRET }}"
+
+            git pull origin main
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+            # Run migrations with backup mindset (separate step)
+            php artisan migrate --force
+
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan event:cache
+            php artisan queue:restart
+
+            # Disable maintenance mode
+            php artisan up
+
+            echo "🚀 Production deployment complete at $(date)"
