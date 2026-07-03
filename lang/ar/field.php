@@ -73,4 +73,12 @@ return [
     "times_used" => "عدد مرات الاستخدام",
     "promos_name" => "اسم العرض الترويجي",
     "currency_unit" => "ر.س",
+    "subject" => "موضوع الرسالة",
+    "message" => "نص الرسالة",
+    "is_read" => "حالة القراءة",
+    "read" => "مقروءة",
+    "unread" => "غير مقروءة",
+    "mark_read" => "تعيين كمقروء",
+    "sender_info" => "بيانات المرسل",
+    "message_details" => "تفاصيل الرسالة",
 ];

@@ -27,4 +27,8 @@ return [
     "store_setting" => "إعداد",
     "audit_logs" => "سجل التدقيق",
     "audit_log" => "سجل تدقيق",
+    "subscribers" => "المشتركون",
+    "subscriber" => "مشترك",
+    "contact_messages" => "رسائل التواصل",
+    "contact_message" => "رسالة",
 ];
