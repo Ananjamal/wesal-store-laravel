@@ -16,7 +16,7 @@ async function onSubmit() {
     await auth.register(form.value)
     router.push('/')
   } catch (e: any) {
-    error.value = e.response?._data?.message || 'فشل التسجيل. يرجى المحاولة مرة أخرى.'
+    error.value = e.response?._data?.message || $t('auth.register_failed')
   } finally {
     loading.value = false
   }
@@ -27,8 +27,8 @@ async function onSubmit() {
   <div class="min-h-screen flex items-center justify-center bg-wisal-ivory p-4">
     <WCard class="w-full max-w-md">
       <div class="text-center mb-8">
-        <h1 class="text-2xl font-bold text-wisal-charcoal mb-2">إنشاء حساب جديد</h1>
-        <p class="text-gray-500">انضم إلى عائلة وِصال</p>
+        <h1 class="text-2xl font-bold text-wisal-charcoal mb-2">{{ $t('auth.register_title') }}</h1>
+        <p class="text-gray-500">{{ $t('auth.register_subtitle') }}</p>
       </div>
 
       <div v-if="error" class="mb-4">
@@ -38,27 +38,27 @@ async function onSubmit() {
       <form @submit.prevent="onSubmit" class="space-y-4">
         <WInput
           v-model="form.name"
-          label="الاسم الكامل"
+          :label="$t('auth.full_name')"
           required
         />
         
         <WInput
           v-model="form.email"
-          label="البريد الإلكتروني"
+          :label="$t('auth.email')"
           type="email"
           required
         />
         
         <WInput
           v-model="form.password"
-          label="كلمة المرور"
+          :label="$t('auth.password')"
           type="password"
           required
         />
         
         <WInput
           v-model="form.password_confirmation"
-          label="تأكيد كلمة المرور"
+          :label="$t('auth.password_confirmation')"
           type="password"
           required
         />
@@ -68,13 +68,13 @@ async function onSubmit() {
           class="w-full mt-6"
           :loading="loading"
         >
-          إنشاء حساب
+          {{ $t('auth.register_btn') }}
         </WButton>
       </form>
       
       <div class="mt-6 text-center text-sm text-gray-500">
-        لديك حساب بالفعل؟
-        <NuxtLink to="/login" class="text-wisal-aqua hover:underline font-medium">تسجيل الدخول</NuxtLink>
+        {{ $t('auth.have_account') }}
+        <NuxtLink to="/login" class="text-wisal-aqua hover:underline font-medium">{{ $t('auth.login_link') }}</NuxtLink>
       </div>
     </WCard>
   </div>

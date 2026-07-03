@@ -16,7 +16,7 @@ async function onSubmit() {
     await auth.login(form.value)
     router.push('/')
   } catch (e: any) {
-    error.value = e.response?._data?.message || 'فشل تسجيل الدخول. تأكد من بياناتك.'
+    error.value = e.response?._data?.message || $t('auth.login_failed')
   } finally {
     loading.value = false
   }
@@ -27,8 +27,8 @@ async function onSubmit() {
   <div class="min-h-screen flex items-center justify-center bg-wisal-ivory p-4">
     <WCard class="w-full max-w-md">
       <div class="text-center mb-8">
-        <h1 class="text-2xl font-bold text-wisal-charcoal mb-2">مرحباً بك في وِصال</h1>
-        <p class="text-gray-500">سجل دخولك للمتابعة</p>
+        <h1 class="text-2xl font-bold text-wisal-charcoal mb-2">{{ $t('auth.login_title') }}</h1>
+        <p class="text-gray-500">{{ $t('auth.login_subtitle') }}</p>
       </div>
 
       <div v-if="error" class="mb-4">
@@ -38,14 +38,14 @@ async function onSubmit() {
       <form @submit.prevent="onSubmit" class="space-y-4">
         <WInput
           v-model="form.email"
-          label="البريد الإلكتروني"
+          :label="$t('auth.email')"
           type="email"
           required
         />
         
         <WInput
           v-model="form.password"
-          label="كلمة المرور"
+          :label="$t('auth.password')"
           type="password"
           required
         />
@@ -55,13 +55,13 @@ async function onSubmit() {
           class="w-full mt-6"
           :loading="loading"
         >
-          تسجيل الدخول
+          {{ $t('auth.login_btn') }}
         </WButton>
       </form>
       
       <div class="mt-6 text-center text-sm text-gray-500">
-        ليس لديك حساب؟
-        <NuxtLink to="/register" class="text-wisal-aqua hover:underline font-medium">إنشاء حساب جديد</NuxtLink>
+        {{ $t('auth.no_account') }}
+        <NuxtLink to="/register" class="text-wisal-aqua hover:underline font-medium">{{ $t('auth.create_new_account') }}</NuxtLink>
       </div>
     </WCard>
   </div>

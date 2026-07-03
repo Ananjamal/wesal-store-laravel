@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "login_title": "مرحباً بك في وِصال",
+    "login_subtitle": "سجل دخولك للمتابعة",
+    "register_title": "إنشاء حساب جديد",
+    "register_subtitle": "انضم إلى عائلة وِصال",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "password_confirmation": "تأكيد كلمة المرور",
+    "full_name": "الاسم الكامل",
+    "login_btn": "تسجيل الدخول",
+    "register_btn": "إنشاء حساب",
+    "no_account": "ليس لديك حساب؟",
+    "have_account": "لديك حساب بالفعل؟",
+    "create_new_account": "إنشاء حساب جديد",
+    "login_link": "تسجيل الدخول",
+    "login_failed": "فشل تسجيل الدخول. تأكد من بياناتك.",
+    "register_failed": "فشل التسجيل. يرجى المحاولة مرة أخرى."
+  },
+  "common": {
+    "loading": "جاري التحميل..."
+  }
+}
