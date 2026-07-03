@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Models\Category;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Facades\DB;
 
 class StatsOverview extends BaseWidget
 {
@@ -65,27 +64,27 @@ class StatsOverview extends BaseWidget
         }
 
         return [
-            Stat::make('إجمالي الإيرادات', number_format($revenueCents / 100, 2) . ' ر.س')
+            Stat::make(__('widgets.total_revenue'), app(\App\Services\CurrencyService::class)->format($revenueCents))
                 ->description($revenueTrend >= 0
-                    ? "↑ {$revenueTrend}% مقارنة بالشهر الماضي"
-                    : "↓ " . abs($revenueTrend) . "% مقارنة بالشهر الماضي")
+                    ? __('widgets.revenue_up', ['trend' => $revenueTrend])
+                    : __('widgets.revenue_down', ['trend' => abs($revenueTrend)]))
                 ->descriptionIcon($revenueTrend >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($revenueTrend >= 0 ? 'success' : 'danger')
                 ->chart($revenueChart),
 
-            Stat::make('إجمالي الطلبات', number_format($totalOrders))
-                ->description("{$pendingOrders} طلب معلّق · {$ordersThisMonth} هذا الشهر")
+            Stat::make(__('widgets.total_orders'), number_format($totalOrders))
+                ->description(__('widgets.orders_description', ['pending' => $pendingOrders, 'this_month' => $ordersThisMonth]))
                 ->descriptionIcon('heroicon-m-shopping-bag')
                 ->color('primary')
                 ->chart($ordersChart),
 
-            Stat::make('المنتجات', "{$publishedProducts} / {$totalProducts}")
-                ->description("{$totalCategories} قسم · " . ($totalProducts - $publishedProducts) . " مسودة")
+            Stat::make(__('widgets.products'), "{$publishedProducts} / {$totalProducts}")
+                ->description(__('widgets.products_description', ['categories' => $totalCategories, 'drafts' => $totalProducts - $publishedProducts]))
                 ->descriptionIcon('heroicon-m-tag')
                 ->color('warning'),
 
-            Stat::make('المستخدمون', number_format($totalUsers))
-                ->description("{$usersThisMonth} انضموا هذا الشهر")
+            Stat::make(__('widgets.users'), number_format($totalUsers))
+                ->description(__('widgets.users_description', ['new_users' => $usersThisMonth]))
                 ->descriptionIcon('heroicon-m-users')
                 ->color('info'),
         ];

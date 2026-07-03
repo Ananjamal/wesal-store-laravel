@@ -35,16 +35,12 @@ class HandleInertiaRequests extends Middleware
             ],
             'locale' => app()->getLocale(),
             'currency' => function () {
-                $code = session('currency', 'SAR');
-                $curr = \App\Models\Currency::where('code', $code)->first() ?? \App\Models\Currency::where('is_default', true)->first();
-                return $curr ? [
-                    'code' => $curr->code,
-                    'symbol' => $curr->symbol,
-                    'exchange_rate' => (float)$curr->exchange_rate,
-                ] : [
-                    'code' => 'SAR',
-                    'symbol' => 'ر.س',
-                    'exchange_rate' => 1.0,
+                /** @var \App\Services\CurrencyService $service */
+                $service = app(\App\Services\CurrencyService::class);
+                return [
+                    'code' => $service->code(),
+                    'symbol' => $service->symbol(),
+                    'exchange_rate' => $service->rate(),
                 ];
             },
             'currencies' => function () {
@@ -56,11 +52,22 @@ class HandleInertiaRequests extends Middleware
             },
             'translations' => function () {
                 $locale = app()->getLocale();
-                $path = lang_path("{$locale}.json");
-                if (file_exists($path)) {
-                    return json_decode(file_get_contents($path), true);
+                $translations = [];
+                $dir = lang_path($locale);
+                if (is_dir($dir)) {
+                    foreach (glob("{$dir}/*.php") as $file) {
+                        $key = basename($file, '.php');
+                        $translations[$key] = require $file;
+                    }
                 }
-                return [];
+                $jsonPath = lang_path("{$locale}.json");
+                if (file_exists($jsonPath)) {
+                    $jsonTrans = json_decode(file_get_contents($jsonPath), true);
+                    if (is_array($jsonTrans)) {
+                        $translations = array_merge($translations, $jsonTrans);
+                    }
+                }
+                return $translations;
             },
         ]);
     }

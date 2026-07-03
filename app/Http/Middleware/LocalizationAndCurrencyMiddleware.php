@@ -21,13 +21,8 @@ class LocalizationAndCurrencyMiddleware
         }
         app()->setLocale($locale);
 
-        // Handle Currency
-        $currency = session('currency');
-        if (!$currency) {
-            $defaultCurrency = \App\Models\Currency::where('is_default', true)->first();
-            $currency = $defaultCurrency ? $defaultCurrency->code : 'SAR';
-            session(['currency' => $currency]);
-        }
+        // Handle Currency via Service
+        app(\App\Services\CurrencyService::class)->boot();
 
         return $next($request);
     }

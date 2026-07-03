@@ -16,12 +16,12 @@ enum OrderStatus: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Pending => 'قيد الانتظار',
-            self::Processing => 'قيد المعالجة (التجهيز)',
-            self::Shipped => 'تم الشحن',
-            self::Delivered => 'تم التوصيل',
-            self::Cancelled => 'ملغي',
-            self::Refunded => 'مسترجع',
+            self::Pending => __('status.pending'),
+            self::Processing => __('status.processing'),
+            self::Shipped => __('status.shipped'),
+            self::Delivered => __('status.delivered'),
+            self::Cancelled => __('status.cancelled'),
+            self::Refunded => __('status.refunded'),
         };
     }
 }

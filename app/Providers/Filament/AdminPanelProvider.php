@@ -19,6 +19,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use App\Http\Middleware\LocalizationAndCurrencyMiddleware;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
@@ -44,29 +45,29 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->navigationGroups([
                 \Filament\Navigation\NavigationGroup::make()
-                    ->label('الكتالوج'),
+                    ->label(fn() => __('nav.catalog')),
                 \Filament\Navigation\NavigationGroup::make()
-                    ->label('المحتوى'),
+                    ->label(fn() => __('nav.content')),
                 \Filament\Navigation\NavigationGroup::make()
-                    ->label('التسويق'),
+                    ->label(fn() => __('nav.marketing')),
                 \Filament\Navigation\NavigationGroup::make()
-                    ->label('العمليات'),
+                    ->label(fn() => __('nav.operations')),
                 \Filament\Navigation\NavigationGroup::make()
-                    ->label('المستخدمين'),
+                    ->label(fn() => __('nav.users')),
                 \Filament\Navigation\NavigationGroup::make()
-                    ->label('الإعدادات'),
+                    ->label(fn() => __('nav.settings')),
             ])
             ->userMenuItems([
                 MenuItem::make()
-                    ->label('زيارة المتجر')
+                    ->label(fn() => __('nav.visit_store'))
                     ->icon('heroicon-o-globe-alt')
                     ->url('/'),
                 MenuItem::make()
-                    ->label('اللغة: العربية')
+                    ->label('العربية 🇸🇦')
                     ->icon('heroicon-o-language')
                     ->url('/lang/ar'),
                 MenuItem::make()
-                    ->label('Language: English')
+                    ->label('English 🇺🇸')
                     ->icon('heroicon-o-language')
                     ->url('/lang/en'),
             ])
@@ -89,6 +90,7 @@ class AdminPanelProvider extends PanelProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
+                LocalizationAndCurrencyMiddleware::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])

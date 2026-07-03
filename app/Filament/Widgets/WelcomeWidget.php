@@ -24,23 +24,25 @@ class WelcomeWidget extends Widget
         $hour = now()->hour;
 
         $greeting = match (true) {
-            $hour < 12 => 'صباح الخير',
-            $hour < 17 => 'مساء الخير',
-            default    => 'مساء النور',
+            $hour < 12 => __('widgets.good_morning'),
+            $hour < 17 => __('widgets.good_afternoon'),
+            default    => __('widgets.good_evening'),
         };
+
+        $isoFormat = app()->getLocale() === 'ar' ? 'dddd، D MMMM YYYY' : 'dddd, D MMMM YYYY';
+        $date = now()->locale(app()->getLocale())->isoFormat($isoFormat);
 
         return [
             'greeting'      => $greeting,
-            'userName'      => $user?->name ?? 'المدير',
+            'userName'      => $user?->name ?? __('widgets.admin'),
             'pendingOrders' => Order::where('status', OrderStatus::Pending->value)->count(),
-            'todayRevenue'  => number_format(
+            'todayRevenue'  => number_format(app(\App\Services\CurrencyService::class)->convert(
                 Order::whereDate('created_at', today())
                     ->whereNotIn('status', [OrderStatus::Cancelled->value, OrderStatus::Refunded->value])
-                    ->sum('total_cents') / 100,
-                2
-            ),
+                    ->sum('total_cents')
+            ), 2),
             'todayOrders'   => Order::whereDate('created_at', today())->count(),
-            'date'          => now()->locale('ar')->isoFormat('dddd، D MMMM YYYY'),
+            'date'          => $date,
         ];
     }
 }

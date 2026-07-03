@@ -4,8 +4,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 relative overflow-hidden transition duration-300 hover:shadow-md">
             <div class="flex items-center justify-between">
                 <div>
-                    <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">إجمالي الإيرادات (المبيعات الفعلية)</span>
-                    <h3 class="text-3xl font-bold mt-2 text-[#467389]">{{ $totalRevenue }} <span class="text-sm font-normal">SAR</span></h3>
+                    <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">{{ __('reports.total_revenue') }}</span>
+                    <h3 class="text-3xl font-bold mt-2 text-[#467389]">{{ $totalRevenue }} <span class="text-sm font-normal">{{ $currencySymbol }}</span></h3>
                 </div>
                 <div class="p-3 bg-[#467389]/10 rounded-xl text-[#467389]">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -20,8 +20,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 relative overflow-hidden transition duration-300 hover:shadow-md">
             <div class="flex items-center justify-between">
                 <div>
-                    <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">إجمالي الطلبات المستلمة</span>
-                    <h3 class="text-3xl font-bold mt-2 text-gray-800 dark:text-white">{{ $totalOrdersCount }} <span class="text-sm font-normal">طلب</span></h3>
+                    <span class="text-sm text-gray-500 dark:text-gray-400 font-medium">{{ __('reports.total_orders') }}</span>
+                    <h3 class="text-3xl font-bold mt-2 text-gray-800 dark:text-white">{{ $totalOrdersCount }} <span class="text-sm font-normal">{{ __('reports.order_unit') }}</span></h3>
                 </div>
                 <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-xl text-gray-500 dark:text-gray-400">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +36,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
         <!-- Orders by Status Widget -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 lg:col-span-1">
-            <h4 class="text-lg font-bold text-gray-800 dark:text-white mb-4 border-b pb-2">حالة الطلبات</h4>
+            <h4 class="text-lg font-bold text-gray-800 dark:text-white mb-4 border-b pb-2">{{ __('reports.status_heading') }}</h4>
             <div class="space-y-4">
                 @foreach ($statusCounts as $label => $count)
                 <div class="flex items-center justify-between">
@@ -51,25 +51,25 @@
 
         <!-- Top 5 Selling Products -->
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 lg:col-span-2">
-            <h4 class="text-lg font-bold text-gray-800 dark:text-white mb-4 border-b pb-2">المنتجات الأكثر مبيعاً</h4>
+            <h4 class="text-lg font-bold text-gray-800 dark:text-white mb-4 border-b pb-2">{{ __('reports.top_selling_products') }}</h4>
             <div class="overflow-x-auto">
                 <table class="w-full text-right border-collapse">
                     <thead>
                         <tr class="border-b border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
-                            <th class="pb-3 pt-1 font-medium">المنتج</th>
-                            <th class="pb-3 pt-1 font-medium">السعر</th>
-                            <th class="pb-3 pt-1 font-medium text-left">الكمية المباعة</th>
+                            <th class="pb-3 pt-1 font-medium">{{ __('reports.product') }}</th>
+                            <th class="pb-3 pt-1 font-medium">{{ __('reports.price') }}</th>
+                            <th class="pb-3 pt-1 font-medium text-left">{{ __('reports.quantity_sold') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
                         @forelse($topProducts as $item)
                         <tr class="text-sm">
                             <td class="py-3.5 font-medium text-gray-800 dark:text-gray-200">
-                                {{ $item->product?->name ?? 'منتج غير معروف' }}
+                                {{ $item->product?->name ?? __('reports.unknown_product') }}
                             </td>
                             <td class="py-3.5 text-gray-600 dark:text-gray-400">
                                 @if($item->product)
-                                {{ number_format($item->product->price_cents / 100, 2) }} SAR
+                                {{ $item->product->formatted_price }}
                                 @else
                                 -
                                 @endif
@@ -80,7 +80,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="3" class="py-4 text-center text-gray-400">لا توجد بيانات مبيعات متوفرة.</td>
+                            <td colspan="3" class="py-4 text-center text-gray-400">{{ __('reports.no_data') }}</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -91,16 +91,16 @@
 
     <!-- Recent Orders -->
     <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 mt-6">
-        <h4 class="text-lg font-bold text-gray-800 dark:text-white mb-4 border-b pb-2">آخر الطلبات المستلمة</h4>
+        <h4 class="text-lg font-bold text-gray-800 dark:text-white mb-4 border-b pb-2">{{ __('reports.recent_orders') }}</h4>
         <div class="overflow-x-auto">
             <table class="w-full text-right border-collapse">
                 <thead>
                     <tr class="border-b border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400">
-                        <th class="pb-3 pt-1 font-medium">رقم الطلب</th>
-                        <th class="pb-3 pt-1 font-medium">العميل</th>
-                        <th class="pb-3 pt-1 font-medium">المجموع</th>
-                        <th class="pb-3 pt-1 font-medium">الحالة</th>
-                        <th class="pb-3 pt-1 font-medium text-left">التاريخ</th>
+                        <th class="pb-3 pt-1 font-medium">{{ __('reports.order_number') }}</th>
+                        <th class="pb-3 pt-1 font-medium">{{ __('reports.customer') }}</th>
+                        <th class="pb-3 pt-1 font-medium">{{ __('reports.total') }}</th>
+                        <th class="pb-3 pt-1 font-medium">{{ __('reports.status') }}</th>
+                        <th class="pb-3 pt-1 font-medium text-left">{{ __('reports.date') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
@@ -110,10 +110,10 @@
                             {{ $order->order_number ?? '#' . $order->id }}
                         </td>
                         <td class="py-3.5 text-gray-600 dark:text-gray-300">
-                            {{ $order->user?->name ?? 'غير معروف' }}
+                            {{ $order->user?->name ?? __('reports.unknown') }}
                         </td>
                         <td class="py-3.5 text-gray-600 dark:text-gray-400">
-                            {{ number_format($order->total_cents / 100, 2) }} SAR
+                            {{ $order->formatted_total }}
                         </td>
                         <td class="py-3.5">
                             <span class="px-2.5 py-1 text-xs font-semibold rounded-full">
@@ -126,7 +126,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="py-4 text-center text-gray-400">لا توجد طلبات مسجلة بعد.</td>
+                        <td colspan="5" class="py-4 text-center text-gray-400">{{ __('reports.no_orders') }}</td>
                     </tr>
                     @endforelse
                 </tbody>

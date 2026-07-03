@@ -16,49 +16,62 @@ class CouponResource extends Resource
     protected static ?string $model = Coupon::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
-    protected static ?string $navigationLabel = 'الكوبونات';
-    protected static ?string $pluralModelLabel = 'الكوبونات';
-    protected static ?string $modelLabel = 'كوبون';
-    protected static ?string $navigationGroup = 'التسويق';
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.coupons');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('resource.coupon');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.coupons');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('nav.marketing');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('code')
-                    ->label('كود الخصم')
+                    ->label(__('field.code'))
                     ->required()
                     ->maxLength(100)
                     ->unique(Coupon::class, 'code', ignoreRecord: true)
                     ->placeholder('SAVE20'),
                 Forms\Components\Select::make('type')
-                    ->label('نوع الكوبون')
+                    ->label(__('field.type'))
                     ->options(CouponType::class)
                     ->required()
                     ->live(),
                 Forms\Components\TextInput::make('value')
-                    ->label('قيمة الخصم')
+                    ->label(__('field.value'))
                     ->required()
                     ->numeric()
                     ->helperText(fn(Forms\Get $get) => match ($get('type')) {
-                        'percentage'   => 'أدخل النسبة المئوية (0-100)',
-                        'fixed'        => 'أدخل القيمة بالهللة (مثال: 5000 تعني 50 ريال)',
-                        'free_shipping' => 'لا يتطلب قيمة (سيتم تعيينها 0 تلقائياً)',
-                        default        => '',
+                        'percentage'    => __('messages.coupon_percentage_hint'),
+                        'fixed'         => __('messages.coupon_fixed_hint'),
+                        'free_shipping' => __('messages.coupon_free_shipping_hint'),
+                        default         => '',
                     }),
                 Forms\Components\TextInput::make('min_order_cents')
-                    ->label('الحد الأدنى لقيمة الطلب (بالهللة)')
+                    ->label(__('field.min_order'))
                     ->numeric()
                     ->default(0),
                 Forms\Components\TextInput::make('max_uses')
-                    ->label('أقصى عدد مرات استخدام ومشاركة')
+                    ->label(__('field.max_uses'))
                     ->numeric()
-                    ->placeholder('اتركه فارغاً لعدد غير محدود'),
+                    ->placeholder(__('messages.unlimited')),
                 Forms\Components\DateTimePicker::make('expires_at')
-                    ->label('تاريخ وتوقيت الانتهاء'),
+                    ->label(__('field.expires_at')),
                 Forms\Components\Toggle::make('is_active')
-                    ->label('مرئي ونشط للعملاء')
+                    ->label(__('field.is_active'))
                     ->default(true)
                     ->required(),
             ])->columns(2);
@@ -69,12 +82,12 @@ class CouponResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
-                    ->label('كود الخصم')
+                    ->label(__('field.code'))
                     ->searchable()
                     ->sortable()
                     ->copyable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->label('النوع')
+                    ->label(__('field.type'))
                     ->badge()
                     ->color(fn(CouponType $state): string => match ($state) {
                         CouponType::Fixed        => 'info',
@@ -83,35 +96,35 @@ class CouponResource extends Resource
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('value')
-                    ->label('القيمة للخصم')
+                    ->label(__('field.value'))
                     ->formatStateUsing(fn($state, Coupon $record) => match ($record->type) {
-                        CouponType::Fixed        => number_format($state / 100, 2) . ' SAR',
+                        CouponType::Fixed        => app(\App\Services\CurrencyService::class)->format($state),
                         CouponType::Percentage   => $state . '%',
-                        CouponType::FreeShipping => 'شحن مجاني',
+                        CouponType::FreeShipping => __('messages.coupon_free_shipping_hint'),
                     }),
                 Tables\Columns\TextColumn::make('users_count')
                     ->counts('users')
-                    ->label('عدد مرات الاستخدام')
+                    ->label(__('field.times_used'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('max_uses')
-                    ->label('الحد الأقصى للاستخدام')
-                    ->placeholder('∞'),
+                    ->label(__('field.max_uses'))
+                    ->placeholder(__('messages.unlimited')),
                 Tables\Columns\TextColumn::make('expires_at')
-                    ->label('تاريخ الانتهاء')
+                    ->label(__('field.expires_at'))
                     ->dateTime()
                     ->sortable()
                     ->color(fn($state) => $state && $state < now() ? 'danger' : null),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('نشط')
+                    ->label(__('field.is_active'))
                     ->boolean()
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
-                    ->label('النوع')
+                    ->label(__('field.type'))
                     ->options(CouponType::class),
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('الحالة نشطة')
+                    ->label(__('field.is_active'))
                     ->boolean(),
             ])
             ->actions([

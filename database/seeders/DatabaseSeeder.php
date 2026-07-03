@@ -80,12 +80,12 @@ class DatabaseSeeder extends Seeder
 
         // 5. Create Categories & Products
         $notebookCategory = Category::factory()->create([
-            'name' => 'Notebooks',
+            'name' => 'دفاتر ومذكرات',
             'slug' => 'notebooks',
         ]);
 
         $stickerCategory = Category::factory()->create([
-            'name' => 'Stickers',
+            'name' => 'ملصقات',
             'slug' => 'stickers',
         ]);
 

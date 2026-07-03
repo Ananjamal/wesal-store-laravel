@@ -15,37 +15,50 @@ class ReviewResource extends Resource
     protected static ?string $model = Review::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
-    protected static ?string $navigationLabel = 'التقييمات';
-    protected static ?string $pluralModelLabel = 'التقييمات';
-    protected static ?string $modelLabel = 'تقييم';
-    protected static ?string $navigationGroup = 'الكتالوج';
     protected static ?int $navigationSort = 3;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.reviews');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('resource.review');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.reviews');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('nav.catalog');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->label('المستخدم')
+                    ->label(__('field.user'))
                     ->relationship('user', 'name')
                     ->disabled()
                     ->required(),
                 Forms\Components\Select::make('product_id')
-                    ->label('المنتج')
+                    ->label(__('field.product'))
                     ->relationship('product', 'name')
                     ->disabled()
                     ->required(),
                 Forms\Components\TextInput::make('rating')
-                    ->label('التقييم')
+                    ->label(__('field.rating'))
                     ->numeric()
                     ->disabled()
                     ->required(),
                 Forms\Components\Textarea::make('comment')
-                    ->label('التعليق')
+                    ->label(__('field.comment'))
                     ->disabled()
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_approved')
-                    ->label('تمت الموافقة والنشر')
+                    ->label(__('field.is_approved'))
                     ->default(false),
             ]);
     }
@@ -55,27 +68,27 @@ class ReviewResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('المستخدم')
+                    ->label(__('field.user'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('product.name')
-                    ->label('المنتج')
+                    ->label(__('field.product'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rating')
-                    ->label('التقييم')
+                    ->label(__('field.rating'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('comment')
-                    ->label('التعليق')
+                    ->label(__('field.comment'))
                     ->limit(50),
                 Tables\Columns\IconColumn::make('is_approved')
-                    ->label('مقبول')
+                    ->label(__('field.is_approved'))
                     ->boolean()
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_approved')
-                    ->label('الحالة مقبولة')
+                    ->label(__('field.is_approved'))
                     ->boolean(),
             ])
             ->actions([
@@ -97,9 +110,9 @@ class ReviewResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListReviews::route('/'),
+            'index'  => Pages\ListReviews::route('/'),
             'create' => Pages\CreateReview::route('/create'),
-            'edit' => Pages\EditReview::route('/{record}/edit'),
+            'edit'   => Pages\EditReview::route('/{record}/edit'),
         ];
     }
 }

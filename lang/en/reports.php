@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Sales & Performance Reports',
+    'group' => 'Reports',
+    'total_revenue' => 'Total Revenue (Actual Sales)',
+    'total_orders' => 'Total Orders Received',
+    'order_unit' => 'order',
+    'order_status' => 'Order Status',
+    'status_heading' => 'Orders by Status',
+    'top_selling_products' => 'Top Selling Products',
+    'product' => 'Product',
+    'price' => 'Price',
+    'quantity_sold' => 'Quantity Sold',
+    'no_data' => 'No sales data available.',
+    'recent_orders' => 'Recent Received Orders',
+    'order_number' => 'Order Number',
+    'customer' => 'Customer',
+    'total' => 'Total',
+    'status' => 'Status',
+    'date' => 'Date',
+    'unknown' => 'Unknown',
+    'unknown_product' => 'Unknown Product',
+    'no_orders' => 'No orders recorded yet.',
+];

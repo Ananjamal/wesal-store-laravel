@@ -37,5 +37,15 @@ class Currency extends Model
                     ->update(['is_default' => false]);
             }
         });
+
+        static::saved(function (Currency $currency) {
+            \Illuminate\Support\Facades\Cache::forget('currency_default');
+            \Illuminate\Support\Facades\Cache::forget('currency_' . strtoupper($currency->code));
+        });
+
+        static::deleted(function (Currency $currency) {
+            \Illuminate\Support\Facades\Cache::forget('currency_default');
+            \Illuminate\Support\Facades\Cache::forget('currency_' . strtoupper($currency->code));
+        });
     }
 }

@@ -13,9 +13,9 @@ enum PostStatus: string implements HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::Draft => 'مسودّة',
-            self::Published => 'منشور',
-            self::Archived => 'مؤرشف',
+            self::Draft => __('status.draft'),
+            self::Published => __('status.published'),
+            self::Archived => __('status.archived'),
         };
     }
 }

@@ -15,35 +15,48 @@ class ShippingMethodResource extends Resource
     protected static ?string $model = ShippingMethod::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
-    protected static ?string $navigationLabel = 'طرق الشحن';
-    protected static ?string $pluralModelLabel = 'طرق الشحن';
-    protected static ?string $modelLabel = 'طريقة شحن';
-    protected static ?string $navigationGroup = 'العمليات';
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.shipping_methods');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('resource.shipping_method');
+    }
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.shipping_methods');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('nav.operations');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('الاسم')
+                    ->label(__('field.name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('carrier')
-                    ->label('الناقل')
+                    ->label(__('field.carrier'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('cost_cents')
-                    ->label('تكلفة الشحن (بالهللة)')
+                    ->label(__('field.shipping_cost'))
                     ->numeric()
                     ->required()
                     ->default(0),
                 Forms\Components\TextInput::make('estimated_delivery_days')
-                    ->label('وقت الشحن المتوقع')
+                    ->label(__('field.delivery_time'))
                     ->placeholder('E.g. 3-5 days')
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_active')
-                    ->label('نشطة')
+                    ->label(__('field.is_active'))
                     ->default(true),
             ]);
     }
@@ -53,26 +66,26 @@ class ShippingMethodResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('الاسم')
+                    ->label(__('field.name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('carrier')
-                    ->label('الشركة الناقلة')
+                    ->label(__('field.carrier'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('cost_cents')
-                    ->label('التكلفة')
-                    ->formatStateUsing(fn($state) => number_format($state / 100, 2) . ' SAR')
+                    ->label(__('field.shipping_cost'))
+                    ->formatStateUsing(fn($state) => app(\App\Services\CurrencyService::class)->format($state))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('estimated_delivery_days')
-                    ->label('مدة التوصيل والمتوقع'),
+                    ->label(__('field.delivery_time')),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label('نشطة')
+                    ->label(__('field.is_active'))
                     ->boolean()
                     ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('نشطة')
+                    ->label(__('field.is_active'))
                     ->boolean(),
             ])
             ->actions([
@@ -94,9 +107,9 @@ class ShippingMethodResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListShippingMethods::route('/'),
+            'index'  => Pages\ListShippingMethods::route('/'),
             'create' => Pages\CreateShippingMethod::route('/create'),
-            'edit' => Pages\EditShippingMethod::route('/{record}/edit'),
+            'edit'   => Pages\EditShippingMethod::route('/{record}/edit'),
         ];
     }
 }
