@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "login_title": "Welcome to Wisal",
+    "login_subtitle": "Sign in to continue",
+    "register_title": "Create a new account",
+    "register_subtitle": "Join the Wisal family",
+    "email": "Email Address",
+    "password": "Password",
+    "password_confirmation": "Confirm Password",
+    "full_name": "Full Name",
+    "login_btn": "Sign In",
+    "register_btn": "Create Account",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "create_new_account": "Create new account",
+    "login_link": "Sign In",
+    "login_failed": "Login failed. Please check your credentials.",
+    "register_failed": "Registration failed. Please try again."
+  },
+  "common": {
+    "loading": "Loading..."
+  }
+}
