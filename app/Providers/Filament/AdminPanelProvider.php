@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('✦ وِصال')
             ->brandLogo(fn() => view('filament.brand'))
             ->brandLogoHeight('2.5rem')
-            ->favicon(asset('favicon.ico'))
+            ->favicon(asset('images/icon.jpg'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::hex('#467389'),

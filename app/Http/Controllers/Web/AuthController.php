@@ -25,11 +25,34 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
+        // Temporary debug
+        \Illuminate\Support\Facades\Log::info('LOGIN ATTEMPT', [
+            'email' => $credentials['email'],
+            'password_length' => strlen($credentials['password']),
+        ]);
+
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+
+        \Illuminate\Support\Facades\Log::info('USER FOUND', [
+            'found' => $user ? true : false,
+            'is_active' => $user?->is_active,
+            'password_match' => $user ? \Illuminate\Support\Facades\Hash::check($credentials['password'], $user->password) : false,
+        ]);
+
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
+            \Illuminate\Support\Facades\Log::info('LOGIN SUCCESS', ['user_id' => Auth::id()]);
+
+            $intended = redirect()->getIntendedUrl();
+            if ($intended && Str::contains($intended, '/admin')) {
+                return redirect('/');
+            }
+
             return redirect()->intended('/');
         }
+
+        \Illuminate\Support\Facades\Log::warning('LOGIN FAILED - Auth::attempt returned false');
 
         throw ValidationException::withMessages([
             'email' => trans('auth.failed'),

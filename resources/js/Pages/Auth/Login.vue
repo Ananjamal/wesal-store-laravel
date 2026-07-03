@@ -42,10 +42,10 @@ const submit = () => {
             <div class="relative z-10">
                 <h2 style="font-size:2.5rem;font-weight:900;color:#ffffff;line-height:1.2;margin-bottom:1rem;">
                     تسوّق بأناقة،<br/>
-                    <span style="color:#D1CBB4;">عِش التميّز</span>
+                    <span style="color:#D1CBB4;">لأدواتك المكتبية</span>
                 </h2>
                 <p style="color:rgba(255,255,255,0.7);font-size:1rem;line-height:1.7;max-width:400px;">
-                    اكتشف مجموعتنا الحصرية من المنتجات الفاخرة المختارة بعناية لتناسب أسلوب حياتك الراقي.
+                    اكتشف مجموعتنا الحصرية من القرطاسية والأدوات المكتبية الفاخرة، مختارة بعناية لتلهم إبداعك وتناسب أسلوب عملك.
                 </p>
 
                 <!-- Feature pills -->

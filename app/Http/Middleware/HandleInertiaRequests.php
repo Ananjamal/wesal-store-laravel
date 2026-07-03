@@ -25,7 +25,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
+        return [
+            ...parent::share($request),
             'auth' => [
                 'user' => $request->user() ? [
                     'id' => $request->user()->id,
@@ -34,6 +35,10 @@ class HandleInertiaRequests extends Middleware
                 ] : null,
             ],
             'locale' => app()->getLocale(),
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error'   => fn () => $request->session()->get('error'),
+            ],
             'currency' => function () {
                 /** @var \App\Services\CurrencyService $service */
                 $service = app(\App\Services\CurrencyService::class);
@@ -69,6 +74,6 @@ class HandleInertiaRequests extends Middleware
                 }
                 return $translations;
             },
-        ]);
+        ];
     }
 }

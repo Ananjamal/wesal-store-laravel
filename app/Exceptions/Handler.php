@@ -27,4 +27,19 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $e)
+    {
+        $response = parent::render($request, $e);
+
+        if ($response->status() === 403 && $request->is('admin*')) {
+            return redirect('/');
+        }
+
+        if ($response->status() === 419) {
+            return back()->with('message', 'انتهت صلاحية الصفحة، يرجى المحاولة مرة أخرى.');
+        }
+
+        return $response;
+    }
 }
