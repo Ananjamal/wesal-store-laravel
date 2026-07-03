@@ -43,11 +43,11 @@ const submit = () => {
             <!-- Hero text -->
             <div class="relative z-10">
                 <h2 style="font-size:2.5rem;font-weight:900;color:#ffffff;line-height:1.2;margin-bottom:1rem;">
-                    طوّر أسلوبك،<br/>
-                    <span style="color:#D1CBB4;">تسوّق معنا</span>
+                    إبداع بلا حدود،<br/>
+                    <span style="color:#D1CBB4;">ابدأ معنا</span>
                 </h2>
                 <p style="color:rgba(255,255,255,0.7);font-size:1rem;line-height:1.7;max-width:400px;">
-                    انضم إلى عائلة وِصال لتستمتع بخصومات حصرية، تجربة تسوق مخصصة، ومتابعة فورية لحالة طلباتك.
+                    انضم إلى عائلة وِصال واكتشف عالماً من القرطاسية والأدوات المكتبية الفاخرة التي تزيد من إنتاجيتك وإبداعك.
                 </p>
 
                 <!-- Feature pills -->
