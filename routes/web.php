@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\LocaleCurrencyController;
 use Inertia\Inertia;
+
+Route::get('lang/{locale}', [LocaleCurrencyController::class, 'setLocale'])->name('set-locale');
+Route::get('currency/{code}', [LocaleCurrencyController::class, 'setCurrency'])->name('set-currency');
 
 Route::get('/', function () {
     return Inertia::render('Welcome');

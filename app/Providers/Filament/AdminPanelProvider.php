@@ -46,17 +46,29 @@ class AdminPanelProvider extends PanelProvider
                 \Filament\Navigation\NavigationGroup::make()
                     ->label('الكتالوج'),
                 \Filament\Navigation\NavigationGroup::make()
-                    ->label('التقارير'),
+                    ->label('المحتوى'),
                 \Filament\Navigation\NavigationGroup::make()
                     ->label('التسويق'),
                 \Filament\Navigation\NavigationGroup::make()
                     ->label('العمليات'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('المستخدمين'),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label('الإعدادات'),
             ])
             ->userMenuItems([
                 MenuItem::make()
                     ->label('زيارة المتجر')
                     ->icon('heroicon-o-globe-alt')
                     ->url('/'),
+                MenuItem::make()
+                    ->label('اللغة: العربية')
+                    ->icon('heroicon-o-language')
+                    ->url('/lang/ar'),
+                MenuItem::make()
+                    ->label('Language: English')
+                    ->icon('heroicon-o-language')
+                    ->url('/lang/en'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
