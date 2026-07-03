@@ -73,4 +73,12 @@ return [
     "times_used" => "Times Used",
     "promos_name" => "Promotion Name",
     "currency_unit" => "SAR",
+    "subject" => "Subject",
+    "message" => "Message",
+    "is_read" => "Read Status",
+    "read" => "Read",
+    "unread" => "Unread",
+    "mark_read" => "Mark as Read",
+    "sender_info" => "Sender Information",
+    "message_details" => "Message Details",
 ];

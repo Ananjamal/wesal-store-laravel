@@ -27,4 +27,8 @@ return [
     "store_setting" => "Setting",
     "audit_logs" => "Audit Log",
     "audit_log" => "Audit Entry",
+    "subscribers" => "Subscribers",
+    "subscriber" => "Subscriber",
+    "contact_messages" => "Contact Messages",
+    "contact_message" => "Message",
 ];
