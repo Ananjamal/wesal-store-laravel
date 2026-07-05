@@ -26,4 +26,13 @@ export default defineConfig({
             "@": "/resources/js",
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['vue', 'pinia', '@inertiajs/vue3'],
+                }
+            }
+        }
+    }
 });

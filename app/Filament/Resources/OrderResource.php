@@ -61,12 +61,42 @@ class OrderResource extends Resource
 
                 Forms\Components\Section::make(__('field.price'))
                     ->schema([
-                        Forms\Components\TextInput::make('subtotal_cents')->label(__('field.subtotal'))->numeric()->required(),
-                        Forms\Components\TextInput::make('shipping_cents')->label(__('field.shipping_cost'))->numeric()->default(0),
-                        Forms\Components\TextInput::make('tax_cents')->label(__('field.tax'))->numeric()->default(0),
-                        Forms\Components\TextInput::make('discount_cents')->label(__('field.discount'))->numeric()->default(0),
-                        Forms\Components\TextInput::make('total_cents')->label(__('field.total'))->numeric()->required(),
+                        Forms\Components\TextInput::make('subtotal_cents')->label(__('field.subtotal'))->type('number')->step('any')->required()->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
+                        Forms\Components\TextInput::make('shipping_cents')->label(__('field.shipping_cost'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
+                        Forms\Components\TextInput::make('tax_cents')->label(__('field.tax'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
+                        Forms\Components\TextInput::make('discount_cents')->label(__('field.discount'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
+                        Forms\Components\TextInput::make('total_cents')->label(__('field.total'))->type('number')->step('any')->required()->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
                     ])->columns(2),
+
+                Forms\Components\Section::make(__('field.order_items'))
+                    ->schema([
+                        Forms\Components\Repeater::make('items')
+                            ->relationship()
+                            ->schema([
+                                Forms\Components\Select::make('product_id')
+                                    ->label(__('field.product'))
+                                    ->relationship('product', 'name')
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label(__('field.quantity'))
+                                    ->type('number')
+                                    ->step('any')
+                                    ->required()
+                                    ->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;']),
+                                Forms\Components\TextInput::make('price_cents')
+                                    ->label(__('field.price'))
+                                    ->type('number')
+                                    ->step('any')
+                                    ->required()
+                                    ->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])
+                                    ->prefix(__('field.currency_unit')),
+                            ])
+                            ->columns(3)
+                            ->defaultItems(0)
+                            ->addable(false)
+                            ->deletable(false)
+                    ]),
             ]);
     }
 
@@ -110,6 +140,7 @@ class OrderResource extends Resource
                     ->options(OrderStatus::class),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -129,8 +160,6 @@ class OrderResource extends Resource
     {
         return [
             'index'  => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
-            'edit'   => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Policies\OrderPolicy;
 use App\Policies\ReviewPolicy;
 use App\Services\CurrencyService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::shouldBeStrict(!app()->isProduction());
+
         // Register Policies
         Gate::policy(Order::class, OrderPolicy::class);
         Gate::policy(Review::class, ReviewPolicy::class);

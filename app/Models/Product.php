@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends Model implements HasMedia
 {
@@ -88,5 +89,20 @@ class Product extends Model implements HasMedia
     public function isLowStock(): bool
     {
         return $this->stock_quantity <= $this->low_stock_threshold;
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+              ->width(400)
+              ->height(400)
+              ->format('webp')
+              ->queued();
+
+        $this->addMediaConversion('medium')
+              ->width(800)
+              ->height(800)
+              ->format('webp')
+              ->queued();
     }
 }

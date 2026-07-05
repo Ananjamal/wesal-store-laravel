@@ -81,4 +81,5 @@ return [
     "mark_read" => "Mark as Read",
     "sender_info" => "Sender Information",
     "message_details" => "Message Details",
+    "order_items" => "Order Items",
 ];

@@ -146,8 +146,6 @@ class CouponResource extends Resource
     {
         return [
             'index'  => Pages\ListCoupons::route('/'),
-            'create' => Pages\CreateCoupon::route('/create'),
-            'edit'   => Pages\EditCoupon::route('/{record}/edit'),
         ];
     }
 }

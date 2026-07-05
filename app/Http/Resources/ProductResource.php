@@ -19,7 +19,11 @@ class ProductResource extends JsonResource
             'stock_quantity'   => $this->stock_quantity,
             'status'           => $this->status,
             'category'         => new CategoryResource($this->whenLoaded('category')),
-            'images'           => $this->getMedia('product-images')->map(fn($media) => $media->getFullUrl()),
+            'images'           => $this->getMedia('product-images')->map(fn($media) => [
+                'original' => $media->getFullUrl(),
+                'medium'   => $media->hasGeneratedConversion('medium') ? $media->getUrl('medium') : $media->getFullUrl(),
+                'thumb'    => $media->hasGeneratedConversion('thumb') ? $media->getUrl('thumb') : $media->getFullUrl(),
+            ]),
         ];
     }
 }

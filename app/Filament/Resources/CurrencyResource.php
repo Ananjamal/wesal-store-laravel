@@ -120,8 +120,6 @@ class CurrencyResource extends Resource
     {
         return [
             'index'  => Pages\ListCurrencies::route('/'),
-            'create' => Pages\CreateCurrency::route('/create'),
-            'edit'   => Pages\EditCurrency::route('/{record}/edit'),
         ];
     }
 }
