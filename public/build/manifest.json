@@ -1,6 +1,13 @@
 {
+  "_auth-BbIzmuwj.js": {
+    "file": "assets/auth-BbIzmuwj.js",
+    "name": "auth",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
   "resources/css/app.css": {
-    "file": "assets/app-CS1m8bSc.css",
+    "file": "assets/app-AdsWYKDM.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -10,7 +17,7 @@
     "isEntry": true
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-CgD7osf1.js",
+    "file": "assets/Login-BfYlWu4n.js",
     "name": "Login",
     "src": "resources/js/Pages/Auth/Login.vue",
     "isDynamicEntry": true,
@@ -19,7 +26,7 @@
     ]
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-BjY53Vb8.js",
+    "file": "assets/Register-DtuPXeZn.js",
     "name": "Register",
     "src": "resources/js/Pages/Auth/Register.vue",
     "isDynamicEntry": true,
@@ -28,7 +35,7 @@
     ]
   },
   "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome-DnpB2eXN.js",
+    "file": "assets/Welcome-Cu0z_IdW.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.vue",
     "isDynamicEntry": true,
@@ -36,15 +43,47 @@
       "resources/js/app.js"
     ]
   },
+  "resources/js/Pages/index.vue": {
+    "file": "assets/index-wxgAvhOm.js",
+    "name": "index",
+    "src": "resources/js/Pages/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/Pages/login.vue": {
+    "file": "assets/login-CS6na52v.js",
+    "name": "login",
+    "src": "resources/js/Pages/login.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_auth-BbIzmuwj.js"
+    ]
+  },
+  "resources/js/Pages/register.vue": {
+    "file": "assets/register-C4jjtMIe.js",
+    "name": "register",
+    "src": "resources/js/Pages/register.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_auth-BbIzmuwj.js"
+    ]
+  },
   "resources/js/app.js": {
-    "file": "assets/app-DL6FlZ9c.js",
+    "file": "assets/app-Df42moQ4.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
       "resources/js/Pages/Auth/Login.vue",
       "resources/js/Pages/Auth/Register.vue",
-      "resources/js/Pages/Welcome.vue"
+      "resources/js/Pages/Welcome.vue",
+      "resources/js/Pages/index.vue",
+      "resources/js/Pages/login.vue",
+      "resources/js/Pages/register.vue"
     ]
   }
 }
