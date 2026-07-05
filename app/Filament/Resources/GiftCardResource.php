@@ -114,8 +114,6 @@ class GiftCardResource extends Resource
     {
         return [
             'index'  => Pages\ListGiftCards::route('/'),
-            'create' => Pages\CreateGiftCard::route('/create'),
-            'edit'   => Pages\EditGiftCard::route('/{record}/edit'),
         ];
     }
 }

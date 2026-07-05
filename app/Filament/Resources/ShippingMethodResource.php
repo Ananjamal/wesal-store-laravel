@@ -108,8 +108,6 @@ class ShippingMethodResource extends Resource
     {
         return [
             'index'  => Pages\ListShippingMethods::route('/'),
-            'create' => Pages\CreateShippingMethod::route('/create'),
-            'edit'   => Pages\EditShippingMethod::route('/{record}/edit'),
         ];
     }
 }

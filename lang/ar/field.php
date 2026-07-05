@@ -81,4 +81,5 @@ return [
     "mark_read" => "تعيين كمقروء",
     "sender_info" => "بيانات المرسل",
     "message_details" => "تفاصيل الرسالة",
+    "order_items" => "عناصر الطلب",
 ];

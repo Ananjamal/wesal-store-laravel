@@ -85,7 +85,6 @@ class SubscriberResource extends Resource
     {
         return [
             'index'  => Pages\ListSubscribers::route('/'),
-            'create' => Pages\CreateSubscriber::route('/create'),
         ];
     }
 }

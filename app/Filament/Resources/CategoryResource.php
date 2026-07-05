@@ -45,10 +45,7 @@ class CategoryResource extends Resource
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn(string $operation, $state, Forms\Set $set) =>
                     $operation === 'create' ? $set('slug', \Illuminate\Support\Str::slug($state)) : null),
-                Forms\Components\TextInput::make('slug')
-                    ->label(__('field.slug'))
-                    ->required()
-                    ->maxLength(255)
+                Forms\Components\Hidden::make('slug')
                     ->unique(Category::class, 'slug', ignoreRecord: true),
                 Forms\Components\Textarea::make('description')
                     ->label(__('field.description'))
@@ -115,8 +112,6 @@ class CategoryResource extends Resource
     {
         return [
             'index'  => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit'   => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
 }

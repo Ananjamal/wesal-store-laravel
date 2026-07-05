@@ -47,10 +47,7 @@ class ProductResource extends Resource
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn(string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', \Illuminate\Support\Str::slug($state)) : null),
-                        Forms\Components\TextInput::make('slug')
-                            ->label('الرابط الدائم (Slug)')
-                            ->required()
-                            ->maxLength(255)
+                        Forms\Components\Hidden::make('slug')
                             ->unique(Product::class, 'slug', ignoreRecord: true),
                         Forms\Components\Select::make('category_id')
                             ->label('القسم')
@@ -67,22 +64,30 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('price_cents')
                             ->label('السعر ')
-                            ->numeric()
+                            ->type('number')
+                            ->step('any')
                             ->required()
-                            ->suffix('¢'),
+                            ->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])
+                            ->prefix(__('field.currency_unit')),
                         Forms\Components\TextInput::make('compare_at_price_cents')
                             ->label('السعر قبل الخصم ')
-                            ->numeric()
-                            ->suffix('¢'),
+                            ->type('number')
+                            ->step('any')
+                            ->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])
+                            ->prefix(__('field.currency_unit')),
                         Forms\Components\TextInput::make('stock_quantity')
                             ->label('الكمية المتوفرة')
                             ->required()
-                            ->numeric()
+                            ->type('number')
+                            ->step('any')
+                            ->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])
                             ->default(0),
                         Forms\Components\TextInput::make('low_stock_threshold')
                             ->label('حد تنبيه كمية المخزون المنخفضة')
                             ->required()
-                            ->numeric()
+                            ->type('number')
+                            ->step('any')
+                            ->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])
                             ->default(5),
                         Forms\Components\Select::make('status')
                             ->label('حالة المنتج')
@@ -171,8 +176,6 @@ class ProductResource extends Resource
     {
         return [
             'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }

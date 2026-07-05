@@ -115,8 +115,6 @@ class FlashSaleResource extends Resource
     {
         return [
             'index'  => Pages\ListFlashSales::route('/'),
-            'create' => Pages\CreateFlashSale::route('/create'),
-            'edit'   => Pages\EditFlashSale::route('/{record}/edit'),
         ];
     }
 }
