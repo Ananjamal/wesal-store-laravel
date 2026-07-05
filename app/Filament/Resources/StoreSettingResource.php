@@ -110,8 +110,6 @@ class StoreSettingResource extends Resource
     {
         return [
             'index'  => Pages\ListStoreSettings::route('/'),
-            'create' => Pages\CreateStoreSetting::route('/create'),
-            'edit'   => Pages\EditStoreSetting::route('/{record}/edit'),
         ];
     }
 }

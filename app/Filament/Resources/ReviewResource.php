@@ -111,8 +111,6 @@ class ReviewResource extends Resource
     {
         return [
             'index'  => Pages\ListReviews::route('/'),
-            'create' => Pages\CreateReview::route('/create'),
-            'edit'   => Pages\EditReview::route('/{record}/edit'),
         ];
     }
 }

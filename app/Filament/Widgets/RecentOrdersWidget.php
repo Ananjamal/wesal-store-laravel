@@ -64,10 +64,10 @@ class RecentOrdersWidget extends BaseWidget
                     ->color('gray'),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
-                    ->label(__('action.view'))
+                Tables\Actions\EditAction::make('edit')
+                    ->label(__('action.view') ?? 'عرض')
                     ->icon('heroicon-m-eye')
-                    ->url(fn(Order $record): string => route('filament.admin.resources.orders.edit', $record)),
+                    ->form(fn (Form $form) => \App\Filament\Resources\OrderResource::form($form)),
             ])
             ->paginated([5, 10])
             ->defaultPaginationPageOption(5);
