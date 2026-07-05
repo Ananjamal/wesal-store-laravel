@@ -11,22 +11,7 @@ jobs:
     environment: production
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Setup PHP 8.2
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          extensions: mbstring, bcmath, pdo_mysql, intl
-
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-
-      - name: Install Node dependencies & build assets
-        run: |
-          npm ci
-          npm run build
 
       - name: Deploy to Production via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -41,9 +26,9 @@ jobs:
             # Enable maintenance mode
             php artisan down --secret="${{ secrets.MAINTENANCE_SECRET }}"
 
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-            npm ci && npm run build
 
             # Run migrations with backup mindset (separate step)
             php artisan migrate --force

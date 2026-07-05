@@ -1,6 +1,6 @@
 {
-  "_auth-BbIzmuwj.js": {
-    "file": "assets/auth-BbIzmuwj.js",
+  "_auth-CFBcT4Ph.js": {
+    "file": "assets/auth-CFBcT4Ph.js",
     "name": "auth",
     "imports": [
       "resources/js/app.js"
@@ -17,7 +17,7 @@
     "isEntry": true
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-BfYlWu4n.js",
+    "file": "assets/Login-CrfuHexd.js",
     "name": "Login",
     "src": "resources/js/Pages/Auth/Login.vue",
     "isDynamicEntry": true,
@@ -26,7 +26,7 @@
     ]
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-DtuPXeZn.js",
+    "file": "assets/Register-a0v8zNlR.js",
     "name": "Register",
     "src": "resources/js/Pages/Auth/Register.vue",
     "isDynamicEntry": true,
@@ -35,7 +35,7 @@
     ]
   },
   "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome-Cu0z_IdW.js",
+    "file": "assets/Welcome-9TwaWBL6.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.vue",
     "isDynamicEntry": true,
@@ -44,7 +44,7 @@
     ]
   },
   "resources/js/Pages/index.vue": {
-    "file": "assets/index-wxgAvhOm.js",
+    "file": "assets/index-DjX7GUbq.js",
     "name": "index",
     "src": "resources/js/Pages/index.vue",
     "isDynamicEntry": true,
@@ -53,27 +53,27 @@
     ]
   },
   "resources/js/Pages/login.vue": {
-    "file": "assets/login-CS6na52v.js",
+    "file": "assets/login-BLF_0TIw.js",
     "name": "login",
     "src": "resources/js/Pages/login.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_auth-BbIzmuwj.js"
+      "_auth-CFBcT4Ph.js"
     ]
   },
   "resources/js/Pages/register.vue": {
-    "file": "assets/register-C4jjtMIe.js",
+    "file": "assets/register-Yd8cpW_d.js",
     "name": "register",
     "src": "resources/js/Pages/register.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_auth-BbIzmuwj.js"
+      "_auth-CFBcT4Ph.js"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Df42moQ4.js",
+    "file": "assets/app-jksK7OGZ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
