@@ -1,10 +1,14 @@
 {
-  "_auth-C-50Nbra.js": {
-    "file": "assets/auth-C-50Nbra.js",
+  "_auth-B0pnZATV.js": {
+    "file": "assets/auth-B0pnZATV.js",
     "name": "auth",
     "imports": [
-      "resources/js/app.js"
+      "_vendor-XCFp1Wh9.js"
     ]
+  },
+  "_vendor-XCFp1Wh9.js": {
+    "file": "assets/vendor-XCFp1Wh9.js",
+    "name": "vendor"
   },
   "resources/css/app.css": {
     "file": "assets/app-xfvEmiwu.css",
@@ -17,66 +21,69 @@
     "isEntry": true
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-BLmbuDfy.js",
+    "file": "assets/Login-BhxOCAJd.js",
     "name": "Login",
     "src": "resources/js/Pages/Auth/Login.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "_vendor-XCFp1Wh9.js"
     ]
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-BcEuzttp.js",
+    "file": "assets/Register-DWRUDysA.js",
     "name": "Register",
     "src": "resources/js/Pages/Auth/Register.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "_vendor-XCFp1Wh9.js"
     ]
   },
   "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome-xigsZomk.js",
+    "file": "assets/Welcome-qsh0t5HX.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "_vendor-XCFp1Wh9.js"
     ]
   },
   "resources/js/Pages/index.vue": {
-    "file": "assets/index-Bklgn1iF.js",
+    "file": "assets/index-DfxtFTR7.js",
     "name": "index",
     "src": "resources/js/Pages/index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "_vendor-XCFp1Wh9.js"
     ]
   },
   "resources/js/Pages/login.vue": {
-    "file": "assets/login--0F10PRf.js",
+    "file": "assets/login-BZh6pVsb.js",
     "name": "login",
     "src": "resources/js/Pages/login.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js",
-      "_auth-C-50Nbra.js"
+      "_vendor-XCFp1Wh9.js",
+      "_auth-B0pnZATV.js"
     ]
   },
   "resources/js/Pages/register.vue": {
-    "file": "assets/register-CgPLKm-7.js",
+    "file": "assets/register-C84ATcHI.js",
     "name": "register",
     "src": "resources/js/Pages/register.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js",
-      "_auth-C-50Nbra.js"
+      "_vendor-XCFp1Wh9.js",
+      "_auth-B0pnZATV.js"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BBOgd8Zb.js",
+    "file": "assets/app-VG3P7rnd.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "imports": [
+      "_vendor-XCFp1Wh9.js"
+    ],
     "dynamicImports": [
       "resources/js/Pages/Auth/Login.vue",
       "resources/js/Pages/Auth/Register.vue",
