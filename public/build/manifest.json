@@ -1,13 +1,13 @@
 {
-  "_auth-CFBcT4Ph.js": {
-    "file": "assets/auth-CFBcT4Ph.js",
+  "_auth-C-50Nbra.js": {
+    "file": "assets/auth-C-50Nbra.js",
     "name": "auth",
     "imports": [
       "resources/js/app.js"
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-AdsWYKDM.css",
+    "file": "assets/app-xfvEmiwu.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -17,7 +17,7 @@
     "isEntry": true
   },
   "resources/js/Pages/Auth/Login.vue": {
-    "file": "assets/Login-CrfuHexd.js",
+    "file": "assets/Login-BLmbuDfy.js",
     "name": "Login",
     "src": "resources/js/Pages/Auth/Login.vue",
     "isDynamicEntry": true,
@@ -26,7 +26,7 @@
     ]
   },
   "resources/js/Pages/Auth/Register.vue": {
-    "file": "assets/Register-a0v8zNlR.js",
+    "file": "assets/Register-BcEuzttp.js",
     "name": "Register",
     "src": "resources/js/Pages/Auth/Register.vue",
     "isDynamicEntry": true,
@@ -35,7 +35,7 @@
     ]
   },
   "resources/js/Pages/Welcome.vue": {
-    "file": "assets/Welcome-9TwaWBL6.js",
+    "file": "assets/Welcome-xigsZomk.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.vue",
     "isDynamicEntry": true,
@@ -44,7 +44,7 @@
     ]
   },
   "resources/js/Pages/index.vue": {
-    "file": "assets/index-DjX7GUbq.js",
+    "file": "assets/index-Bklgn1iF.js",
     "name": "index",
     "src": "resources/js/Pages/index.vue",
     "isDynamicEntry": true,
@@ -53,27 +53,27 @@
     ]
   },
   "resources/js/Pages/login.vue": {
-    "file": "assets/login-BLF_0TIw.js",
+    "file": "assets/login--0F10PRf.js",
     "name": "login",
     "src": "resources/js/Pages/login.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_auth-CFBcT4Ph.js"
+      "_auth-C-50Nbra.js"
     ]
   },
   "resources/js/Pages/register.vue": {
-    "file": "assets/register-Yd8cpW_d.js",
+    "file": "assets/register-CgPLKm-7.js",
     "name": "register",
     "src": "resources/js/Pages/register.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_auth-CFBcT4Ph.js"
+      "_auth-C-50Nbra.js"
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-jksK7OGZ.js",
+    "file": "assets/app-BBOgd8Zb.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,

@@ -84,8 +84,8 @@ const switchCurrency = (code) => {
           <span class="bg-wisal-beige/30 rounded px-2 py-1">{{ currency.symbol }} {{ currency.code }}</span>
           <span class="bg-wisal-beige/30 rounded px-2 py-1">{{ locale === 'ar' ? 'العربية' : 'English' }}</span>
         </div>
-        <button class="bg-wisal-aqua text-wisal-ivory px-6 py-2.5 rounded-lg hover:bg-wisal-aqua/90 transition-colors duration-200 font-medium">
-          {{ t('browse_products') }}
+        <button class="bg-wisal-aqua text-wisal-ivory px-8 py-3 rounded-full shadow-lg hover:bg-wisal-aqua/90 hover:-translate-y-1 transform transition-all duration-200 font-bold text-lg">
+          🚀 {{ t('browse_products') }}
         </button>
       </div>
     </main>
