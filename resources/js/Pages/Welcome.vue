@@ -87,6 +87,18 @@ const switchCurrency = (code) => {
         <button class="bg-wisal-aqua text-wisal-ivory px-8 py-3 rounded-full shadow-lg hover:bg-wisal-aqua/90 hover:-translate-y-1 transform transition-all duration-200 font-bold text-lg">
           🚀 {{ t('browse_products') }}
         </button>
+          <button class="bg-wisal-aqua text-wisal-ivory px-8 py-3 rounded-full shadow-lg hover:bg-wisal-aqua/90 hover:-translate-y-1 transform transition-all duration-200 font-bold text-lg">
+          🚀 {{ t('browse_products') }}
+        </button>
+          <button class="bg-wisal-aqua text-wisal-ivory px-8 py-3 rounded-full shadow-lg hover:bg-wisal-aqua/90 hover:-translate-y-1 transform transition-all duration-200 font-bold text-lg">
+          🚀 {{ t('browse_products') }}
+        </button>
+          <button class="bg-wisal-aqua text-wisal-ivory px-8 py-3 rounded-full shadow-lg hover:bg-wisal-aqua/90 hover:-translate-y-1 transform transition-all duration-200 font-bold text-lg">
+          🚀 {{ t('browse_products') }}
+        </button>
+          <button class="bg-wisal-aqua text-wisal-ivory px-8 py-3 rounded-full shadow-lg hover:bg-wisal-aqua/90 hover:-translate-y-1 transform transition-all duration-200 font-bold text-lg">
+          🚀 {{ t('browse_products') }}
+        </button>
       </div>
     </main>
 
