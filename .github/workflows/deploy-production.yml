@@ -16,12 +16,12 @@ jobs:
       - name: Deploy to Production via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USER }}
+          host: 141.136.43.197
+          username: u712088840
           key: ${{ secrets.PROD_SSH_KEY }}
-          port: ${{ secrets.PROD_PORT || 22 }}
+          port: 65002
           script: |
-            cd ${{ secrets.PROD_PATH }}
+            cd /home/u712088840/domains/wisalbrand.com/app_core
             git pull origin main
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
             npm install && npm run build
