@@ -18,7 +18,7 @@ jobs:
         with:
           host: 141.136.43.197
           username: u712088840
-          key: ${{ secrets.PROD_SSH_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 65002
           script: |
             cd /home/u712088840/domains/wisalbrand.com/app_core
