@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName(fn() => \App\Models\StoreSetting::getValue('store_name', '✦ وِصال'))
             ->brandLogo(fn() => view('filament.brand'))
-            ->brandLogoHeight('4rem')
+            ->brandLogoHeight('3rem')
             ->favicon(function() {
                 if ($favicon = \App\Models\StoreSetting::getValue('store_favicon')) {
                     return asset('storage/' . $favicon) . '?v=' . @filemtime(storage_path('app/public/' . $favicon));
