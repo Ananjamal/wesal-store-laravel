@@ -23,10 +23,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Bind Faker to use Arabic locale
-        app()->singleton(\Faker\Generator::class, function () {
-            return \Faker\Factory::create('ar_SA');
-        });
+        // Bind Faker to use Arabic locale if available (dev environments)
+        if (class_exists(\Faker\Factory::class)) {
+            app()->singleton(\Faker\Generator::class, function () {
+                return \Faker\Factory::create('ar_SA');
+            });
+        }
 
         // 1. Create Roles
         $adminRole    = Role::firstOrCreate(['name' => 'Admin',    'guard_name' => 'web']);
@@ -112,13 +114,15 @@ class DatabaseSeeder extends Seeder
             ['name' => 'ملصقات']
         );
 
-        // Add products only if category has none
-        if ($notebookCategory->products()->count() === 0) {
-            Product::factory()->count(5)->create(['category_id' => $notebookCategory->id]);
-        }
+        // Add products only if category has none and Faker is available
+        if (class_exists(\Faker\Factory::class)) {
+            if ($notebookCategory->products()->count() === 0) {
+                Product::factory()->count(5)->create(['category_id' => $notebookCategory->id]);
+            }
 
-        if ($stickerCategory->products()->count() === 0) {
-            Product::factory()->count(5)->create(['category_id' => $stickerCategory->id]);
+            if ($stickerCategory->products()->count() === 0) {
+                Product::factory()->count(5)->create(['category_id' => $stickerCategory->id]);
+            }
         }
 
         // 6. Create Coupons (skip if already exist)
@@ -132,65 +136,71 @@ class DatabaseSeeder extends Seeder
             ['type' => 'fixed', 'value' => 5000]
         );
 
-        // 7. Create Test Customer Users & Addresses & Orders (only if fewer than 3 customers exist)
-        $existingCustomerCount = User::role('Customer')->count();
-        if ($existingCustomerCount < 3) {
-            $needed    = 3 - $existingCustomerCount;
-            $customers = User::factory()->count($needed)->create();
+        // 7. Create Test Customer Users & Addresses & Orders if Faker is available
+        if (class_exists(\Faker\Factory::class)) {
+            $existingCustomerCount = User::role('Customer')->count();
+            if ($existingCustomerCount < 3) {
+                $needed    = 3 - $existingCustomerCount;
+                $customers = User::factory()->count($needed)->create();
 
-            foreach ($customers as $customer) {
-                $customer->assignRole($customerRole);
+                foreach ($customers as $customer) {
+                    $customer->assignRole($customerRole);
 
-                Address::firstOrCreate(
-                    ['user_id' => $customer->id, 'is_default' => true],
-                    Address::factory()->make(['user_id' => $customer->id, 'is_default' => true])->toArray()
-                );
+                    Address::firstOrCreate(
+                        ['user_id' => $customer->id, 'is_default' => true],
+                        Address::factory()->make(['user_id' => $customer->id, 'is_default' => true])->toArray()
+                    );
 
-                $order = Order::factory()->create(['user_id' => $customer->id]);
+                    $order = Order::factory()->create(['user_id' => $customer->id]);
 
-                OrderItem::factory()->count(2)->create([
-                    'order_id'   => $order->id,
-                    'product_id' => fn() => Product::inRandomOrder()->first()->id,
-                ]);
+                    OrderItem::factory()->count(2)->create([
+                        'order_id'   => $order->id,
+                        'product_id' => fn() => Product::inRandomOrder()->first()->id,
+                    ]);
+                }
             }
         }
 
-        // 8. Create Blog Posts (only if none exist for admin)
-        if (Post::where('user_id', $admin->id)->count() === 0) {
-            Post::factory()->count(3)->create(['user_id' => $admin->id]);
-        }
-
-        // 9. Seed the remaining Sidebar Elements
-        if (\App\Models\AuditLog::count() === 0) {
-            \App\Models\AuditLog::factory()->count(10)->create(['user_id' => $admin->id]);
-        }
-
-        if (\App\Models\ContactMessage::count() === 0) {
-            \App\Models\ContactMessage::factory()->count(5)->create();
-        }
-
-        if (\App\Models\FlashSale::count() === 0) {
-            \App\Models\FlashSale::factory()->count(2)->create();
-        }
-
-        if (\App\Models\GiftCard::count() === 0) {
-            \App\Models\GiftCard::factory()->count(5)->create(['created_by' => $admin->id]);
-        }
-
-        if (\App\Models\Review::count() === 0) {
-            $randomUser = User::inRandomOrder()->first() ?? $admin;
-            $randomProduct = Product::inRandomOrder()->first();
-            
-            if ($randomProduct) {
-                \App\Models\Review::factory()->count(5)->create([
-                    'user_id' => $randomUser->id,
-                    'product_id' => $randomProduct->id,
-                ]);
+        // 8. Create Blog Posts (only if none exist for admin) if Faker is available
+        if (class_exists(\Faker\Factory::class)) {
+            if (Post::where('user_id', $admin->id)->count() === 0) {
+                Post::factory()->count(3)->create(['user_id' => $admin->id]);
             }
         }
 
-        if (\App\Models\Subscriber::count() === 0) {
-            \App\Models\Subscriber::factory()->count(10)->create();
+        // 9. Seed the remaining Sidebar Elements if Faker is available
+        if (class_exists(\Faker\Factory::class)) {
+            if (\App\Models\AuditLog::count() === 0) {
+                \App\Models\AuditLog::factory()->count(10)->create(['user_id' => $admin->id]);
+            }
+
+            if (\App\Models\ContactMessage::count() === 0) {
+                \App\Models\ContactMessage::factory()->count(5)->create();
+            }
+
+            if (\App\Models\FlashSale::count() === 0) {
+                \App\Models\FlashSale::factory()->count(2)->create();
+            }
+
+            if (\App\Models\GiftCard::count() === 0) {
+                \App\Models\GiftCard::factory()->count(5)->create(['created_by' => $admin->id]);
+            }
+
+            if (\App\Models\Review::count() === 0) {
+                $randomUser = User::inRandomOrder()->first() ?? $admin;
+                $randomProduct = Product::inRandomOrder()->first();
+                
+                if ($randomProduct) {
+                    \App\Models\Review::factory()->count(5)->create([
+                        'user_id' => $randomUser->id,
+                        'product_id' => $randomProduct->id,
+                    ]);
+                }
+            }
+
+            if (\App\Models\Subscriber::count() === 0) {
+                \App\Models\Subscriber::factory()->count(10)->create();
+            }
         }
 
         $this->command->info('✅ Seeding finished successfully.');
