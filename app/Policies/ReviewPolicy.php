@@ -8,6 +8,14 @@ use App\Models\User;
 class ReviewPolicy
 {
     /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->hasAnyRole(['Admin', 'Manager']);
+    }
+
+    /**
      * Any authenticated Customer can create a review.
      */
     public function create(User $user): bool

@@ -8,6 +8,14 @@ use App\Models\User;
 class OrderPolicy
 {
     /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->hasAnyRole(['Admin', 'Manager']);
+    }
+
+    /**
      * Only the order owner, Admin, or Manager can view the order.
      */
     public function view(User $user, Order $order): bool
