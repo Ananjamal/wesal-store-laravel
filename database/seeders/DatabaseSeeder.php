@@ -43,6 +43,21 @@ class DatabaseSeeder extends Seeder
             $admin->assignRole($adminRole);
         }
 
+        // Create Default Manager User
+        $manager = User::firstOrCreate(
+            ['email' => 'manager@wisal-store.com'],
+            [
+                'name'      => 'Manager User',
+                'password'  => Hash::make('password123'),
+                'is_active' => true,
+            ]
+        );
+
+        // Always ensure manager has the Manager role
+        if (!$manager->hasRole('Manager')) {
+            $manager->assignRole($managerRole);
+        }
+
         // 2.5. Create Default Currencies
         $currencies = [
             ['code' => 'SAR', 'name' => 'Saudi Riyal',      'symbol' => 'ر.س', 'exchange_rate' => 1.000000,  'is_default' => false, 'is_active' => true],
