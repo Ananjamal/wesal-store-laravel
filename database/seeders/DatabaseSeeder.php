@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Bind Faker to use Arabic locale
+        app()->singleton(\Faker\Generator::class, function () {
+            return \Faker\Factory::create('ar_SA');
+        });
+
         // 1. Create Roles
         $adminRole    = Role::firstOrCreate(['name' => 'Admin',    'guard_name' => 'web']);
         $managerRole  = Role::firstOrCreate(['name' => 'Manager',  'guard_name' => 'web']);
@@ -32,7 +37,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@wisal-store.com'],
             [
-                'name'      => 'Admin User',
+                'name'      => 'مدير النظام',
                 'password'  => Hash::make('password123'),
                 'is_active' => true,
             ]
@@ -47,7 +52,7 @@ class DatabaseSeeder extends Seeder
         $manager = User::firstOrCreate(
             ['email' => 'manager@wisal-store.com'],
             [
-                'name'      => 'Manager User',
+                'name'      => 'مدير العمليات',
                 'password'  => Hash::make('password123'),
                 'is_active' => true,
             ]
@@ -60,11 +65,11 @@ class DatabaseSeeder extends Seeder
 
         // 2.5. Create Default Currencies
         $currencies = [
-            ['code' => 'SAR', 'name' => 'Saudi Riyal',      'symbol' => 'ر.س', 'exchange_rate' => 1.000000,  'is_default' => false, 'is_active' => true],
-            ['code' => 'USD', 'name' => 'US Dollar',         'symbol' => '$',   'exchange_rate' => 0.266667,  'is_default' => false, 'is_active' => true],
-            ['code' => 'EGP', 'name' => 'Egyptian Pound',    'symbol' => 'ج.م', 'exchange_rate' => 12.800000, 'is_default' => false, 'is_active' => true],
-            ['code' => 'EUR', 'name' => 'Euro',              'symbol' => '€',   'exchange_rate' => 0.250000,  'is_default' => false, 'is_active' => true],
-            ['code' => 'ILS', 'name' => 'Israeli Shekel',    'symbol' => '₪',   'exchange_rate' => 0.970000,  'is_default' => true,  'is_active' => true],
+            ['code' => 'SAR', 'name' => 'ريال سعودي',       'symbol' => 'ر.س', 'exchange_rate' => 1.000000,  'is_default' => false, 'is_active' => true],
+            ['code' => 'USD', 'name' => 'دولار أمريكي',      'symbol' => '$',   'exchange_rate' => 0.266667,  'is_default' => false, 'is_active' => true],
+            ['code' => 'EGP', 'name' => 'جنيه مصري',        'symbol' => 'ج.م', 'exchange_rate' => 12.800000, 'is_default' => false, 'is_active' => true],
+            ['code' => 'EUR', 'name' => 'يورو',             'symbol' => '€',   'exchange_rate' => 0.250000,  'is_default' => false, 'is_active' => true],
+            ['code' => 'ILS', 'name' => 'شيكل إسرائيلي',     'symbol' => '₪',   'exchange_rate' => 0.970000,  'is_default' => true,  'is_active' => true],
         ];
 
         foreach ($currencies as $currency) {
@@ -76,7 +81,7 @@ class DatabaseSeeder extends Seeder
 
         // 3. Create Store Settings
         $settings = [
-            ['key' => 'store_name',              'value' => 'Wisal Store',          'type' => 'string'],
+            ['key' => 'store_name',              'value' => 'متجر وصال',             'type' => 'string'],
             ['key' => 'store_email',             'value' => 'info@wisal-store.com', 'type' => 'string'],
             ['key' => 'loyalty_points_enabled',  'value' => 'true',                 'type' => 'boolean'],
             ['key' => 'points_per_sar',          'value' => '10',                   'type' => 'integer'],
@@ -88,8 +93,8 @@ class DatabaseSeeder extends Seeder
 
         // 4. Create Shipping Methods
         $shippingMethods = [
-            ['name' => 'Standard Shipping', 'carrier' => 'SMSA', 'cost_cents' => 2500, 'estimated_delivery_days' => '3-5 days', 'is_active' => true],
-            ['name' => 'Express Shipping',  'carrier' => 'DHL',  'cost_cents' => 5000, 'estimated_delivery_days' => '1-2 days', 'is_active' => true],
+            ['name' => 'شحن قياسي', 'carrier' => 'سمسا', 'cost_cents' => 2500, 'estimated_delivery_days' => '3-5 أيام', 'is_active' => true],
+            ['name' => 'شحن سريع',  'carrier' => 'دي إتش إل',  'cost_cents' => 5000, 'estimated_delivery_days' => '1-2 أيام', 'is_active' => true],
         ];
 
         foreach ($shippingMethods as $method) {
