@@ -14,6 +14,8 @@ class StoreSettingResource extends Resource
 {
     protected static ?string $model = StoreSetting::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
     protected static ?int $navigationSort = 1;
 

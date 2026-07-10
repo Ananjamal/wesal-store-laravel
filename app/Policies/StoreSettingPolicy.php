@@ -12,7 +12,7 @@ class StoreSettingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasAnyRole(['Admin', 'Manager']);
     }
 
     /**
@@ -20,7 +20,7 @@ class StoreSettingPolicy
      */
     public function view(User $user, StoreSetting $storeSetting): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasAnyRole(['Admin', 'Manager']);
     }
 
     /**
@@ -28,7 +28,7 @@ class StoreSettingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasAnyRole(['Admin', 'Manager']);
     }
 
     /**
@@ -36,7 +36,7 @@ class StoreSettingPolicy
      */
     public function update(User $user, StoreSetting $storeSetting): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasAnyRole(['Admin', 'Manager']);
     }
 
     /**
@@ -44,6 +44,6 @@ class StoreSettingPolicy
      */
     public function delete(User $user, StoreSetting $storeSetting): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasAnyRole(['Admin', 'Manager']);
     }
 }

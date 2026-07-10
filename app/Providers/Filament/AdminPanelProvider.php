@@ -32,10 +32,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('✦ وِصال')
+            ->brandName(fn() => \App\Models\StoreSetting::getValue('store_name', '✦ وِصال'))
             ->brandLogo(fn() => view('filament.brand'))
-            ->brandLogoHeight('2.5rem')
-            ->favicon(asset('images/icon.jpg'))
+            ->brandLogoHeight('4rem')
+            ->favicon(function() {
+                if ($favicon = \App\Models\StoreSetting::getValue('store_favicon')) {
+                    return asset('storage/' . $favicon) . '?v=' . @filemtime(storage_path('app/public/' . $favicon));
+                }
+                return asset('images/icon_without_bg.ico?v=' . @filemtime(public_path('images/icon_without_bg.ico')));
+            })
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::hex('#467389'),
@@ -58,6 +63,10 @@ class AdminPanelProvider extends PanelProvider
                     ->label(fn() => __('nav.settings')),
             ])
             ->userMenuItems([
+                MenuItem::make()
+                    ->label(fn() => __('profile.edit_profile'))
+                    ->icon('heroicon-o-user-circle')
+                    ->url(fn (): string => \App\Filament\Pages\EditProfile::getUrl()),
                 MenuItem::make()
                     ->label(fn() => __('nav.visit_store'))
                     ->icon('heroicon-o-globe-alt')

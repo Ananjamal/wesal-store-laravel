@@ -13,11 +13,17 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar ? asset('storage/' . $this->avatar) : null;
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {
@@ -43,6 +49,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'phone',
+        'avatar',
         'loyalty_points_balance',
         'referral_code',
         'referred_by_id',

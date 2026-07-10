@@ -30,4 +30,15 @@ class StoreSetting extends Model
             default => $setting->value,
         };
     }
+
+    public static function setValue(string $key, $value, string $type = 'string'): void
+    {
+        self::updateOrCreate(
+            ['key' => $key],
+            [
+                'value' => is_array($value) ? json_encode($value) : (string) $value,
+                'type' => $type
+            ]
+        );
+    }
 }
