@@ -10,6 +10,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 
 class OrderResource extends Resource
 {
@@ -100,6 +105,16 @@ class OrderResource extends Resource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                ViewEntry::make('order_details')
+                    ->view('filament.infolists.order-details')
+                    ->columnSpanFull()
+            ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -141,7 +156,26 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('changeStatus')
+                    ->label('تحديث الحالة')
+                    ->icon('heroicon-m-arrow-path')
+                    ->color('warning')
+                    ->form([
+                        Forms\Components\Select::make('status')
+                            ->label(__('field.order_status') ?? 'حالة الطلب')
+                            ->options(OrderStatus::class)
+                            ->required(),
+                    ])
+                    ->action(function (Order $record, array $data): void {
+                        $record->update([
+                            'status' => $data['status'],
+                        ]);
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title('تم تحديث حالة الطلب بنجاح')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
