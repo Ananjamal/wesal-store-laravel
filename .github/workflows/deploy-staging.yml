@@ -8,6 +8,7 @@ jobs:
   deploy:
     name: Deploy to Staging Server
     runs-on: ubuntu-latest
+    environment: staging
 
     steps:
       - name: Checkout code
@@ -33,13 +34,12 @@ jobs:
           host: ${{ secrets.STAGING_HOST }}
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_SSH_KEY }}
-          port: ${{ secrets.STAGING_PORT || 65002 }}
-          debug: true
+          port: ${{ secrets.STAGING_PORT || 22 }}
           script: |
             cd ${{ secrets.STAGING_PATH }}
-            git fetch origin
-            git reset --hard origin/staging
+            git pull origin staging
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            npm ci && npm run build
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
