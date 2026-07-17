@@ -13,6 +13,8 @@
     "nav": {
         "catalog": "Catalog",
         "content": "Content",
+        "cms": "Content Management (CMS)",
+        "product_attributes": "Product Attributes",
         "marketing": "Marketing",
         "operations": "Operations",
         "users": "Users",
@@ -46,7 +48,23 @@
         "store_settings": "Store Settings",
         "store_setting": "Setting",
         "audit_logs": "Audit Log",
-        "audit_log": "Audit Entry"
+        "audit_log": "Audit Entry",
+        "colors": "Colors",
+        "color": "Color",
+        "sizes": "Sizes",
+        "size": "Size",
+        "article_categories": "Article Categories",
+        "article_category": "Article Category",
+        "banners": "Banners",
+        "banner": "Banner",
+        "sliders": "Sliders",
+        "slider": "Slide",
+        "homepage_sections": "Homepage Sections",
+        "homepage_section": "Section",
+        "menus": "Menus",
+        "menu": "Menu",
+        "menu_items": "Menu Items",
+        "menu_item": "Menu Item"
     },
 
     "field": {
@@ -120,7 +138,27 @@
         "sold_qty": "Sold Quantity",
         "created_by": "Created By",
         "times_used": "Times Used",
-        "promos_name": "Promotion Name"
+        "promos_name": "Promotion Name",
+        "message": "Product Message",
+        "short_description": "Short Description",
+        "meta_title": "Meta Title",
+        "meta_description": "Meta Description",
+        "keywords": "Keywords",
+        "is_featured": "Featured",
+        "is_published": "Published",
+        "hex_code": "Hex Color Code",
+        "cover_image": "Cover Image",
+        "desktop_image": "Desktop Image",
+        "mobile_image": "Mobile Image",
+        "button_text": "Button Text",
+        "button_link": "Button Link",
+        "sort_order": "Sort Order",
+        "location": "Location",
+        "target": "Open In",
+        "icon": "Icon",
+        "background": "Background",
+        "items_count": "Items Count",
+        "currency_unit": "SAR"
     },
 
     "action": {

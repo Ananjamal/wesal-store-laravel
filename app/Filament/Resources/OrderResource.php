@@ -42,6 +42,8 @@ class OrderResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $currencySymbol = fn() => \Illuminate\Support\Facades\Cache::remember('currency_default', 3600, fn() => \App\Models\Currency::where('is_default', true)->first())?->symbol ?? 'ر.س';
+
         return $form
             ->schema([
                 Forms\Components\Section::make(__('field.order'))
@@ -66,11 +68,11 @@ class OrderResource extends Resource
 
                 Forms\Components\Section::make(__('field.price'))
                     ->schema([
-                        Forms\Components\TextInput::make('subtotal_cents')->label(__('field.subtotal'))->type('number')->step('any')->required()->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
-                        Forms\Components\TextInput::make('shipping_cents')->label(__('field.shipping_cost'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
-                        Forms\Components\TextInput::make('tax_cents')->label(__('field.tax'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
-                        Forms\Components\TextInput::make('discount_cents')->label(__('field.discount'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
-                        Forms\Components\TextInput::make('total_cents')->label(__('field.total'))->type('number')->step('any')->required()->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix(__('field.currency_unit')),
+                        Forms\Components\TextInput::make('subtotal_cents')->label(__('field.subtotal'))->type('number')->step('any')->required()->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix($currencySymbol),
+                        Forms\Components\TextInput::make('shipping_cents')->label(__('field.shipping_cost'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix($currencySymbol),
+                        Forms\Components\TextInput::make('tax_cents')->label(__('field.tax'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix($currencySymbol),
+                        Forms\Components\TextInput::make('discount_cents')->label(__('field.discount'))->type('number')->step('any')->default(0)->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix($currencySymbol),
+                        Forms\Components\TextInput::make('total_cents')->label(__('field.total'))->type('number')->step('any')->required()->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])->prefix($currencySymbol),
                     ])->columns(2),
 
                 Forms\Components\Section::make(__('field.order_items'))
@@ -95,7 +97,7 @@ class OrderResource extends Resource
                                     ->step('any')
                                     ->required()
                                     ->extraInputAttributes(['dir' => 'ltr', 'style' => 'text-align: right;'])
-                                    ->prefix(__('field.currency_unit')),
+                                    ->prefix($currencySymbol),
                             ])
                             ->columns(3)
                             ->defaultItems(0)

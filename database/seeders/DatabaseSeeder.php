@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
             OrderSeeder::class,
             PostSeeder::class,
             DummyDataSeeder::class,
+            SizeSeeder::class,
+            ColorSeeder::class,
+            CmsSeeder::class,
         ]);
 
         $this->command->info('✅ Seeding finished successfully.');

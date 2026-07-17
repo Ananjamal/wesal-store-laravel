@@ -6,8 +6,8 @@ use App\Enums\ProductStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
@@ -22,19 +22,25 @@ class Product extends Model implements HasMedia
         'category_id',
         'name',
         'slug',
+        'message',
+        'short_description',
         'description',
         'price_cents',
         'compare_at_price_cents',
         'stock_quantity',
         'low_stock_threshold',
         'status',
+        'is_published',
+        'meta_title',
+        'meta_description',
     ];
 
     protected $casts = [
-        'price_cents' => 'integer',
+        'price_cents'         => 'integer',
         'compare_at_price_cents' => 'integer',
-        'stock_quantity' => 'integer',
-        'status' => ProductStatus::class,
+        'stock_quantity'      => 'integer',
+        'status'              => ProductStatus::class,
+        'is_published'        => 'boolean',
     ];
 
     protected static function booted(): void
@@ -43,6 +49,8 @@ class Product extends Model implements HasMedia
             $product->slug ??= Str::slug($product->name);
         });
     }
+
+    // ─── Relationships ────────────────────────────────────────────────────────
 
     public function category(): BelongsTo
     {
@@ -71,6 +79,26 @@ class Product extends Model implements HasMedia
             ->withTimestamps();
     }
 
+    /** ألوان المنتج (Many-to-Many) */
+    public function colors(): BelongsToMany
+    {
+        return $this->belongsToMany(Color::class, 'color_product');
+    }
+
+    /** مقاسات المنتج (Many-to-Many) */
+    public function sizes(): BelongsToMany
+    {
+        return $this->belongsToMany(Size::class, 'product_size');
+    }
+
+    /** المقالات المرتبطة بالمنتج (Many-to-Many) */
+    public function articles(): BelongsToMany
+    {
+        return $this->belongsToMany(Post::class, 'article_product', 'product_id', 'post_id');
+    }
+
+    // ─── Accessors ────────────────────────────────────────────────────────────
+
     public function getPriceAttribute(): float
     {
         return app(\App\Services\CurrencyService::class)->convert($this->price_cents);
@@ -81,14 +109,35 @@ class Product extends Model implements HasMedia
         return app(\App\Services\CurrencyService::class)->format($this->price_cents);
     }
 
+    // ─── Scopes ───────────────────────────────────────────────────────────────
+
     public function scopePublished($query)
     {
         return $query->where('status', ProductStatus::Published);
     }
 
+    public function scopeVisible($query)
+    {
+        return $query->where('is_published', true)->where('status', ProductStatus::Published);
+    }
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+
     public function isLowStock(): bool
     {
         return $this->stock_quantity <= $this->low_stock_threshold;
+    }
+
+    // ─── Media ────────────────────────────────────────────────────────────────
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('product-images')
+            ->useDisk('public');
+
+        $this->addMediaCollection('product-cover')
+            ->singleFile()
+            ->useDisk('public');
     }
 
     public function registerMediaConversions(Media $media = null): void
