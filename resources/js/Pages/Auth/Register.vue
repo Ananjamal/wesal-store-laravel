@@ -70,7 +70,7 @@ const submit = () => {
             <!-- Mobile logo -->
             <div class="flex justify-center mb-8 lg:hidden">
                 <div style="width:80px;height:80px;border-radius:20px;overflow:hidden;border:2px solid #D1CBB4;box-shadow:0 8px 20px rgba(70,115,137,0.2);">
-                    <img src="/images/logo.jpg" alt="Wisal" style="width:100%;height:100%;object-fit:cover;" />
+                    <img src="/images/logo.png" alt="Wisal" style="width:100%;height:100%;object-fit:cover;" />
                 </div>
             </div>
 

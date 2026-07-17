@@ -1,27 +1,22 @@
 <script setup lang="ts">
-interface Props {
-  type?: 'text' | 'circular' | 'rectangular'
+withDefaults(defineProps<{
   width?: string
   height?: string
-}
-
-withDefaults(defineProps<Props>(), {
-  type: 'text',
-  width: '100%',
-  height: 'auto',
+  rounded?: string
+}>(), {
+  width: 'w-full',
+  height: 'h-4',
+  rounded: 'rounded-xl',
 })
 </script>
 
 <template>
-  <div
+  <div 
     :class="[
-      'animate-pulse bg-gray-200',
-      {
-        'rounded-md h-4': type === 'text',
-        'rounded-full': type === 'circular',
-        'rounded-xl': type === 'rectangular'
-      }
+      'shimmer-bg',
+      width,
+      height,
+      rounded
     ]"
-    :style="{ width, height: type === 'text' && height === 'auto' ? '1rem' : height }"
-  />
+  ></div>
 </template>

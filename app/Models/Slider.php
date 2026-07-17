@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Slider extends Model
 {
-    use HasFactory;
+    use HasFactory, \App\Traits\CleansUrls;
 
     protected $fillable = [
         'title',
@@ -24,6 +24,11 @@ class Slider extends Model
         'is_active'  => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    public function getButtonLinkAttribute($value)
+    {
+        return $this->cleanUrl($value);
+    }
 
     public function scopeActive($query)
     {

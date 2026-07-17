@@ -49,8 +49,7 @@ class BannerResource extends Resource
 
                         Forms\Components\TextInput::make('link')
                             ->label('الرابط')
-                            ->url()
-                            ->placeholder('https://...')
+                            ->placeholder('/products')
                             ->maxLength(500),
 
                         Forms\Components\Textarea::make('description')

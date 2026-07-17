@@ -25,6 +25,7 @@ class HomepageSection extends Model
     ];
 
     protected $casts = [
+        'type'        => HomepageSectionType::class,
         'is_active'   => 'boolean',
         'sort_order'  => 'integer',
         'items_count' => 'integer',

@@ -22,7 +22,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->avatar ? asset('storage/' . $this->avatar) : null;
+        return isset($this->attributes['avatar']) ? asset('storage/' . $this->attributes['avatar']) : null;
     }
 
     public function canAccessPanel(Panel $panel): bool

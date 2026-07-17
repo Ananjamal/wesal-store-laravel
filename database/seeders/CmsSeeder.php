@@ -92,6 +92,7 @@ class CmsSeeder extends Seeder
                 'title' => 'بين كل هدية وذكرى — وِصال',
                 'subtitle' => 'مجموعة حصرية من الهدايا المنسقة بحب وعناية',
                 'description' => 'تصفح تشكيلة واسعة من المصاحف الملونة، سجادات الصلاة الفاخرة، والإكسسوارات المتميزة لتصنعوا أجمل الذكريات مع من تحبون.',
+                'image' => 'https://images.unsplash.com/photo-1608755728617-aefab37d2edd?auto=format&fit=crop&w=1200&q=80',
                 'button_text' => 'تسوق الآن',
                 'button_link' => '/products',
                 'sort_order' => 1,
@@ -100,14 +101,15 @@ class CmsSeeder extends Seeder
                 'title' => 'جديد متجرنا: باقة التخطيط الفاخرة',
                 'subtitle' => 'خطط لأهدافك بأناقة لا تضاهى',
                 'description' => 'أجندات ودفاتر تخطيط مصممة بأجود خامات الورق والتجليد الفاخر، متوفرة الآن بألوان وتصاميم متنوعة تناسب ذوقك الرفيع.',
+                'image' => 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1200&q=80',
                 'button_text' => 'اكتشف التشكيلة',
-                'button_link' => '/categories/planners',
+                'button_link' => '/products',
                 'sort_order' => 2,
             ],
         ];
 
         foreach ($slidersData as $slider) {
-            Slider::firstOrCreate(
+            Slider::updateOrCreate(
                 ['title' => $slider['title']],
                 array_merge($slider, ['is_active' => true])
             );
@@ -116,25 +118,25 @@ class CmsSeeder extends Seeder
         // 5. البنرات (Banners)
         $bannersData = [
             [
+                'title' => 'شحن مجاني للطلبات فوق 299 شيكل',
+                'description' => 'استمتع بشحن سريع ومجاني لجميع مناطق فلسطين عند الشراء بقيمة 299 شيكل أو أكثر.',
+                'link' => '/products',
+                'starts_at' => null,
+                'ends_at' => null,
+                'sort_order' => 1,
+            ],
+            [
                 'title' => 'خصم 15% بمناسبة الافتتاح',
                 'description' => 'استخدم كود الخصم WESAL15 عند الدفع، العرض سارٍ على جميع المنتجات لفترة محدودة.',
                 'link' => '/products',
                 'starts_at' => now(),
                 'ends_at' => now()->addMonths(2),
-                'sort_order' => 1,
-            ],
-            [
-                'title' => 'شحن مجاني للطلبات فوق 299 ريال',
-                'description' => 'استمتع بشحن سريع ومجاني لجميع مناطق المملكة عند الشراء بقيمة 299 ريال أو أكثر.',
-                'link' => '/products',
-                'starts_at' => null,
-                'ends_at' => null,
                 'sort_order' => 2,
             ],
         ];
 
         foreach ($bannersData as $banner) {
-            Banner::firstOrCreate(
+            Banner::updateOrCreate(
                 ['title' => $banner['title']],
                 array_merge($banner, ['is_active' => true])
             );
@@ -148,7 +150,7 @@ class CmsSeeder extends Seeder
                 'subtitle' => 'وجهتكم الأولى للهدايا الأنيقة والمنسقة يدوياً',
                 'description' => 'نصنع من تفاصيل هداياكم لحظات لا تُنسى تدوم في الذاكرة.',
                 'items_count' => 1,
-                'sort_order' => 1,
+                'sort_order' => 10,
             ],
             [
                 'type' => HomepageSectionType::Categories->value,
@@ -156,15 +158,7 @@ class CmsSeeder extends Seeder
                 'subtitle' => 'تصفح أقسامنا المميزة',
                 'description' => 'نوفر لكم أقساماً منوعة تسهل عليكم الوصول للمنتج المناسب.',
                 'items_count' => 6,
-                'sort_order' => 2,
-            ],
-            [
-                'type' => HomepageSectionType::FeaturedProducts->value,
-                'title' => 'منتجاتنا المميزة',
-                'subtitle' => 'مختارات وصال الأكثر طلباً',
-                'description' => 'مجموعة من أرقى المنتجات التي يفضلها عملاؤنا.',
-                'items_count' => 8,
-                'sort_order' => 3,
+                'sort_order' => 20,
             ],
             [
                 'type' => HomepageSectionType::Offers->value,
@@ -172,15 +166,23 @@ class CmsSeeder extends Seeder
                 'subtitle' => 'لا تفوت فرصة التوفير والخصومات الحصرية',
                 'description' => 'عروض مميزة وحصرية لفترة محدودة.',
                 'items_count' => 4,
-                'sort_order' => 4,
+                'sort_order' => 30,
             ],
             [
-                'type' => HomepageSectionType::Articles->value,
-                'title' => 'من مدونتنا',
-                'subtitle' => 'أفكار ونصائح مميزة لاختيار وتنسيق الهدايا والمنظمات',
-                'description' => 'نشارككم الإلهام من خلال مقالات تثري معلوماتكم.',
-                'items_count' => 3,
-                'sort_order' => 5,
+                'type' => HomepageSectionType::LatestProducts->value,
+                'title' => 'أحدث المنتجات',
+                'subtitle' => 'وصل حديثاً',
+                'description' => 'اكتشف آخر الهدايا والمنسقات التي أضيفت لمتجرنا حديثاً.',
+                'items_count' => 8,
+                'sort_order' => 40,
+            ],
+            [
+                'type' => HomepageSectionType::FeaturedProducts->value,
+                'title' => 'منتجاتنا المميزة',
+                'subtitle' => 'مختارات وصال الأكثر طلباً',
+                'description' => 'مجموعة من أرقى المنتجات التي يفضلها عملاؤنا.',
+                'items_count' => 8,
+                'sort_order' => 50,
             ],
             [
                 'type' => HomepageSectionType::Testimonials->value,
@@ -188,7 +190,47 @@ class CmsSeeder extends Seeder
                 'subtitle' => 'قصص سعيدة وكلمات نعتز بها من عائلة وصال',
                 'description' => 'نفخر بثقة عملائنا ونسعى دوماً لتقديم الأفضل لهم.',
                 'items_count' => 5,
-                'sort_order' => 6,
+                'sort_order' => 60,
+            ],
+            [
+                'type' => HomepageSectionType::Articles->value,
+                'title' => 'من مدونتنا',
+                'subtitle' => 'أفكار ونصائح مميزة لاختيار وتنسيق الهدايا والمنظمات',
+                'description' => 'نشارككم الإلهام من خلال مقالات تثري معلوماتكم.',
+                'items_count' => 3,
+                'sort_order' => 70,
+            ],
+            [
+                'type' => HomepageSectionType::FAQ->value,
+                'title' => 'الأسئلة الشائعة',
+                'subtitle' => 'استفسارات متكررة',
+                'description' => 'إجابات سريعة ومبسطة لأهم الأسئلة التي قد تراودك حول الشراء والتوصيل.',
+                'items_count' => 4,
+                'sort_order' => 80,
+            ],
+            [
+                'type' => HomepageSectionType::Partners->value,
+                'title' => 'شركاء النجاح',
+                'subtitle' => 'نفتخر بالعمل معهم',
+                'description' => 'شركات ومؤسسات ساهمت معنا في تقديم أفضل جودة.',
+                'items_count' => 6,
+                'sort_order' => 90,
+            ],
+            [
+                'type' => HomepageSectionType::Newsletter->value,
+                'title' => 'النشرة البريدية',
+                'subtitle' => 'كن أول من يعلم',
+                'description' => 'اشترك بنشرتنا البريدية لتصلك أحدث العروض والمنتجات الحصرية مباشرة في بريدك.',
+                'items_count' => 1,
+                'sort_order' => 100,
+            ],
+            [
+                'type' => HomepageSectionType::ContactUs->value,
+                'title' => 'تواصل معنا',
+                'subtitle' => 'يسعدنا خدمتك في أي وقت',
+                'description' => 'إذا كان لديك أي استفسار أو ترغب في تنسيق خاص، لا تتردد بالاتصال بنا.',
+                'items_count' => 1,
+                'sort_order' => 110,
             ],
         ];
 

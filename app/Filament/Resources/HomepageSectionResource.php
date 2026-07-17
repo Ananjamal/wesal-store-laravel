@@ -112,7 +112,7 @@ class HomepageSectionResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->label('نوع القسم')
                     ->badge()
-                    ->formatStateUsing(fn($state) => HomepageSectionType::tryFrom($state)?->getLabel() ?? $state),
+                    ->formatStateUsing(fn($state) => $state instanceof HomepageSectionType ? $state->getLabel() : (HomepageSectionType::tryFrom($state)?->getLabel() ?? $state)),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('العنوان')

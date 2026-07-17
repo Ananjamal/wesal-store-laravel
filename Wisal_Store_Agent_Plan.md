@@ -22,7 +22,7 @@
 > هذه الألوان تخلق مزيجاً بين الشباب والهوية، وبين الحداثة والتقاليد، وهو جوهر فلسفة وِصال.
 
 **تعليمات إلزامية للـ Agent:**
-1. لا تُنشئ أي لون Primary/Secondary/Background/Text خارج هذه القائمة الأربعة إلا كدرجات (Shades/Tints) مشتقة رياضياً منها (فاتح/غامق) عند الحاجة لتباين (Contrast) أو حالات Hover/Active/Disabled.
+1. لا تُنشئ أي لون Primary/Secondary/Background/Text خارج هذه القائمة الأربعة إلا كدرجات (Shades/Tints) مشتقة فلسطينياً منها (فاتح/غامق) عند الحاجة لتباين (Contrast) أو حالات Hover/Active/Disabled.
 2. عند إنشاء `tailwind.config.ts`، `Design Tokens`، أو `Filament Panel Theme`، استخدم أسماء المتغيرات التالية حرفياً حتى تبقى قابلة للتتبع في كل الفروع:
    - `wisal-beige` → `#D1CBB4`
    - `wisal-aqua` → `#467389`
@@ -30,14 +30,14 @@
    - `wisal-charcoal` → `#323232`
 3. أي اقتراح لتغيير أو إضافة لون جديد يجب أن يُطرح كسؤال صريح قبل التنفيذ، ولا يُفترض أو يُخمَّن.
 4. **جميع الموديولز يجب أن تبدو وكأن شخصاً واحداً كتبها بنفس الأسلوب من أول تاسك إلى آخر تاسك**، حتى لو تم تنفيذها في أيام مختلفة أو ضمن فروع منفصلة. هذا يعني الالتزام الحرفي بما يلي في كل ملف يُكتب طوال الـ21 يوماً:
-   - **تسمية الملفات والمجلدات**: نمط واحد ثابت (مثال: PascalCase لأسماء الـ Models والـ Components، kebab-case لأسماء ملفات الصفحات في Nuxt، snake_case لأعمدة قاعدة البيانات) — لا تبديل بين الأنماط بين تاسك وآخر.
+   - **تسمية الملفات والمجلدات**: نمط واحد ثابت (مثال: PascalCase لأسماء الـ Models والـ Components، kebab-case لأسماء ملفات الصفحات في ، snake_case لأعمدة قاعدة البيانات) — لا تبديل بين الأنماط بين تاسك وآخر.
    - **تسمية المتغيرات والدوال**: نفس القواعد النحوية (camelCase في JS/TS، snake_case في PHP) بلا استثناء، وأسماء معبّرة لا اختصارات غامضة.
-   - **بنية المجلدات**: كل Feature جديد يتبع نفس الهيكل بالضبط (مثال: كل Filament Resource يحتوي نفس ترتيب الأقسام: Form → Table → Relations → Pages؛ كل صفحة Nuxt تتبع نفس ترتيب `<script setup> → <template> → <style>`).
+   - **بنية المجلدات**: كل Feature جديد يتبع نفس الهيكل بالضبط (مثال: كل Filament Resource يحتوي نفس ترتيب الأقسام: Form → Table → Relations → Pages؛ كل صفحة  تتبع نفس ترتيب `<script setup> → <template> → <style>`).
    - **أسلوب معالجة الأخطاء**: نمط try/catch أو Form Requests أو Exception Handling موحّد في كل الباك-إند، ونمط موحّد لعرض رسائل الخطأ في الفرونت (Toast واحد بنفس الشكل، لا حلول متفرقة).
    - **أسلوب التعليقات (Comments)**: إما بالعربية أو بالإنجليزية بشكل ثابت طوال المشروع (يُفضّل الإنجليزية للكود مع تعليقات توضيحية عربية عند الحاجة فقط)، وبنفس الكثافة (لا ملف مليء بالتعليقات وآخر خالٍ تماماً).
    - **إعادة استخدام المكوّنات المشتركة**: قبل إنشاء أي مكوّن جديد (زر، حقل، بطاقة، Modal)، يجب التحقق أولاً من مكتبة `WButton, WCard, WInput, WBadge, WSkeleton, WModal` (فرع features/frontend/design-system) وإعادة استخدامها بدل إعادة كتابتها من الصفر في كل صفحة.
    - **صيغة الـ API Responses**: كل الـ API Resources في Laravel تُعيد نفس بنية JSON الموحّدة (success, data, message, errors) بلا استثناء عبر كل الـ Controllers.
-   - **قبل بدء أي تاسك جديد**: يجب على الـ Agent مراجعة ملف أو تاسك سابق مشابه (نفس النوع: Filament Resource آخر، أو صفحة Nuxt أخرى) والاقتداء بنفس نمط الكتابة فيه حرفياً، بدل البدء من الصفر بأسلوب مختلف.
+   - **قبل بدء أي تاسك جديد**: يجب على الـ Agent مراجعة ملف أو تاسك سابق مشابه (نفس النوع: Filament Resource آخر، أو صفحة  أخرى) والاقتداء بنفس نمط الكتابة فيه حرفياً، بدل البدء من الصفر بأسلوب مختلف.
 
 ---
 
@@ -47,7 +47,7 @@
 |---|---|
 | **المدة** | 21 يوماً متتالياً (3 أسابيع — 7 أيام عمل أسبوعياً) |
 | **النطاق** | كامل — جميع الميزات في الوثيقة التقنية الأصلية دون استثناء (لا يوجد تأجيل ميزات) |
-| **الفرونت-إند** | Vue.js عبر Nuxt 3 — SSR للصفحات العامة + SPA للوحة العميل |
+| **الفرونت-إند** | Vue.js عبر  3 — SSR للصفحات العامة + SPA للوحة العميل |
 | **الباك-إند** | Laravel 11 API + Sanctum — Filament v3 للوحة التحكم |
 | **حجم الفريق المطلوب** | 5-6 مطورين متخصصين بحد أدنى، يعملون بالتوازي الكامل يومياً على فروع مستقلة |
 | **إدارة المصدر** | GitHub — استراتيجية فروع ثلاثية (main / staging / develop) + فروع Features منظمة |
@@ -61,7 +61,7 @@
 
 - فريق من 5-6 مطورين متخصصين (Backend, Frontend Vue, Admin/Filament, DevOps) يعملون بالتوازي الكامل كل يوم على فروع مستقلة يتم دمجها باستمرار.
 - العمل 7 أيام أسبوعياً (سباق مكثف) والدمج المستمر (Continuous Integration) اليومي لتفادي تعارضات الفروع المتراكمة.
-- مراجعة يومية سريعة (Daily Standup) بين كل المسارات لضمان تزامن تكامل الـAPI مع Nuxt فور جاهزية كل جزء.
+- مراجعة يومية سريعة (Daily Standup) بين كل المسارات لضمان تزامن تكامل الـAPI مع  فور جاهزية كل جزء.
 
 ---
 
@@ -120,7 +120,7 @@ feature/* → Pull Request → develop → Pull Request → staging → اختب
 - View Transitions ناعمة بين الصفحات
 - Prefetching عند التحويم
 - Virtual Scrolling للقوائم الطويلة
-- تحسين الصور تلقائياً عبر Nuxt Image
+- تحسين الصور تلقائياً عبر  Image
 
 ---
 
@@ -168,7 +168,7 @@ git push -u origin main
 ```
 wisal-store/
 ├── backend/     ← Laravel 11
-├── frontend/    ← Nuxt 3
+├── frontend/    ←  3
 └── .github/workflows/
 ```
 
@@ -242,7 +242,7 @@ composer require simplesoftwareio/simple-qrcode
 composer require laravel/socialite
 ```
 
-**إعداد CORS للتواصل مع Nuxt** — تعديل `config/cors.php`:
+**إعداد CORS للتواصل مع ** — تعديل `config/cors.php`:
 ```php
 'paths' => ['api/*', 'sanctum/csrf-cookie'],
 'allowed_origins' => ['http://localhost:3000'],
@@ -263,7 +263,7 @@ git commit -m "chore: initial Laravel 11 + Filament v3 + Sanctum setup"
 git push -u origin develop
 ```
 
-## الخطوة 3 — تسطيب الفرونت-إند (Nuxt 3 + TypeScript + Tailwind + Pinia + VueUse)
+## الخطوة 3 — تسطيب الفرونت-إند ( 3 + TypeScript + Tailwind + Pinia + VueUse)
 
 ```bash
 cd frontend
@@ -272,25 +272,25 @@ npx nuxi@latest init . --package-manager pnpm --gitInit false
 
 **تثبيت الحزم الأساسية (اختيار TypeScript عند السؤال):**
 ```bash
-pnpm add -D @nuxtjs/tailwindcss
-pnpm add @pinia/nuxt pinia
-pnpm add @vueuse/nuxt @vueuse/core
-pnpm add @nuxt/image
-pnpm add nuxt-icon
+pnpm add -D @js/tailwindcss
+pnpm add @pinia/ pinia
+pnpm add @vueuse/ @vueuse/core
+pnpm add @/image
+pnpm add -icon
 ```
 
-**تعديل `nuxt.config.ts`:**
+**تعديل `.config.ts`:**
 ```typescript
-export default defineNuxtConfig({
+export default defineConfig({
   modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@nuxt/image',
+    '@js/tailwindcss',
+    '@pinia/',
+    '@vueuse/',
+    '@/image',
   ],
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000',
+      apiBase: process.env._PUBLIC_API_BASE || 'http://localhost:8000',
     },
   },
   ssr: true, // SSR للصفحات العامة
@@ -319,7 +319,7 @@ export default {
 **إعداد ملف البيئة:**
 ```bash
 cp .env.example .env 2>/dev/null || touch .env
-echo "NUXT_PUBLIC_API_BASE=http://localhost:8000" >> .env
+echo "_PUBLIC_API_BASE=http://localhost:8000" >> .env
 ```
 
 **تشغيل السيرفر محلياً:**
@@ -330,7 +330,7 @@ pnpm dev
 **Commit:**
 ```bash
 git add .
-git commit -m "chore: initial Nuxt 3 + Tailwind (Wisal brand colors) + Pinia + VueUse setup"
+git commit -m "chore: initial  3 + Tailwind (Wisal brand colors) + Pinia + VueUse setup"
 git push -u origin develop
 ```
 
@@ -381,7 +381,7 @@ jobs:
 - [ ] Laravel 11 يعمل محلياً ويتصل بقاعدة البيانات
 - [ ] Filament v3 مثبت ولوحة الأدمن الافتراضية تفتح على `/admin`
 - [ ] Sanctum مُعد وCORS يسمح بطلبات من `localhost:3000`
-- [ ] Nuxt 3 يعمل محلياً على `localhost:3000` ويتصل بالـ API
+- [ ]  3 يعمل محلياً على `localhost:3000` ويتصل بالـ API
 - [ ] الألوان الأربعة الرسمية (`wisal-beige`, `wisal-aqua`, `wisal-ivory`, `wisal-charcoal`) مضافة في `tailwind.config.ts` وتُستخدم فعلياً في المكونات الأولى
 - [ ] GitHub Actions يعمل تلقائياً عند فتح أي Pull Request
 - [ ] كل عضو فريق قادر على استنساخ المستودع وتشغيل المشروع محلياً بنفس الخطوات
@@ -441,7 +441,7 @@ jobs:
 ### النوع 3 — تاسك Frontend صفحة/شاشة كاملة (مثال: features/frontend/shop-page)
 
 ```
-1. تعريف الـ Route/الصفحة ضمن نظام Nuxt File-based Routing (اسم الملف بنمط kebab-case)
+1. تعريف الـ Route/الصفحة ضمن نظام  File-based Routing (اسم الملف بنمط kebab-case)
 2. Composable/Store: أي منطق بيانات يُستخرج لـ composable أو Pinia store منفصل (لا منطق أعمال داخل <script setup> مباشرة إن كان قابلاً لإعادة الاستخدام)
 3. هيكل الملف: <script setup lang="ts"> أولاً → <template> ثانياً → <style> أخيراً (ثابت في كل الصفحات)
 4. إعادة استخدام المكوّنات من design-system (WButton, WCard...) بدل إنشاء نسخة جديدة
@@ -583,12 +583,12 @@ CI يعمل تلقائياً → مراجعة → دمج
 
 ## الأسبوع 1 — الأساس الكامل + لوحة تحكم الأدمن *(الأيام 1-7)*
 
-**هدف الأسبوع:** بناء البنية التحتية الكاملة (Git + Backend + Nuxt) وإنجاز لوحة تحكم Filament بكل شاشاتها دون استثناء.
+**هدف الأسبوع:** بناء البنية التحتية الكاملة (Git + Backend + ) وإنجاز لوحة تحكم Filament بكل شاشاتها دون استثناء.
 
 **اليوم 1 — الفريق كامل**
 - إنشاء مستودع GitHub وتطبيق استراتيجية الفروع كاملة: main / staging / develop + قواعد الحماية (Branch Protection)
 - تنفيذ قسم "تسطيب المشروع من الصفر" أعلاه بالكامل: Laravel 11 + Filament v3 + Sanctum على فرع develop + إعداد CORS
-- تنصيب Nuxt 3 (TypeScript) + Tailwind **بالألوان الرسمية الأربعة لوِصال** + Pinia + VueUse
+- تنصيب  3 (TypeScript) + Tailwind **بالألوان الرسمية الأربعة لوِصال** + Pinia + VueUse
 - إعداد GitHub Actions أولي: تشغيل الاختبارات والـLint تلقائياً عند كل Pull Request
 
 **اليوم 2 — Backend / API**
@@ -1086,14 +1086,14 @@ class ProductController extends Controller
 
 ## الأسبوع 2 — واجهة المتجر الكاملة بتقنية Vue.js *(الأيام 8-14)*
 
-**هدف الأسبوع:** بناء كل صفحات التصفح والعرض في Nuxt (الرئيسية، المتجر، الأقسام، المنتج، البحث الذكي، الإهداء، المدونة) بجميع الميزات الإضافية (Dark Mode، Flash Sale، QR Code).
+**هدف الأسبوع:** بناء كل صفحات التصفح والعرض في  (الرئيسية، المتجر، الأقسام، المنتج، البحث الذكي، الإهداء، المدونة) بجميع الميزات الإضافية (Dark Mode، Flash Sale، QR Code).
 
-**اليوم 8 — Frontend (Nuxt/Vue)**
+**اليوم 8 — Frontend (/Vue)**
 - فرع features/frontend/home-page: Header/Footer بهوية وِصال (الألوان الرسمية الأربعة) + Hero Slider + أقسام مميزة + شهادات عملاء
-- فرع features/frontend/products-store: Pinia products store مع تخزين مؤقت للنتائج + Skeleton Loaders + Nuxt Image لتحسين الصور
+- فرع features/frontend/products-store: Pinia products store مع تخزين مؤقت للنتائج + Skeleton Loaders +  Image لتحسين الصور
 - فرع features/frontend/page-transitions: View Transitions API بين الصفحات + Prefetching عند التحويم
 
-**اليوم 9 — Frontend (Nuxt/Vue)**
+**اليوم 9 — Frontend (/Vue)**
 - فرع features/frontend/shop-page: صفحة /shop (شبكة منتجات + فلاتر جانبية فورية مرتبطة بالـURL + فرز + Pagination)
 - فرع features/frontend/category-pages: صفحات الأقسام الديناميكية (مفكرات، ملصقات، بطاقات، فواصل) بفلاتر خاصة بكل قسم
 
@@ -1101,15 +1101,15 @@ class ProductController extends Controller
 - فرع features/backend/search: دمج Laravel Scout + Meilisearch لبحث سريع وذكي ثنائي اللغة
 - فرع features/frontend/smart-search: شريط بحث فوري (debounced) مع اقتراحات + صفحة نتائج البحث وبدائل عند عدم وجود نتائج
 
-**اليوم 11 — Frontend (Nuxt/Vue)**
+**اليوم 11 — Frontend (/Vue)**
 - فرع features/frontend/product-detail: صفحة المنتج (معرض صور بحركة zoom/swipe + تفاصيل + إضافة للسلة + مراجعات + منتجات مشابهة بتحميل كسول)
 - فرع features/backend/reviews: API لإضافة وعرض المراجعات والتقييمات
 
-**اليوم 12 — Frontend (Nuxt/Vue)**
+**اليوم 12 — Frontend (/Vue)**
 - فرع features/frontend/gift-bundle-builder: منشئ باقة الإهداء التفاعلي (Stepper) + فرع features/backend/gift-bundles لحساب السعر الديناميكي
 - فرع features/frontend/blog-pages: صفحة المدونة + صفحة المقال + صفحة من نحن
 
-**اليوم 13 — Frontend (Nuxt/Vue)**
+**اليوم 13 — Frontend (/Vue)**
 - فرع features/frontend/dark-mode: تفعيل الوضع الليلي عبر Tailwind + Pinia preference store (يجب أن يحافظ الوضع الليلي على هوية وِصال — Charcoal #323232 كخلفية أساسية بدل الأسود الخام)
 - فرع features/frontend/flash-sale-widget: عرض Flash Sale بمؤقت عد تنازلي حي على الصفحة الرئيسية وصفحات المنتج
 - فرع features/backend/qr-codes: توليد QR Code لكل منتج (لعرضه في لوحة الأدمن وطباعته)
@@ -1153,19 +1153,19 @@ class ProductController extends Controller
 **اليوم 20 — DevOps/QA**
 - فرع features/backend/performance: Redis Caching شامل (Cache Tags) + Horizon لمراقبة الطوابير + php artisan optimize ضمن CI/CD
 - فرع features/backend/security: مراجعة CSRF/XSS/SQL Injection + Rate Limiting + Security Headers + تفعيل 2FA للأدمن
-- فرع features/frontend/seo-ssr: ضبط Nuxt SSR للصفحات العامة + Meta Tags وJSON-LD ديناميكية + قياس Core Web Vitals
+- فرع features/frontend/seo-ssr: ضبط  SSR للصفحات العامة + Meta Tags وJSON-LD ديناميكية + قياس Core Web Vitals
 
 **اليوم 21 — الفريق كامل**
 - دمج جميع الفروع المتبقية في develop → staging → اختبار شامل لدورة الشراء الكاملة (تصفح → سلة → دفع بكل الطرق → تأكيد → لوحة العميل → إشعارات)
 - فتح Pull Request من staging إلى main (production) بعد موافقة الفريق واجتياز جميع الاختبارات (Pest + Vitest + E2E)
-- تجهيز VPS (Nginx + SSL + Supervisor + PM2 لتشغيل Nuxt SSR) + دمج staging → main + وسم الإصدار v1.0.0 + الإطلاق الرسمي لمتجر وِصال 🎉
+- تجهيز VPS (Nginx + SSL + Supervisor + PM2 لتشغيل  SSR) + دمج staging → main + وسم الإصدار v1.0.0 + الإطلاق الرسمي لمتجر وِصال 🎉
 
 ---
 
 ## ✦ وِصال ✦
 ### *"بين كل هدية وذكرى — وِصال"*
 
-هذه خطة سباق مكثف (Sprint) لإطلاق النسخة الكاملة من متجر وِصال بكل ميزاتها خلال 3 أسابيع، بواجهة Vue.js (Nuxt 3) وباك-إند Laravel API، معتمدة على استراتيجية Git/GitHub منظمة (main / staging / develop + فروع Features)، وملتزمة حرفياً بالهوية البصرية الرسمية:
+هذه خطة سباق مكثف (Sprint) لإطلاق النسخة الكاملة من متجر وِصال بكل ميزاتها خلال 3 أسابيع، بواجهة Vue.js ( 3) وباك-إند Laravel API، معتمدة على استراتيجية Git/GitHub منظمة (main / staging / develop + فروع Features)، وملتزمة حرفياً بالهوية البصرية الرسمية:
 
 - Beige Heritage `#D1CBB4`
 - Aqua Blue `#467389`

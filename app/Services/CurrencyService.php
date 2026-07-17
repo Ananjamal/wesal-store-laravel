@@ -14,26 +14,13 @@ class CurrencyService
      */
     public function boot(): void
     {
-        $code = session('currency');
-
-        if ($code) {
-            $this->current = Cache::remember(
-                "currency_{$code}",
-                60,
-                fn() =>
-                Currency::where('code', strtoupper($code))->where('is_active', true)->first()
-            );
-        }
-
-        if (!$this->current) {
-            $this->current = Cache::remember(
-                'currency_default',
-                60,
-                fn() =>
-                Currency::where('is_default', true)->first()
-                    ?? Currency::first()
-            );
-        }
+        $this->current = Cache::remember(
+            'currency_default',
+            60,
+            fn() =>
+            Currency::where('is_default', true)->first()
+                ?? Currency::first()
+        );
     }
 
     /**

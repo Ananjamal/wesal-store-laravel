@@ -20,11 +20,20 @@ const pinia = createPinia();
 
 createInertiaApp({
     title: (title) => (title ? `${title} - وِصال` : "✦ وِصال ✦"),
-    resolve: (name) =>
-        resolvePageComponent(
+    resolve: async (name) => {
+        const page = await resolvePageComponent(
             `./Pages/${name}.vue`,
             import.meta.glob("./Pages/**/*.vue"),
-        ),
+        );
+        
+        const isAuthPage = name.toLowerCase().includes('login') || name.toLowerCase().includes('register');
+        if (!isAuthPage) {
+            const defaultLayout = await import('./Layouts/default.vue');
+            page.default.layout = page.default.layout || defaultLayout.default;
+        }
+        
+        return page;
+    },
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)

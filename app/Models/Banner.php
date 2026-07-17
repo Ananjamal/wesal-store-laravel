@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Banner extends Model
 {
-    use HasFactory;
+    use HasFactory, \App\Traits\CleansUrls;
 
     protected $fillable = [
         'title',
@@ -27,6 +27,11 @@ class Banner extends Model
         'starts_at'  => 'datetime',
         'ends_at'    => 'datetime',
     ];
+
+    public function getLinkAttribute($value)
+    {
+        return $this->cleanUrl($value);
+    }
 
     /**
      * تحقق مما إذا كان البنر نشطاً وفي نطاق تاريخه.

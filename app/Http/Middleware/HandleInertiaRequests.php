@@ -32,6 +32,8 @@ class HandleInertiaRequests extends Middleware
                     'id' => $request->user()->id,
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
+                    'avatar' => $request->user()->avatar ? asset('storage/' . $request->user()->avatar) : null,
+                    'is_admin' => $request->user()->hasRole(['Admin', 'Manager']),
                 ] : null,
             ],
             'locale' => app()->getLocale(),
@@ -73,6 +75,42 @@ class HandleInertiaRequests extends Middleware
                     }
                 }
                 return $translations;
+            },
+            'menus' => function () {
+                return \Illuminate\Support\Facades\Cache::remember('shared_menus_' . app()->getLocale(), 60, function () {
+                    return \App\Models\Menu::where('is_active', true)
+                        ->with(['items' => fn($q) => $q->where('is_active', true)->orderBy('sort_order')])
+                        ->get()
+                        ->mapWithKeys(fn($menu) => [
+                            $menu->location => [
+                                'name' => $menu->name,
+                                'items' => $menu->items->whereNull('parent_id')->map(fn($item) => [
+                                    'id' => $item->id,
+                                    'title' => $item->title,
+                                    'url' => $item->url,
+                                    'target' => $item->target,
+                                    'icon' => $item->icon,
+                                    'children' => $menu->items->where('parent_id', $item->id)->map(fn($child) => [
+                                        'id' => $child->id,
+                                        'title' => $child->title,
+                                        'url' => $child->url,
+                                        'target' => $child->target,
+                                        'icon' => $child->icon,
+                                    ])->values()->all(),
+                                ])->values()->all(),
+                            ],
+                        ]);
+                });
+            },
+            'categories' => function () {
+                return \App\Models\Category::where('is_active', true)
+                    ->whereNull('parent_id')
+                    ->get()
+                    ->map(fn($c) => [
+                        'id' => $c->id,
+                        'name' => $c->name,
+                        'slug' => $c->slug,
+                    ]);
             },
         ];
     }

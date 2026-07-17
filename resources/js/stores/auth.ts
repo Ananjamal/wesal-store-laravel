@@ -38,12 +38,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    try {
-      await api('/auth/logout', { method: 'POST' })
-    } catch (e) {}
     token.value = null
     user.value = null
-    router.visit('/login')
+    router.post('/logout')
   }
 
   return { user, token, fetchUser, login, register, logout }

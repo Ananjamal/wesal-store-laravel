@@ -8,9 +8,7 @@ use Inertia\Inertia;
 Route::get('lang/{locale}', [LocaleCurrencyController::class, 'setLocale'])->name('set-locale');
 Route::get('currency/{code}', [LocaleCurrencyController::class, 'setCurrency'])->name('set-currency');
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-});
+Route::get('/', [App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'showLogin'])->name('login');
@@ -22,4 +20,14 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('profile', [AuthController::class, 'showProfile'])->name('profile');
+    Route::post('profile', [AuthController::class, 'updateProfile']);
 });
+
+Route::get('products', [App\Http\Controllers\Web\ProductController::class, 'index'])->name('products.index');
+Route::get('products/{slug}', [App\Http\Controllers\Web\ProductController::class, 'show'])->name('products.show');
+
+Route::get('blog', [App\Http\Controllers\Web\BlogController::class, 'index'])->name('blog.index');
+Route::get('blog/{slug}', [App\Http\Controllers\Web\BlogController::class, 'show'])->name('blog.show');
+
+Route::get('wishlist', fn() => Inertia::render('Wishlist'))->name('wishlist');

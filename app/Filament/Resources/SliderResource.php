@@ -75,8 +75,7 @@ class SliderResource extends Resource
 
                         Forms\Components\TextInput::make('button_link')
                             ->label('رابط الزر')
-                            ->url()
-                            ->placeholder('https://...'),
+                            ->placeholder('/products'),
 
                         Forms\Components\Toggle::make('is_active')
                             ->label('نشط')

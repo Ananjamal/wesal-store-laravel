@@ -24,13 +24,13 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             StoreSettingSeeder::class,
             ShippingMethodSeeder::class,
+            SizeSeeder::class,
+            ColorSeeder::class,
             CategoryAndProductSeeder::class,
             CouponSeeder::class,
             OrderSeeder::class,
             PostSeeder::class,
             DummyDataSeeder::class,
-            SizeSeeder::class,
-            ColorSeeder::class,
             CmsSeeder::class,
         ]);
 

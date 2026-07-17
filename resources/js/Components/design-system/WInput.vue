@@ -28,8 +28,11 @@ function onInput(event: Event) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-1.5">
-    <label v-if="label" class="text-sm font-medium text-wisal-charcoal">
+  <div class="flex flex-col gap-2">
+    <label 
+      v-if="label" 
+      class="text-sm font-bold text-wisal-charcoal dark:text-wisal-ivory transition-colors duration-200"
+    >
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
@@ -40,15 +43,15 @@ function onInput(event: Event) {
       :placeholder="placeholder"
       :disabled="disabled"
       :class="[
-        'px-4 py-2 rounded-lg border bg-white focus:outline-none focus:ring-2 transition-all duration-200',
+        'w-full px-5 py-3.5 rounded-2xl border bg-white dark:bg-wisal-charcoal/40 text-wisal-charcoal dark:text-wisal-ivory placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-300',
         error 
-          ? 'border-red-500 focus:ring-red-200 focus:border-red-500' 
-          : 'border-gray-200 focus:border-wisal-aqua focus:ring-wisal-aqua/20',
-        disabled ? 'opacity-50 bg-gray-50 cursor-not-allowed' : ''
+          ? 'border-red-500 focus:ring-red-200/50 focus:border-red-500' 
+          : 'border-wisal-beige/30 dark:border-gray-800 focus:border-wisal-aqua focus:ring-wisal-aqua/20 dark:focus:ring-wisal-aqua/10',
+        disabled ? 'opacity-50 bg-gray-50 dark:bg-gray-900 cursor-not-allowed' : ''
       ]"
       @input="onInput"
     >
     
-    <span v-if="error" class="text-xs text-red-500 mt-0.5">{{ error }}</span>
+    <span v-if="error" class="text-xs text-red-500 font-medium mt-0.5">{{ error }}</span>
   </div>
 </template>

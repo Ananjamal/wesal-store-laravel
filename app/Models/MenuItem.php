@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MenuItem extends Model
 {
-    use HasFactory;
+    use HasFactory, \App\Traits\CleansUrls;
 
     protected $fillable = [
         'menu_id',
@@ -26,6 +26,11 @@ class MenuItem extends Model
         'is_active'  => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    public function getUrlAttribute($value)
+    {
+        return $this->cleanUrl($value);
+    }
 
     public function menu(): BelongsTo
     {

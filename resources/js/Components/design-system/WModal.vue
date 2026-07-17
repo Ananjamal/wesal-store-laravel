@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
-import { watch, ref, onMounted } from 'vue'
+import { watch, ref } from 'vue'
 
 interface Props {
   modelValue: boolean
@@ -46,8 +46,8 @@ const maxWidthClasses = {
       leave-to-class="opacity-0"
     >
       <div v-if="modelValue" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-wisal-charcoal/40 backdrop-blur-sm" @click="close"></div>
+        <!-- Backdrop with rich blur -->
+        <div class="absolute inset-0 bg-wisal-charcoal/60 backdrop-blur-md" @click="close"></div>
         
         <!-- Modal Panel -->
         <Transition
@@ -62,30 +62,32 @@ const maxWidthClasses = {
             v-if="modelValue"
             ref="modalRef"
             :class="[
-              'relative bg-white rounded-2xl shadow-xl w-full flex flex-col max-h-[90vh]',
+              'relative bg-white dark:bg-wisal-charcoal border border-wisal-beige/20 dark:border-gray-800/80 rounded-3xl shadow-premium-lg w-full flex flex-col max-h-[85vh] overflow-hidden',
               maxWidthClasses[maxWidth]
             ]"
           >
             <!-- Header -->
-            <div class="flex items-center justify-between p-6 border-b border-gray-100">
-              <h3 v-if="title" class="text-xl font-bold text-wisal-charcoal">{{ title }}</h3>
-              <div v-else><slot name="header" /></div>
+            <div class="flex items-center justify-between p-6 border-b border-wisal-beige/10 dark:border-gray-800">
+              <h3 v-if="title" class="text-xl font-extrabold text-wisal-charcoal dark:text-wisal-ivory">{{ title }}</h3>
+              <div v-else class="flex-grow"><slot name="header" /></div>
               
               <button 
                 @click="close"
-                class="p-2 -mr-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors"
+                class="p-2 -mr-2 text-gray-400 hover:text-wisal-aqua rounded-xl hover:bg-wisal-beige/10 dark:hover:bg-gray-800 transition-all duration-200"
               >
-                <Icon name="heroicon-o-x-mark" class="w-5 h-5" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
             
             <!-- Body -->
-            <div class="p-6 overflow-y-auto">
+            <div class="p-6 overflow-y-auto custom-scrollbar">
               <slot />
             </div>
             
             <!-- Footer -->
-            <div v-if="$slots.footer" class="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+            <div v-if="$slots.footer" class="p-6 border-t border-wisal-beige/10 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/30">
               <slot name="footer" />
             </div>
           </div>

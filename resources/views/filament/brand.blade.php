@@ -4,7 +4,7 @@
 @endphp
 <div class="flex items-center gap-3 py-1">
     <div class="relative flex h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-[#D1CBB4] bg-white shadow-sm transition hover:scale-105">
-        <img src="{{ $logo ? asset('storage/' . $logo) : asset('images/logo.jpg') }}" alt="Logo" class="h-full w-full object-cover">
+        <img src="{{ $logo ? asset('storage/' . $logo) : asset('images/logo.png') }}" alt="Logo" class="h-full w-full object-cover">
     </div>
     <div class="flex flex-col">
         <span class="text-base font-bold tracking-wide text-gray-900 dark:text-white">{{ $storeName }}</span>
