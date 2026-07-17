@@ -37,9 +37,9 @@ jobs:
           port: ${{ secrets.STAGING_PORT || 22 }}
           script: |
             cd ${{ secrets.STAGING_PATH }}
-            git pull origin staging
+            git fetch origin
+            git reset --hard origin/staging
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-            npm ci && npm run build
             php artisan migrate --force
             php artisan config:cache
             php artisan route:cache
