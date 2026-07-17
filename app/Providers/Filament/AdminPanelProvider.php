@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->spa()
             ->brandName(fn() => \App\Models\StoreSetting::getValue('store_name', '✦ وِصال'))
             ->brandLogo(fn() => view('filament.brand'))
             ->brandLogoHeight('3rem')

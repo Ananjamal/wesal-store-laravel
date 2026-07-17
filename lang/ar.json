@@ -13,6 +13,8 @@
     "nav": {
         "catalog": "الكتالوج",
         "content": "المحتوى",
+        "cms": "إدارة المحتوى (CMS)",
+        "product_attributes": "سمات المنتجات",
         "marketing": "التسويق",
         "operations": "العمليات",
         "users": "المستخدمون",
@@ -46,7 +48,23 @@
         "store_settings": "إعدادات المتجر",
         "store_setting": "إعداد",
         "audit_logs": "سجل التدقيق",
-        "audit_log": "سجل تدقيق"
+        "audit_log": "سجل تدقيق",
+        "colors": "الألوان",
+        "color": "لون",
+        "sizes": "المقاسات",
+        "size": "مقاس",
+        "article_categories": "تصنيفات المقالات",
+        "article_category": "تصنيف مقالات",
+        "banners": "البنرات",
+        "banner": "بنر",
+        "sliders": "السلايدر",
+        "slider": "شريحة",
+        "homepage_sections": "أقسام الصفحة الرئيسية",
+        "homepage_section": "قسم",
+        "menus": "القوائم",
+        "menu": "قائمة",
+        "menu_items": "عناصر القائمة",
+        "menu_item": "عنصر قائمة"
     },
 
     "field": {
@@ -120,7 +138,27 @@
         "sold_qty": "الكمية المباعة",
         "created_by": "منشئ البطاقة",
         "times_used": "عدد مرات الاستخدام",
-        "promos_name": "اسم العرض الترويجي"
+        "promos_name": "اسم العرض الترويجي",
+        "message": "رسالة المنتج",
+        "short_description": "وصف مختصر",
+        "meta_title": "Meta Title",
+        "meta_description": "Meta Description",
+        "keywords": "الكلمات المفتاحية",
+        "is_featured": "مميز",
+        "is_published": "منشور",
+        "hex_code": "كود اللون",
+        "cover_image": "صورة الغلاف",
+        "desktop_image": "صورة سطح المكتب",
+        "mobile_image": "صورة الجوال",
+        "button_text": "نص الزر",
+        "button_link": "رابط الزر",
+        "sort_order": "الترتيب",
+        "location": "الموقع",
+        "target": "طريقة الفتح",
+        "icon": "الأيقونة",
+        "background": "الخلفية",
+        "items_count": "عدد العناصر",
+        "currency_unit": "ر.س"
     },
 
     "action": {

@@ -1,0 +1,115 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\SizeResource\Pages;
+use App\Models\Size;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class SizeResource extends Resource
+{
+    protected static ?string $model = Size::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?int $navigationSort = 6;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('resource.sizes');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('resource.size');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('resource.sizes');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('nav.product_attributes');
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Section::make('بيانات المقاس')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('رمز المقاس')
+                            ->required()
+                            ->maxLength(20)
+                            ->placeholder('مثال: XL')
+                            ->extraInputAttributes(['style' => 'text-transform: uppercase;']),
+
+                        Forms\Components\TextInput::make('label')
+                            ->label('التسمية التوضيحية')
+                            ->maxLength(100)
+                            ->placeholder('مثال: كبير جداً'),
+
+                        Forms\Components\Toggle::make('is_active')
+                            ->label('نشط')
+                            ->default(true),
+                    ])->columns(2),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->label('رمز المقاس')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->weight('bold'),
+
+                Tables\Columns\TextColumn::make('label')
+                    ->label('التسمية')
+                    ->searchable(),
+
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('نشط')
+                    ->boolean()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('products_count')
+                    ->label('المنتجات')
+                    ->counts('products')
+                    ->badge()
+                    ->color('info'),
+            ])
+            ->filters([
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('الحالة'),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->defaultSort('name');
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index'  => Pages\ListSizes::route('/'),
+            'create' => Pages\CreateSize::route('/create'),
+            'edit'   => Pages\EditSize::route('/{record}/edit'),
+        ];
+    }
+}
