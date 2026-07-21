@@ -40,6 +40,18 @@ const props = defineProps<{
 const page = usePage()
 const activeLocale = computed(() => (page.props.locale as string) || 'ar')
 const currentCurrency = computed(() => (page.props.currency as any) || { code: 'SAR', symbol: 'ر.س' })
+
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return ''
+  try {
+    return new Date(dateStr).toLocaleString(
+      activeLocale.value === 'ar' ? 'ar-EG' : 'en-US',
+      { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+    )
+  } catch {
+    return dateStr
+  }
+}
 </script>
 
 <template>
@@ -71,7 +83,7 @@ const currentCurrency = computed(() => (page.props.currency as any) || { code: '
             {{ post.title }}
           </h1>
           <div class="flex items-center gap-4 text-xs md:text-sm text-gray-300 font-sans">
-            <span>{{ post.published_at }}</span>
+            <span>{{ formatDate(post.published_at) }}</span>
             <span>|</span>
             <span>{{ activeLocale === 'ar' ? 'بواسطة:' : 'By:' }} {{ post.author_name }}</span>
           </div>
@@ -149,7 +161,7 @@ const currentCurrency = computed(() => (page.props.currency as any) || { code: '
             >
               <img :src="item.image" :alt="item.title" class="w-20 h-16 rounded-xl object-cover" />
               <div class="min-w-0">
-                <span class="text-[10px] text-gray-400 font-sans block">{{ item.published_at }}</span>
+                <span class="text-[10px] text-gray-400 font-sans block">{{ formatDate(item.published_at) }}</span>
                 <h4 class="font-bold text-xs md:text-sm text-wisal-charcoal dark:text-wisal-ivory line-clamp-2 hover:text-wisal-aqua transition-colors duration-200 mt-0.5">
                   <Link :href="`/blog/${item.slug}`">{{ item.title }}</Link>
                 </h4>

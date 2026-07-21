@@ -60,11 +60,10 @@ const props = defineProps<{
       }>
     }
   }
-  categories: Category[]
+  category: Category
   colors: Color[]
   sizes: Size[]
   filters: {
-    category_id?: string
     color_id?: string
     size_id?: string
     search?: string
@@ -77,64 +76,33 @@ const props = defineProps<{
 const page = usePage()
 const activeLocale = computed(() => (page.props.locale as string) || 'ar')
 
-// Local reactive copy of products — updated on every Inertia response
-const localProducts = ref(props.products)
-watch(
-  () => props.products,
-  (val) => { localProducts.value = val },
-  { deep: true }
-)
-
 // Local filter states
 const search = ref(props.filters.search || '')
-const categoryId = ref(props.filters.category_id || '')
 const colorId = ref(props.filters.color_id || '')
 const sizeId = ref(props.filters.size_id || '')
 const priceMin = ref(props.filters.price_min || '')
 const priceMax = ref(props.filters.price_max || '')
 const sort = ref(props.filters.sort || 'latest')
 
-const sortOptions = computed(() => [
-  { value: 'latest', label: activeLocale.value === 'ar' ? 'الأحدث' : 'Latest' },
-  { value: 'price_asc', label: activeLocale.value === 'ar' ? 'السعر: من الأقل للأعلى' : 'Price: Low to High' },
-  { value: 'price_desc', label: activeLocale.value === 'ar' ? 'السعر: من الأعلى للأقل' : 'Price: High to Low' },
-  { value: 'oldest', label: activeLocale.value === 'ar' ? 'الأقدم' : 'Oldest' },
-])
-
-const isSortDropdownOpen = ref(false)
 const isFilterDrawerOpen = ref(false)
 const isPageLoading = ref(false)
 
 function applyFilters() {
   isPageLoading.value = true
-  router.get('/products', {
-    search: search.value || undefined,
-    category_id: categoryId.value || undefined,
-    color_id: colorId.value || undefined,
-    size_id: sizeId.value || undefined,
-    price_min: priceMin.value || undefined,
-    price_max: priceMax.value || undefined,
-    sort: sort.value !== 'latest' ? sort.value : undefined,
+  router.get('/category/' + props.category.slug, {
+    search: search.value,
+    color_id: colorId.value,
+    size_id: sizeId.value,
+    price_min: priceMin.value,
+    price_max: priceMax.value,
+    sort: sort.value,
   }, {
-    preserveScroll: true,
+    preserveState: true,
     replace: true,
-    only: ['products', 'filters'],
-    onSuccess: (page) => {
-      localProducts.value = (page.props as any).products
-      isPageLoading.value = false
-    },
-    onError: () => {
-      isPageLoading.value = false
-    },
     onFinish: () => {
       isPageLoading.value = false
     }
   })
-}
-
-function selectCategory(id: number | '') {
-  categoryId.value = id ? String(id) : ''
-  applyFilters()
 }
 
 function selectColor(id: number | '') {
@@ -149,7 +117,6 @@ function selectSize(id: number | '') {
 
 function clearFilters() {
   search.value = ''
-  categoryId.value = ''
   colorId.value = ''
   sizeId.value = ''
   priceMin.value = ''
@@ -161,22 +128,6 @@ function clearFilters() {
 watch(sort, () => {
   applyFilters()
 })
-
-function navigateTo(url: string | null) {
-  if (!url) return
-  isPageLoading.value = true
-  router.get(url, {}, {
-    preserveScroll: false,
-    replace: true,
-    only: ['products', 'filters'],
-    onSuccess: (page) => {
-      localProducts.value = (page.props as any).products
-      isPageLoading.value = false
-    },
-    onError: () => { isPageLoading.value = false },
-    onFinish: () => { isPageLoading.value = false }
-  })
-}
 </script>
 
 <template>
@@ -189,10 +140,10 @@ function navigateTo(url: string | null) {
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-wisal-beige/10 dark:border-gray-800 pb-8">
       <div class="space-y-1">
         <h1 class="text-3xl md:text-5xl font-black text-wisal-charcoal dark:text-wisal-ivory leading-none">
-          {{ activeLocale === 'ar' ? 'جميع المنتجات' : 'All Products' }}
+          {{ props.category.name }}
         </h1>
         <p class="text-gray-400 text-xs md:text-sm font-semibold">
-          {{ activeLocale === 'ar' ? `نعرض لك ${localProducts.meta.total} من الهدايا والمنظمات الفاخرة` : `Showing ${localProducts.meta.total} premium gifts and planners` }}
+          {{ activeLocale === 'ar' ? `نتائج (${products.meta.total})` : `Results (${products.meta.total})` }}
         </p>
       </div>
 
@@ -217,59 +168,22 @@ function navigateTo(url: string | null) {
           </button>
         </div>
 
-        <!-- Custom Sorting Dropdown -->
-        <div class="relative min-w-[240px]">
-          <button 
-            @click="isSortDropdownOpen = !isSortDropdownOpen"
-            @blur="setTimeout(() => isSortDropdownOpen = false, 200)"
-            class="w-full flex items-center justify-between bg-white dark:bg-wisal-charcoal border border-wisal-beige/25 dark:border-gray-800 rounded-2xl py-3.5 px-5 text-xs md:text-sm font-bold text-wisal-charcoal dark:text-wisal-ivory focus:outline-none focus:ring-2 focus:ring-wisal-aqua/20 transition-all shadow-premium-sm"
+        <!-- Sorting -->
+        <div class="relative">
+          <select 
+            v-model="sort"
+            class="appearance-none bg-white dark:bg-wisal-charcoal border border-wisal-beige/25 dark:border-gray-800 rounded-2xl py-3.5 pl-12 pr-5 text-xs md:text-sm font-bold text-wisal-charcoal dark:text-wisal-ivory focus:outline-none focus:ring-2 focus:ring-wisal-aqua/20 cursor-pointer min-w-[180px] shadow-premium-sm"
           >
-            <div class="flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-gray-400">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-              </svg>
-              <span>{{ sortOptions.find(o => o.value === sort)?.label || (activeLocale === 'ar' ? 'الترتيب' : 'Sort') }}</span>
-            </div>
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke-width="2.5" 
-              stroke="currentColor" 
-              class="w-4 h-4 text-gray-400 transition-transform duration-300"
-              :class="isSortDropdownOpen ? 'rotate-180' : ''"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            <option value="latest">{{ activeLocale === 'ar' ? 'الأحدث' : 'Latest' }}</option>
+            <option value="price_asc">{{ activeLocale === 'ar' ? 'السعر: من الأقل للأعلى' : 'Price: Low to High' }}</option>
+            <option value="price_desc">{{ activeLocale === 'ar' ? 'السعر: من الأعلى للأقل' : 'Price: High to Low' }}</option>
+            <option value="oldest">{{ activeLocale === 'ar' ? 'الأقدم' : 'Oldest' }}</option>
+          </select>
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
             </svg>
-          </button>
-
-          <!-- Dropdown Menu -->
-          <transition 
-            enter-active-class="transition duration-200 ease-out"
-            enter-from-class="transform scale-95 opacity-0"
-            enter-to-class="transform scale-100 opacity-100"
-            leave-active-class="transition duration-75 ease-in"
-            leave-from-class="transform scale-100 opacity-100"
-            leave-to-class="transform scale-95 opacity-0"
-          >
-            <div 
-              v-show="isSortDropdownOpen" 
-              class="absolute z-50 mt-2 w-full bg-white dark:bg-wisal-charcoal rounded-2xl border border-wisal-beige/20 dark:border-gray-800 shadow-premium-lg overflow-hidden py-2"
-            >
-              <button
-                v-for="option in sortOptions"
-                :key="option.value"
-                @click="sort = option.value; isSortDropdownOpen = false"
-                class="w-full text-start px-5 py-3 text-xs md:text-sm font-bold transition-colors hover:bg-wisal-beige/10 dark:hover:bg-gray-800 flex items-center justify-between"
-                :class="sort === option.value ? 'text-wisal-aqua' : 'text-gray-600 dark:text-wisal-ivory'"
-              >
-                <span>{{ option.label }}</span>
-                <svg v-if="sort === option.value" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-              </button>
-            </div>
-          </transition>
+          </div>
         </div>
 
         <!-- Mobile filter toggle button -->
@@ -295,29 +209,6 @@ function navigateTo(url: string | null) {
           <button @click="clearFilters" class="text-xs text-gray-400 hover:text-red-500 font-bold transition-colors">
             {{ activeLocale === 'ar' ? 'تفريغ الكل' : 'Clear All' }}
           </button>
-        </div>
-
-        <!-- Category filter list -->
-        <div class="space-y-4">
-          <h3 class="font-extrabold text-sm text-wisal-charcoal dark:text-wisal-ivory uppercase tracking-wider">{{ activeLocale === 'ar' ? 'الأقسام' : 'Categories' }}</h3>
-          <div class="flex flex-col gap-1.5">
-            <button 
-              @click="selectCategory('')" 
-              :class="categoryId === '' ? 'text-wisal-aqua font-extrabold bg-wisal-aqua/5 dark:bg-gray-800' : 'text-gray-500 hover:text-wisal-aqua'"
-              class="text-right text-xs md:text-sm py-2 px-3.5 rounded-xl transition-all duration-200 w-full"
-            >
-              {{ activeLocale === 'ar' ? 'كل الأقسام' : 'All Categories' }}
-            </button>
-            <button 
-              v-for="cat in categories" 
-              :key="cat.id"
-              @click="selectCategory(cat.id)" 
-              :class="categoryId === String(cat.id) ? 'text-wisal-aqua font-extrabold bg-wisal-aqua/5 dark:bg-gray-800' : 'text-gray-500 hover:text-wisal-aqua'"
-              class="text-right text-xs md:text-sm py-2 px-3.5 rounded-xl transition-all duration-200 w-full"
-            >
-              {{ cat.name }}
-            </button>
-          </div>
         </div>
 
         <!-- Color filter swatches -->
@@ -360,7 +251,7 @@ function navigateTo(url: string | null) {
 
         <!-- Price range filters -->
         <div class="space-y-4">
-          <h3 class="font-extrabold text-sm text-wisal-charcoal dark:text-wisal-ivory uppercase tracking-wider">{{ activeLocale === 'ar' ? `نطاق السعر (${page.props.currency.symbol})` : `Price (${page.props.currency.symbol})` }}</h3>
+          <h3 class="font-extrabold text-sm text-wisal-charcoal dark:text-wisal-ivory uppercase tracking-wider">{{ activeLocale === 'ar' ? 'نطاق السعر (ر.س)' : 'Price (SAR)' }}</h3>
           <div class="flex items-center gap-2">
             <input 
               v-model="priceMin"
@@ -404,7 +295,7 @@ function navigateTo(url: string | null) {
         <template v-else>
           <!-- Empty State -->
           <div 
-            v-if="localProducts.data.length === 0" 
+            v-if="products.data.length === 0" 
             class="text-center py-24 bg-white dark:bg-[#323232]/20 rounded-[32px] border border-dashed border-wisal-beige/20 dark:border-gray-800 max-w-xl mx-auto space-y-4"
           >
             <div class="text-5xl text-gray-300">🎁</div>
@@ -425,7 +316,7 @@ function navigateTo(url: string | null) {
           <!-- Active Products -->
           <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <ProductCard 
-              v-for="product in localProducts.data" 
+              v-for="product in products.data" 
               :key="product.id"
               :product="product"
             />
@@ -433,10 +324,10 @@ function navigateTo(url: string | null) {
 
           <!-- Pagination -->
           <div 
-            v-if="localProducts.meta.last_page > 1" 
+            v-if="products.meta.last_page > 1" 
             class="flex flex-wrap justify-center gap-2 pt-8 border-t border-wisal-beige/10 dark:border-gray-800"
           >
-            <template v-for="(link, index) in localProducts.meta.links" :key="index">
+            <template v-for="(link, index) in products.meta.links" :key="index">
               <span 
                 v-if="link.url === null && link.label === '...'"
                 class="px-4 py-2.5 text-sm text-gray-400 select-none"
@@ -444,18 +335,17 @@ function navigateTo(url: string | null) {
                 ...
               </span>
 
-              <button
+              <Link
                 v-else-if="link.url"
-                @click="navigateTo(link.url)"
-                :disabled="link.active"
+                :href="link.url"
                 :class="[
                   'px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-200 border',
                   link.active 
-                    ? 'bg-wisal-aqua text-white border-wisal-aqua shadow-sm cursor-default' 
-                    : 'bg-white dark:bg-wisal-charcoal border-wisal-beige/25 dark:border-gray-800 hover:bg-wisal-beige/10 dark:text-wisal-ivory cursor-pointer'
+                    ? 'bg-wisal-aqua text-white border-wisal-aqua shadow-sm' 
+                    : 'bg-white dark:bg-wisal-charcoal border-wisal-beige/25 dark:border-gray-800 hover:bg-wisal-beige/10 dark:text-wisal-ivory'
                 ]"
                 v-html="link.label"
-              ></button>
+              ></Link>
             </template>
           </div>
         </template>
@@ -555,7 +445,7 @@ function navigateTo(url: string | null) {
 
             <!-- Price -->
             <div class="space-y-4">
-              <h3 class="font-extrabold text-sm text-wisal-charcoal dark:text-wisal-ivory">{{ activeLocale === 'ar' ? `نطاق السعر (${page.props.currency.symbol})` : `Price Range (${page.props.currency.symbol})` }}</h3>
+              <h3 class="font-extrabold text-sm text-wisal-charcoal dark:text-wisal-ivory">{{ activeLocale === 'ar' ? 'نطاق السعر (ر.س)' : 'Price Range (SAR)' }}</h3>
               <div class="flex items-center gap-2">
                 <input 
                   v-model="priceMin"

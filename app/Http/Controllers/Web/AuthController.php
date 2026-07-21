@@ -44,6 +44,10 @@ class AuthController extends Controller
 
             \Illuminate\Support\Facades\Log::info('LOGIN SUCCESS', ['user_id' => Auth::id()]);
 
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $this->syncGuestData($user, $request->input('cartItems', []), $request->input('wishlistItems', []));
+
             $intended = redirect()->getIntendedUrl();
             if ($intended && Str::contains($intended, '/admin')) {
                 return redirect('/');
@@ -85,8 +89,14 @@ class AuthController extends Controller
         $user->assignRole('Customer');
 
         Auth::login($user);
+        $this->syncGuestData($user, $request->input('cartItems', []), $request->input('wishlistItems', []));
 
-        return redirect('/');
+        $intended = redirect()->getIntendedUrl();
+        if ($intended && \Illuminate\Support\Str::contains($intended, '/admin')) {
+            return redirect('/');
+        }
+
+        return redirect()->intended('/');
     }
 
     public function logout(Request $request)
@@ -101,7 +111,13 @@ class AuthController extends Controller
 
     public function showProfile()
     {
-        return Inertia::render('Profile');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $orders = $user->orders()->latest()->get();
+
+        return Inertia::render('Profile', [
+            'orders' => $orders
+        ]);
     }
 
     public function updateProfile(Request $request)
@@ -135,5 +151,41 @@ class AuthController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', app()->getLocale() === 'ar' ? 'تم تحديث الملف الشخصي بنجاح!' : 'Profile updated successfully!');
+    }
+
+    private function syncGuestData(\App\Models\User $user, array $cartItems, array $wishlistItems)
+    {
+        // 1. Sync Wishlist
+        if (!empty($wishlistItems)) {
+            $productIds = collect($wishlistItems)->pluck('id')->filter()->toArray();
+            $user->wishlists()->syncWithoutDetaching($productIds);
+        }
+
+        // 2. Sync Cart
+        if (!empty($cartItems)) {
+            $cart = $user->carts()->firstOrCreate(['session_id' => session()->getId()]);
+            
+            foreach ($cartItems as $item) {
+                if (empty($item['id']) || empty($item['quantity'])) continue;
+                
+                $existingItem = $cart->items()
+                    ->where('product_id', $item['id'])
+                    ->where('color_id', $item['colorId'] ?? null)
+                    ->where('size_id', $item['sizeId'] ?? null)
+                    ->first();
+
+                if ($existingItem) {
+                    $existingItem->increment('quantity', $item['quantity']);
+                } else {
+                    $cart->items()->create([
+                        'product_id' => $item['id'],
+                        'color_id' => $item['colorId'] ?? null,
+                        'size_id' => $item['sizeId'] ?? null,
+                        'quantity' => $item['quantity'],
+                    ]);
+                }
+            }
+            $cart->update(['last_activity_at' => now()]);
+        }
     }
 }

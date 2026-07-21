@@ -31,8 +31,8 @@ function search() {
   isLoading.value = true
   debounceTimer = setTimeout(async () => {
     try {
-      const response = await axios.get('/api/catalog/products', {
-        params: { search: query.value }
+      const response = await axios.get('/api/catalog/search', {
+        params: { q: query.value }
       })
       results.value = response.data.data || []
     } catch (e) {
@@ -58,6 +58,13 @@ function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape' && props.isOpen) {
     handleClose()
   }
+}
+
+function goToResults() {
+  if (!query.value.trim()) return
+  const currentQuery = query.value
+  handleClose()
+  router.visit('/products?search=' + encodeURIComponent(currentQuery))
 }
 
 onMounted(() => {
@@ -98,6 +105,7 @@ onUnmounted(() => {
           <input 
             v-model="query"
             @input="search"
+            @keyup.enter="goToResults"
             type="text"
             autofocus
             :placeholder="activeLocale === 'ar' ? 'اكتب اسم المنتج أو الكلمات المفتاحية...' : 'Type product name or keywords...'"
@@ -153,7 +161,7 @@ onUnmounted(() => {
               >
                 <!-- Thumbnail -->
                 <img 
-                  :src="item.images && item.images.length > 0 ? item.images[0].thumb : 'https://picsum.photos/seed/product-' + item.id + '/100/100'" 
+                  :src="item.image" 
                   :alt="item.name" 
                   class="w-12 h-12 rounded-xl object-cover bg-white"
                 />
@@ -164,7 +172,7 @@ onUnmounted(() => {
                     {{ item.name }}
                   </h4>
                   <span v-if="item.category" class="text-xs text-wisal-aqua font-semibold">
-                    {{ item.category.name }}
+                    {{ item.category }}
                   </span>
                 </div>
 
@@ -175,6 +183,16 @@ onUnmounted(() => {
                   </span>
                   <span class="text-[10px] text-gray-500 font-bold ml-0.5">ر.س</span>
                 </div>
+              </div>
+
+              <!-- View All Results Button -->
+              <div class="pt-2 text-center">
+                <button 
+                  @click="goToResults"
+                  class="text-xs font-bold text-wisal-aqua hover:text-[#2a4e62] transition-colors underline"
+                >
+                  {{ activeLocale === 'ar' ? 'عرض كافة النتائج' : 'View all results' }}
+                </button>
               </div>
             </div>
           </template>

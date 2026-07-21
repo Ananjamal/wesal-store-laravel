@@ -42,19 +42,33 @@ class ProductController extends Controller
         }
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->string('search') . '%');
+            $searchTerm = $request->string('search')->toString();
+            // Get matching IDs from Scout/Meilisearch
+            $scoutIds = Product::search($searchTerm)->keys();
+            
+            // Apply to the main query
+            if ($scoutIds->isEmpty()) {
+                // Force empty result if nothing found in Scout
+                $query->where('id', 0);
+            } else {
+                $query->whereIn('id', $scoutIds);
+            }
         }
 
+        $currencyRate = app(\App\Services\CurrencyService::class)->rate();
+
         if ($request->filled('price_min')) {
-            $query->where('price_cents', '>=', $request->integer('price_min') * 100);
+            $minBaseCents = ((float)$request->input('price_min') / $currencyRate) * 100;
+            $query->where('price_cents', '>=', round($minBaseCents));
         }
 
         if ($request->filled('price_max')) {
-            $query->where('price_cents', '<=', $request->integer('price_max') * 100);
+            $maxBaseCents = ((float)$request->input('price_max') / $currencyRate) * 100;
+            $query->where('price_cents', '<=', round($maxBaseCents));
         }
 
         // Sorting
-        $sort = $request->string('sort', 'latest');
+        $sort = $request->string('sort', 'latest')->toString();
         switch ($sort) {
             case 'price_asc':
                 $query->orderBy('price_cents', 'asc');

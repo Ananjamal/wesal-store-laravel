@@ -10,13 +10,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes, InteractsWithMedia;
+    use HasFactory, SoftDeletes, InteractsWithMedia, Searchable;
 
     protected $fillable = [
         'category_id',
@@ -107,6 +108,18 @@ class Product extends Model implements HasMedia
     public function getFormattedPriceAttribute(): string
     {
         return app(\App\Services\CurrencyService::class)->format($this->price_cents);
+    }
+
+    public function toSearchableArray(): array
+    {
+        // For Laravel Scout's database driver, we must only return actual table columns
+        // that are string-based, because it uses these keys to build a LIKE query.
+        // It also calls this method on an empty model instance to get the keys!
+        return [
+            'name' => $this->name ?? '',
+            'short_description' => $this->short_description ?? '',
+            'description' => $this->description ? strip_tags($this->description) : '',
+        ];
     }
 
     // ─── Scopes ───────────────────────────────────────────────────────────────
