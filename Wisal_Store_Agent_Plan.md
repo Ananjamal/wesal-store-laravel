@@ -6,6 +6,43 @@
 **خطة إنجاز المشروع الكاملة خلال 3 أسابيع — واجهة Vue.js + استراتيجية Git/GitHub**
 *3-Week Full-Scope Plan — Vue.js Frontend & Git Branching Strategy*
 
+## 🚀 استراتيجية وخطوات الرفع والتحديث على السيرفر (Hostinger)
+
+إليك الأوامر التفصيلية التي يجب تنفيذها محلياً في الـ Terminal لنقل التحديثات من جهازك الشخصي إلى السيرفر عبر GitHub بطريقة صحيحة وآمنة:
+
+### 1. الرفع على فرع التطوير (`develop`)
+احفظ تعديلاتك المحلية وارفعها لفرع التطوير الأساسي:
+```bash
+git add .
+git commit -m "feat: وصف التعديلات التي قمت بها"
+git push origin develop
+```
+
+### 2. النشر على السيرفر التجريبي (`staging`)
+عندما تكون جاهزاً لاختبار التعديلات على السيرفر التجريبي:
+```bash
+git checkout staging
+git pull origin staging
+git merge develop --no-edit
+git push origin staging
+```
+> **ملاحظة:** يتم بناء ملفات الـ Frontend تلقائياً على خوادم GitHub Actions ونقلها للسيرفر عبر **SCP** لعدم وجود Node/NPM على السيرفر.
+
+### 3. النشر على السيرفر الرئيسي الحي (`main`)
+لإطلاق التعديلات رسمياً للمستخدمين على الموقع النهائي:
+```bash
+git checkout main
+git pull origin main
+git merge staging --no-edit
+git push origin main
+```
+
+### 4. العودة لفرع التطوير محلياً (`develop`)
+بعد الانتهاء، عُد دائماً لفرع التطوير للاستمرار في البرمجة:
+```bash
+git checkout develop
+```
+
 ---
 
 ## ⚠️ تنبيه إلزامي للـ Agent — الهوية البصرية (Brand Identity) — يُطبَّق حرفياً ولا يُستبدل
