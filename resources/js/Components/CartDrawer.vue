@@ -173,11 +173,14 @@ function closeDrawer() {
         <!-- Footer containing subtotal & actions -->
         <div v-if="cartItems.length > 0" class="p-6 border-t border-wisal-beige/10 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30 space-y-4">
           <div class="flex items-center justify-between text-sm md:text-base font-extrabold text-wisal-charcoal dark:text-wisal-ivory">
-            <span>{{ activeLocale === 'ar' ? 'المجموع الفرعي:' : 'Subtotal:' }}</span>
+            <span>{{ activeLocale === 'ar' ? 'المجموع:' : 'Total:' }}</span>
             <div class="flex items-baseline gap-0.5 text-lg font-black text-wisal-aqua">
-              <span>{{ formattedSubtotal }}</span>
+              <span>{{ (cartStore.total * currentCurrency.exchange_rate).toFixed(2) }}</span>
               <span class="text-xs font-bold">{{ currentCurrency.symbol }}</span>
             </div>
+          </div>
+          <div v-if="cartStore.coupon" class="text-xs font-bold text-red-500 text-center">
+            {{ activeLocale === 'ar' ? 'تم تطبيق خصم الكوبون!' : 'Coupon applied!' }}
           </div>
 
           <div class="flex flex-col gap-2">
@@ -189,10 +192,18 @@ function closeDrawer() {
             >
               {{ activeLocale === 'ar' ? 'إتمام عملية الشراء' : 'Proceed to Checkout' }}
             </Link>
+
+            <Link 
+              href="/cart" 
+              class="w-full border-2 border-wisal-charcoal text-wisal-charcoal dark:border-wisal-ivory dark:text-wisal-ivory py-3 rounded-2xl text-xs md:text-sm font-black text-center hover:bg-wisal-charcoal hover:text-wisal-ivory dark:hover:bg-wisal-ivory dark:hover:text-wisal-charcoal transition-all block mt-1"
+              @click="closeDrawer"
+            >
+              {{ activeLocale === 'ar' ? 'عرض السلة والتعديل' : 'View Cart' }}
+            </Link>
             
             <button 
               @click="closeDrawer"
-              class="w-full border border-wisal-beige/40 dark:border-gray-800 py-3 rounded-2xl text-xs font-bold text-center text-gray-500 hover:bg-wisal-beige/5 dark:hover:bg-gray-800 transition-all"
+              class="w-full py-2 text-xs font-bold text-center text-gray-500 hover:text-wisal-charcoal dark:hover:text-wisal-ivory transition-all mt-1"
             >
               {{ activeLocale === 'ar' ? 'متابعة التسوق' : 'Continue Shopping' }}
             </button>

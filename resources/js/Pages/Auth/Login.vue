@@ -1,13 +1,23 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { useCartStore } from '@/stores/cart';
+import { useWishlistStore } from '@/stores/wishlist';
+
+const cartStore = useCartStore();
+const wishlistStore = useWishlistStore();
 
 const form = useForm({
     email: '',
     password: '',
     remember: false,
+    cartItems: cartStore.items,
+    wishlistItems: wishlistStore.items,
 });
 
 const submit = () => {
+    // Refresh items right before submitting just in case
+    form.cartItems = cartStore.items;
+    form.wishlistItems = wishlistStore.items;
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
     });

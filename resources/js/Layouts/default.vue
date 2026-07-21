@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { usePage, router } from '@inertiajs/vue3'
+import { ref, computed, onMounted, watch } from 'vue'
+import { Link, usePage, router } from '@inertiajs/vue3'
 import { useAuthStore } from '@/stores/auth'
 import { usePreferenceStore } from '@/stores/preference'
 import { useI18n } from 'vue-i18n'
@@ -27,7 +27,13 @@ const isUserDropdownOpen = ref(false)
 const isCurrencyDropdownOpen = ref(false)
 
 // Dynamic menus from HandleInertiaRequests middleware
-const headerMenu = computed(() => page.props.menus?.header || { items: [] })
+const headerMenu = computed(() => {
+  const menu = page.props.menus?.header || { items: [] }
+  return {
+    ...menu,
+    items: menu.items.filter((item: any) => item.url !== '/categories' && item.title !== 'الأقسام' && item.title !== 'Categories')
+  }
+})
 const footerMenu = computed(() => page.props.menus?.footer || { items: [] })
 
 const currencies = computed(() => (page.props.currencies as any[]) || [])
@@ -47,6 +53,30 @@ onMounted(() => {
     }, 5000)
   }
 })
+
+// Sync backend cart when user logs in or out
+let isInitialSync = true
+watch(() => page.props.auth?.user, (newUser, oldUser) => {
+  if (newUser && newUser.cart_items && isInitialSync) {
+    cartStore.items = newUser.cart_items
+    cartStore.saveCart()
+    isInitialSync = false
+  } else if (!newUser && oldUser) {
+    // User logged out, clear cart
+    cartStore.clearCart()
+    isInitialSync = true
+  }
+}, { immediate: true })
+
+import axios from 'axios'
+
+// Auto-sync cart to backend on any change
+watch(() => cartStore.items, (newItems) => {
+  if (page.props.auth?.user && !isInitialSync) {
+    axios.post('/cart/sync', { cartItems: newItems })
+      .catch(err => console.error('Failed to sync cart', err))
+  }
+}, { deep: true })
 
 function switchLocale(newLocale: string) {
   isLangDropdownOpen.value = false
@@ -309,13 +339,21 @@ function toggleDropdown(itemId: number) {
                       {{ auth.user?.email || page.props.auth?.user?.email }}
                     </div>
                     <!-- Profile Link -->
-                    <Link 
+                    <a 
                       href="/profile" 
                       @click="isUserDropdownOpen = false"
                       class="block w-full text-right px-4 py-2.5 text-xs font-bold hover:bg-wisal-beige/10 hover:text-wisal-aqua dark:hover:bg-gray-800 transition-colors"
                     >
                       {{ activeLocale === 'ar' ? 'الملف الشخصي' : 'My Profile' }}
-                    </Link>
+                    </a>
+                    <!-- Orders Link -->
+                    <a 
+                      href="/profile#orders" 
+                      @click="isUserDropdownOpen = false"
+                      class="block w-full text-right px-4 py-2.5 text-xs font-bold hover:bg-wisal-beige/10 hover:text-wisal-aqua dark:hover:bg-gray-800 transition-colors"
+                    >
+                      {{ activeLocale === 'ar' ? 'طلباتي' : 'My Orders' }}
+                    </a>
                     <!-- Admin Panel Link -->
                     <a 
                       v-if="auth.user?.is_admin || page.props.auth?.user?.is_admin" 

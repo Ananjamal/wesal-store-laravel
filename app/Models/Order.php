@@ -26,6 +26,17 @@ class Order extends Model
         'address_id',
         'shipping_method_id',
         'notes',
+        'shipping_name',
+        'shipping_phone',
+        'shipping_alt_phone',
+        'shipping_city',
+        'shipping_area',
+        'shipping_address',
+        'shipping_landmark',
+        'payment_method',
+        'payment_status',
+        'currency_code',
+        'exchange_rate',
     ];
 
     protected $casts = [

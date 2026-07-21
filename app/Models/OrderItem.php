@@ -13,6 +13,8 @@ class OrderItem extends Model
     protected $fillable = [
         'order_id',
         'product_id',
+        'color_id',
+        'size_id',
         'quantity',
         'price_cents',
     ];
@@ -35,5 +37,15 @@ class OrderItem extends Model
     public function getPriceAttribute(): float
     {
         return $this->price_cents / 100;
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(Color::class);
+    }
+
+    public function size(): BelongsTo
+    {
+        return $this->belongsTo(Size::class);
     }
 }

@@ -66,6 +66,18 @@ function selectCategory(id: number | '') {
   applyFilters()
 }
 
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return ''
+  try {
+    return new Date(dateStr).toLocaleString(
+      activeLocale.value === 'ar' ? 'ar-EG' : 'en-US',
+      { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+    )
+  } catch {
+    return dateStr
+  }
+}
+
 function clearFilters() {
   search.value = ''
   categoryId.value = ''
@@ -185,7 +197,7 @@ function clearFilters() {
           <!-- Content Details -->
           <div class="p-6 flex-grow flex flex-col justify-between">
             <div>
-              <span class="text-[10px] text-gray-400 font-semibold font-sans">{{ post.published_at }}</span>
+              <span class="text-[10px] text-gray-400 font-semibold font-sans">{{ formatDate(post.published_at) }}</span>
               <h3 class="font-bold text-base md:text-lg text-wisal-charcoal dark:text-wisal-ivory mt-1 line-clamp-2 hover:text-wisal-aqua transition-colors duration-200">
                 <Link :href="`/blog/${post.slug}`">
                   {{ post.title }}

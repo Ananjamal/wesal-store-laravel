@@ -1,5 +1,10 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { useCartStore } from '@/stores/cart';
+import { useWishlistStore } from '@/stores/wishlist';
+
+const cartStore = useCartStore();
+const wishlistStore = useWishlistStore();
 
 const form = useForm({
     name: '',
@@ -7,9 +12,13 @@ const form = useForm({
     phone: '',
     password: '',
     password_confirmation: '',
+    cartItems: cartStore.items,
+    wishlistItems: wishlistStore.items,
 });
 
 const submit = () => {
+    form.cartItems = cartStore.items;
+    form.wishlistItems = wishlistStore.items;
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });

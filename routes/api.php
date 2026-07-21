@@ -27,6 +27,7 @@ Route::prefix('catalog')->name('catalog.')->group(function () {
     Route::get('categories',          [CategoryController::class, 'index'])->name('categories.index');
     Route::get('products',            [ProductController::class, 'index'])->name('products.index');
     Route::get('products/{product}',  [ProductController::class, 'show'])->name('products.show');
+    Route::get('search',              [\App\Http\Controllers\Api\SearchController::class, 'index'])->name('search');
 });
 
 // Protected routes (Sanctum token required)
@@ -34,3 +35,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('me',           [AuthController::class, 'me'])->name('me');
 });
+
+Route::post('/coupon/apply', [\App\Http\Controllers\Api\CouponController::class, 'apply']);

@@ -29,12 +29,36 @@ export const useCartStore = defineStore('cart', () => {
     return items.value.reduce((sum, item) => sum + item.quantity, 0)
   })
 
+  const coupon = ref<{ code: string, discount_amount: number, type: string } | null>(
+    JSON.parse(localStorage.getItem('cart_coupon') || 'null')
+  )
+
   const subtotal = computed(() => {
     return items.value.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   })
 
+  const discountAmount = computed(() => {
+    if (!coupon.value) return 0
+    return coupon.value.discount_amount
+  })
+
+  const total = computed(() => {
+    return Math.max(0, subtotal.value - discountAmount.value)
+  })
+
   function saveCart() {
     localStorage.setItem('cart_items', JSON.stringify(items.value))
+    localStorage.setItem('cart_coupon', JSON.stringify(coupon.value))
+  }
+
+  function setCoupon(code: string, discount: number, type: string) {
+    coupon.value = { code, discount_amount: discount, type }
+    saveCart()
+  }
+
+  function removeCoupon() {
+    coupon.value = null
+    saveCart()
   }
 
   function addItem(product: any, quantity: number = 1, colorId: number | null = null, sizeId: number | null = null) {
@@ -91,6 +115,12 @@ export const useCartStore = defineStore('cart', () => {
   function removeItem(key: string) {
     const item = items.value.find(i => i.key === key)
     items.value = items.value.filter(i => i.key !== key)
+    
+    // Auto-remove coupon if cart is empty or minimum spend not met (basic check)
+    if (items.value.length === 0) {
+      coupon.value = null
+    }
+
     saveCart()
     
     if (item) {
@@ -118,8 +148,7 @@ export const useCartStore = defineStore('cart', () => {
     }
 
     if (quantity < 1) {
-      removeItem(key)
-      return
+      quantity = 1
     }
 
     item.quantity = quantity
@@ -128,6 +157,7 @@ export const useCartStore = defineStore('cart', () => {
 
   function clearCart() {
     items.value = []
+    coupon.value = null
     saveCart()
   }
 
@@ -135,9 +165,15 @@ export const useCartStore = defineStore('cart', () => {
     items,
     totalItems,
     subtotal,
+    discountAmount,
+    total,
+    coupon,
     addItem,
     removeItem,
     updateQuantity,
-    clearCart
+    clearCart,
+    setCoupon,
+    removeCoupon,
+    saveCart
   }
 })

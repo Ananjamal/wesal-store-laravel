@@ -22,12 +22,21 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('profile', [AuthController::class, 'showProfile'])->name('profile');
     Route::post('profile', [AuthController::class, 'updateProfile']);
+    Route::get('checkout', [\App\Http\Controllers\Web\OrderController::class, 'checkout'])->name('checkout');
+    Route::post('checkout', [\App\Http\Controllers\Web\OrderController::class, 'store'])->name('checkout.store');
+    Route::get('checkout/success/{order}', [\App\Http\Controllers\Web\OrderController::class, 'success'])->name('checkout.success');
+    Route::post('cart/sync', [\App\Http\Controllers\Api\CartController::class, 'sync'])->name('cart.sync');
 });
 
+Route::redirect('categories', 'products');
 Route::get('products', [App\Http\Controllers\Web\ProductController::class, 'index'])->name('products.index');
 Route::get('products/{slug}', [App\Http\Controllers\Web\ProductController::class, 'show'])->name('products.show');
+
+Route::get('category/{slug}', [App\Http\Controllers\Web\CategoryController::class, 'show'])->name('category.show');
 
 Route::get('blog', [App\Http\Controllers\Web\BlogController::class, 'index'])->name('blog.index');
 Route::get('blog/{slug}', [App\Http\Controllers\Web\BlogController::class, 'show'])->name('blog.show');
 
 Route::get('wishlist', fn() => Inertia::render('Wishlist'))->name('wishlist');
+Route::get('cart', fn() => Inertia::render('Cart'))->name('cart');
+Route::get('contact', fn() => Inertia::render('Contact'))->name('contact');
