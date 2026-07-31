@@ -34,7 +34,7 @@ jobs:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.PROD_PORT || 65002 }}
+          port: ${{ secrets.PROD_PORT || 22 }}
           source: "public/build/"
           target: ${{ secrets.PROD_PATH }}
 
@@ -44,7 +44,7 @@ jobs:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.PROD_PORT || 65002 }}
+          port: ${{ secrets.PROD_PORT || 22 }}
           script: |
             cd ${{ secrets.PROD_PATH }}
             git pull origin main

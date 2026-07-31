@@ -1,1 +1,0 @@
-import{u as t,v as a,L as n}from"./vendor-3dZinj3O.js";const u={__name:"WSkeleton",props:{width:{type:String,default:"w-full"},height:{type:String,default:"h-4"},rounded:{type:String,default:"rounded-md"}},setup(e){return(l,r)=>(t(),a("div",{class:n(["animate-pulse bg-gray-200/80",e.width,e.height,e.rounded])},null,2))}};export{u as _};
