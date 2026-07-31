@@ -5,7 +5,7 @@ import confetti from 'canvas-confetti'
 
 const page = usePage()
 const activeLocale = computed(() => (page.props.locale as string) || 'ar')
-const currentCurrency = computed(() => (page.props.currency as any) || { code: 'SAR', symbol: 'ر.س', exchange_rate: 1 })
+const currentCurrency = computed(() => (page.props.currency as any) || { code: 'ILS', symbol: '₪', exchange_rate: 1 })
 
 const props = defineProps<{
   order: any
@@ -100,7 +100,7 @@ onMounted(() => {
           
           <div class="space-y-4">
             <div v-for="item in order.items" :key="item.id" class="flex items-center gap-4">
-              <img :src="item.product?.images?.[0]?.image_path ? '/storage/' + item.product.images[0].image_path : 'https://picsum.photos/seed/p/50/50'" class="w-12 h-12 rounded-xl object-cover border border-wisal-beige/30" />
+              <img :src="item.product?.image_url || 'https://picsum.photos/seed/p/50/50'" class="w-12 h-12 rounded-xl object-cover border border-wisal-beige/30" />
               <div class="flex-grow">
                 <p class="text-sm font-bold text-wisal-charcoal dark:text-wisal-ivory">{{ item.product?.name || 'منتج محذوف' }}</p>
                 <p class="text-xs font-semibold text-gray-400">
@@ -143,12 +143,16 @@ onMounted(() => {
     </div>
 
     <!-- Actions -->
-    <div class="mt-8 flex gap-4">
-      <a href="/products" class="bg-wisal-charcoal dark:bg-wisal-ivory text-wisal-ivory dark:text-wisal-charcoal px-8 py-3 rounded-xl font-bold shadow-md hover:-translate-y-1 transition-all">
-        {{ activeLocale === 'ar' ? 'العودة للتسوق' : 'Return to Shop' }}
+    <div class="mt-8 flex flex-wrap gap-4 justify-center">
+      <a :href="`/checkout/invoice/${order.id}`" target="_blank" class="bg-wisal-aqua text-white px-8 py-3.5 rounded-xl font-bold shadow-md hover:-translate-y-1 transition-all flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+        {{ activeLocale === 'ar' ? 'تحميل الفاتورة PDF' : 'Download Invoice PDF' }}
       </a>
-      <a href="/profile#orders" class="bg-white dark:bg-gray-800 text-wisal-charcoal dark:text-wisal-ivory border border-wisal-beige/30 dark:border-gray-700 px-8 py-3 rounded-xl font-bold shadow-md hover:-translate-y-1 transition-all">
-        {{ activeLocale === 'ar' ? 'متابعة الطلب' : 'Track Order' }}
+      <a href="/profile#orders" class="bg-white dark:bg-gray-800 text-wisal-charcoal dark:text-wisal-ivory border border-wisal-beige/30 dark:border-gray-700 px-8 py-3.5 rounded-xl font-bold shadow-md hover:-translate-y-1 transition-all">
+        {{ activeLocale === 'ar' ? 'متابعة الطلب في حسابي' : 'Track Order in My Account' }}
+      </a>
+      <a href="/products" class="bg-wisal-charcoal dark:bg-wisal-ivory text-wisal-ivory dark:text-wisal-charcoal px-8 py-3.5 rounded-xl font-bold shadow-md hover:-translate-y-1 transition-all">
+        {{ activeLocale === 'ar' ? 'مواصلة التسوق' : 'Continue Shopping' }}
       </a>
     </div>
 

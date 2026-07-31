@@ -1,6 +1,6 @@
 @php
     $record = $getRecord();
-    $record->loadMissing(['user', 'address', 'shippingMethod', 'items.product.images']);
+    $record->loadMissing(['user', 'address', 'shippingMethod', 'items.product.images', 'items.product.media']);
     $currencyService = app(\App\Services\CurrencyService::class);
 @endphp
 
@@ -112,12 +112,29 @@
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                     @foreach($record->items as $item)
                         @php
-                            $image = $item->product?->images->first()?->image_path;
-                            $imageUrl = $image ? asset('storage/' . $image) : asset('images/logo.jpg');
+                            $product = $item->product;
+                            $imagePath = $product?->images->first()?->image_path;
+                            
+                            if ($imagePath && (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))) {
+                                $imageUrl = $imagePath;
+                            } elseif ($imagePath) {
+                                $imageUrl = asset('storage/' . ltrim($imagePath, '/'));
+                            } elseif ($product && method_exists($product, 'getFirstMediaUrl') && $product->getFirstMediaUrl('product-images')) {
+                                $imageUrl = $product->getFirstMediaUrl('product-images');
+                            } elseif ($product && method_exists($product, 'getFirstMediaUrl') && $product->getFirstMediaUrl()) {
+                                $imageUrl = $product->getFirstMediaUrl();
+                            } else {
+                                $imageUrl = asset('images/logo.png');
+                            }
                         @endphp
                         <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap text-right">
-                                <img src="{{ $imageUrl }}" class="h-12 w-12 rounded-lg object-cover border border-gray-100 dark:border-gray-800 bg-white shadow-sm" />
+                                <img 
+                                    src="{{ $imageUrl }}" 
+                                    alt="{{ $product?->name }}" 
+                                    onerror="this.onerror=null;this.src='{{ asset('images/logo.png') }}';" 
+                                    class="h-12 w-12 rounded-lg object-cover border border-gray-100 dark:border-gray-800 bg-white shadow-sm" 
+                                />
                             </td>
                             <td class="px-6 py-4 text-sm font-semibold text-gray-950 dark:text-white">
                                 {{ $item->product?->name ?? 'منتج غير معروف' }}

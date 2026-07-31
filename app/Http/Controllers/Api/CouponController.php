@@ -45,28 +45,25 @@ class CouponController extends Controller
             return response()->json(['message' => __('الحد الأدنى لتطبيق هذا الكوبون هو :amount', ['amount' => $minSpend])], 400);
         }
 
-        // Calculate discount
-        $discountAmount = 0;
-        if ($coupon->type->value === 'percentage') {
-            $discountAmount = ($request->subtotal * $coupon->value) / 100;
-            // Cap at max discount if exists
-            if ($coupon->max_discount_cents) {
-                $maxDiscount = $coupon->max_discount_cents / 100;
-                if ($discountAmount > $maxDiscount) {
-                    $discountAmount = $maxDiscount;
-                }
-            }
-        } else {
-            // fixed amount
-            $discountAmount = $coupon->value;
-        }
+        // Calculate discount using central model logic
+        $discountCents = $coupon->calculateDiscountCents($subtotalCents);
+        $discountAmount = $discountCents / 100;
+        $currencySymbol = app(\App\Services\CurrencyService::class)->symbol();
+        $formulaText = $coupon->getCalculationDescription($request->subtotal, $discountAmount, $currencySymbol);
+
+        $typeVal = is_object($coupon->type) ? $coupon->type->value : $coupon->type;
+        $formattedValue = $typeVal === 'percentage' ? "{$coupon->value}%" : number_format($coupon->value >= 100 ? $coupon->value / 100 : $coupon->value, 2) . " {$currencySymbol}";
 
         return response()->json([
             'message' => __('تم تطبيق الكوبون بنجاح!'),
             'coupon' => [
                 'code' => $coupon->code,
                 'discount_amount' => $discountAmount,
-                'type' => $coupon->type->value,
+                'discount_cents' => $discountCents,
+                'type' => $typeVal,
+                'value' => $coupon->value,
+                'formatted_value' => $formattedValue,
+                'formula_text' => $formulaText,
             ]
         ]);
     }

@@ -34,6 +34,18 @@ Route::prefix('catalog')->name('catalog.')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('me',           [AuthController::class, 'me'])->name('me');
+    
+    // Customer Portal Endpoints
+    Route::prefix('customer')->group(function () {
+        Route::get('orders', [\App\Http\Controllers\Api\CustomerApiController::class, 'orders']);
+        Route::get('orders/{order}', [\App\Http\Controllers\Api\CustomerApiController::class, 'orderDetails']);
+        Route::get('wishlist', [\App\Http\Controllers\Api\CustomerApiController::class, 'wishlist']);
+        Route::get('addresses', [\App\Http\Controllers\Api\CustomerApiController::class, 'addresses']);
+        Route::post('addresses', [\App\Http\Controllers\Api\CustomerApiController::class, 'storeAddress']);
+        Route::get('reviews', [\App\Http\Controllers\Api\CustomerApiController::class, 'reviews']);
+    });
 });
 
 Route::post('/coupon/apply', [\App\Http\Controllers\Api\CouponController::class, 'apply']);
+Route::post('/webhooks/payment/{gateway}', [\App\Http\Controllers\Api\PaymentWebhookController::class, 'handle']);
+

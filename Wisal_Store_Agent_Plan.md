@@ -1174,8 +1174,9 @@ class ProductController extends Controller
 **اليوم 17 — Backend / API**
 - فرع features/backend/payment-stripe: دمج Stripe (Payment Intents + Webhook للتأكيد الفوري)
 - فرع features/backend/payment-paypal: دمج PayPal Checkout
-- فرع features/backend/payment-cod-giftcard: تفعيل الدفع عند الاستلام + استبدال بطاقة الهدية الرقمية كرصيد
-- فرع features/frontend/payment-ui: دمج واجهات الدفع الثلاث داخل الـCheckout دون إعادة تحميل الصفحة + معالجة الأخطاء بأناقة
+- فرع features/backend/payment-palpay: دمج palPay Checkout(الخاصة بفلسطين)
+
+- فرع features/frontend/payment-ui: دمج واجهات الدفع الاربعة داخل الـCheckout دون إعادة تحميل الصفحة + معالجة الأخطاء بأناقة
 
 **اليوم 18 — Backend + Frontend**
 - فرع features/backend/customer-api: API endpoints للوحة العميل (orders, order details, wishlist, addresses, profile, reviews)
@@ -1185,7 +1186,6 @@ class ProductController extends Controller
 **اليوم 19 — Backend + Frontend**
 - فرع features/backend/notifications: إشعارات Email + Database لكل الأحداث (تأكيد، شحن، تسليم، إلغاء، استرداد) + تذكير السلة المتروكة + كوبون عيد الميلاد + نشرة أسبوعية
 - فرع features/backend/realtime: Laravel Echo + Pusher/WebSockets للإشعارات الفورية + فرع features/frontend/notifications-ui لجرس الإشعارات بحركة Toast سلسة
-- فرع features/backend/loyalty-referral: نظام نقاط الولاء الكامل + برنامج الإحالة (Referral) + عرضهما في لوحة العميل
 
 **اليوم 20 — DevOps/QA**
 - فرع features/backend/performance: Redis Caching شامل (Cache Tags) + Horizon لمراقبة الطوابير + php artisan optimize ضمن CI/CD

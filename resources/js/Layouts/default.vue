@@ -354,15 +354,18 @@ function toggleDropdown(itemId: number) {
                     >
                       {{ activeLocale === 'ar' ? 'طلباتي' : 'My Orders' }}
                     </a>
-                    <!-- Admin Panel Link -->
+                    <!-- Control Panel Link -->
                     <a 
                       v-if="auth.user?.is_admin || page.props.auth?.user?.is_admin" 
                       href="/admin" 
                       target="_blank"
                       @click="isUserDropdownOpen = false"
-                      class="block w-full text-right px-4 py-2.5 text-xs font-bold text-wisal-aqua hover:bg-wisal-beige/10 dark:hover:bg-gray-800 transition-colors"
+                      class="flex items-center justify-between w-full text-right px-4 py-2.5 text-xs font-bold text-wisal-aqua hover:bg-wisal-beige/10 dark:hover:bg-gray-800 transition-colors"
                     >
-                      {{ activeLocale === 'ar' ? 'مدير النظام' : 'System Admin' }}
+                      <span>{{ activeLocale === 'ar' ? 'لوحة التحكم' : 'Control Panel' }}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-wisal-aqua">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 18H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 12h11.25" />
+                      </svg>
                     </a>
                     <!-- Logout -->
                     <button 
@@ -455,6 +458,34 @@ function toggleDropdown(itemId: number) {
             <template v-if="auth.token || page.props.auth?.user">
               <div class="text-xs font-bold text-gray-400">
                 {{ auth.user?.name || page.props.auth?.user?.name }}
+              </div>
+              <div class="space-y-1">
+                <Link 
+                  href="/profile" 
+                  class="block w-full text-right py-2 text-xs font-bold text-wisal-charcoal dark:text-wisal-ivory hover:text-wisal-aqua transition-colors"
+                  @click="toggleMobileMenu"
+                >
+                  {{ activeLocale === 'ar' ? 'الملف الشخصي' : 'My Profile' }}
+                </Link>
+                <Link 
+                  href="/profile#orders" 
+                  class="block w-full text-right py-2 text-xs font-bold text-wisal-charcoal dark:text-wisal-ivory hover:text-wisal-aqua transition-colors"
+                  @click="toggleMobileMenu"
+                >
+                  {{ activeLocale === 'ar' ? 'طلباتي' : 'My Orders' }}
+                </Link>
+                <a 
+                  v-if="auth.user?.is_admin || page.props.auth?.user?.is_admin" 
+                  href="/admin" 
+                  target="_blank"
+                  class="flex items-center justify-between w-full bg-wisal-aqua/10 text-wisal-aqua dark:bg-wisal-aqua/20 py-2.5 px-4 rounded-2xl text-xs font-bold hover:bg-wisal-aqua/20 transition-colors my-1"
+                  @click="toggleMobileMenu"
+                >
+                  <span>{{ activeLocale === 'ar' ? 'لوحة التحكم' : 'Control Panel' }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 18H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 12h11.25" />
+                  </svg>
+                </a>
               </div>
               <button 
                 @click="auth.logout" 

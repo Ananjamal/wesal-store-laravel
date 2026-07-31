@@ -5,7 +5,7 @@ import { useCartStore } from '@/stores/cart'
 
 const page = usePage()
 const activeLocale = computed(() => (page.props.locale as string) || 'ar')
-const currentCurrency = computed(() => (page.props.currency as any) || { code: 'SAR', symbol: 'ر.س', exchange_rate: 1 })
+const currentCurrency = computed(() => (page.props.currency as any) || { code: 'ILS', symbol: '₪', exchange_rate: 1 })
 
 const cartStore = useCartStore()
 
@@ -49,7 +49,13 @@ async function applyCoupon() {
     const data = await res.json()
     if (!res.ok) throw new Error(data.message || 'Error')
     
-    cartStore.setCoupon(data.coupon.code, data.coupon.discount_amount, data.coupon.type)
+    cartStore.setCoupon({
+      code: data.coupon.code,
+      discount_amount: data.coupon.discount_amount,
+      type: data.coupon.type,
+      formatted_value: data.coupon.formatted_value,
+      formula_text: data.coupon.formula_text
+    })
     toastStore.addToast(data.message, 'success')
     couponCode.value = ''
   } catch (err: any) {
@@ -224,17 +230,28 @@ async function applyCoupon() {
               <span class="text-wisal-charcoal dark:text-wisal-ivory">{{ formatPrice(shippingCost) }} {{ currentCurrency.symbol }}</span>
             </div>
 
-            <!-- Discount -->
-            <div v-if="cartStore.coupon" class="flex justify-between items-center text-gray-500 bg-wisal-beige/20 p-3 rounded-xl border border-wisal-beige/50">
-              <div class="flex items-center gap-2">
-                <span class="text-wisal-charcoal font-bold">{{ activeLocale === 'ar' ? 'كود الخصم:' : 'Discount:' }}</span>
-                <span class="bg-wisal-charcoal text-wisal-ivory px-2 py-0.5 rounded text-[10px] font-black">{{ cartStore.coupon.code }}</span>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-red-500 font-bold">- {{ formatPrice(cartStore.discountAmount) }} {{ currentCurrency.symbol }}</span>
-                <button @click="cartStore.removeCoupon()" class="text-gray-400 hover:text-red-500 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            <!-- Discount Card -->
+            <div v-if="cartStore.coupon" class="bg-wisal-beige/20 dark:bg-gray-800/50 border border-wisal-beige/40 dark:border-gray-700 rounded-2xl p-3.5 space-y-2.5 shadow-sm">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="bg-wisal-charcoal text-wisal-ivory dark:bg-wisal-ivory dark:text-wisal-charcoal text-xs font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-xs">
+                    {{ cartStore.coupon.code }}
+                  </span>
+                  <span v-if="cartStore.coupon.formatted_value" class="text-[11px] font-extrabold text-wisal-aqua bg-wisal-aqua/10 dark:bg-wisal-aqua/20 px-2 py-0.5 rounded-md">
+                    {{ cartStore.coupon.formatted_value }}
+                  </span>
+                </div>
+                
+                <button @click="cartStore.removeCoupon()" class="text-gray-400 hover:text-red-500 transition-colors p-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30" title="إزالة الكوبون">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
+              </div>
+
+              <div class="flex items-center justify-between pt-2 border-t border-wisal-beige/20 dark:border-gray-700/50 text-xs font-bold">
+                <span class="text-gray-500">{{ activeLocale === 'ar' ? 'خصم الكوبون' : 'Discount Applied' }}</span>
+                <span class="text-red-500 font-black text-sm dir-ltr">
+                  - {{ formatPrice(cartStore.discountAmount) }} {{ currentCurrency.symbol }}
+                </span>
               </div>
             </div>
             

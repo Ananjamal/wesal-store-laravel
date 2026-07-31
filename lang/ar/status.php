@@ -2,7 +2,7 @@
 
 return [
     'pending' => 'قيد الانتظار',
-    'processing' => 'قيد المعالجة (التجهيز)',
+    'processing' => 'جاري التجهيز',
     'shipped' => 'تم الشحن',
     'delivered' => 'تم التوصيل',
     'cancelled' => 'ملغي',

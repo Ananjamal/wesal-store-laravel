@@ -56,4 +56,39 @@ class Coupon extends Model
     {
         return $this->usage_limit && $this->usages_count >= $this->usage_limit;
     }
+
+    /**
+     * Calculate discount amount in cents securely.
+     */
+    public function calculateDiscountCents(int $subtotalCents): int
+    {
+        $typeVal = is_object($this->type) ? $this->type->value : $this->type;
+
+        if ($typeVal === 'percentage') {
+            $discount = ($subtotalCents * $this->value) / 100;
+            if ($this->max_discount_cents && $discount > $this->max_discount_cents) {
+                $discount = $this->max_discount_cents;
+            }
+            return (int) round($discount);
+        }
+
+        // Fixed amount:
+        // Value stored in DB as cents (e.g. 5000 = 50.00 ₪) or standard unit (e.g. 50)
+        $fixedCents = $this->value >= 100 ? $this->value : ($this->value * 100);
+        return (int) min($subtotalCents, $fixedCents);
+    }
+
+    /**
+     * Get human-readable description of how discount was calculated.
+     */
+    public function getCalculationDescription(float $subtotal, float $discountAmount, string $currencySymbol = '₪'): string
+    {
+        $typeVal = is_object($this->type) ? $this->type->value : $this->type;
+
+        if ($typeVal === 'percentage') {
+            return "خصم {$this->value}% من المجموع (" . number_format($subtotal, 2) . " {$currencySymbol}) = " . number_format($discountAmount, 2) . " {$currencySymbol}";
+        }
+
+        return "خصم ثابت بمقدار " . number_format($discountAmount, 2) . " {$currencySymbol}";
+    }
 }

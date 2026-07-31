@@ -113,7 +113,21 @@ class AuthController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $orders = $user->orders()->latest()->get();
+        $orders = $user->orders()
+            ->with(['items.product.media', 'items.color', 'items.size'])
+            ->latest()
+            ->get();
+
+        // Append first media URL to each product for the modal
+        foreach ($orders as $order) {
+            foreach ($order->items as $item) {
+                if ($item->product) {
+                    $media = $item->product->getFirstMedia('product-images')
+                          ?? $item->product->getFirstMedia('product-cover');
+                    $item->product->image_url = $media ? $media->getUrl() : null;
+                }
+            }
+        }
 
         return Inertia::render('Profile', [
             'orders' => $orders
@@ -155,37 +169,50 @@ class AuthController extends Controller
 
     private function syncGuestData(\App\Models\User $user, array $cartItems, array $wishlistItems)
     {
-        // 1. Sync Wishlist
+        // 1. Sync Wishlist (filtering out non-existent product IDs)
         if (!empty($wishlistItems)) {
-            $productIds = collect($wishlistItems)->pluck('id')->filter()->toArray();
-            $user->wishlists()->syncWithoutDetaching($productIds);
-        }
-
-        // 2. Sync Cart
-        if (!empty($cartItems)) {
-            $cart = $user->carts()->firstOrCreate(['session_id' => session()->getId()]);
-            
-            foreach ($cartItems as $item) {
-                if (empty($item['id']) || empty($item['quantity'])) continue;
-                
-                $existingItem = $cart->items()
-                    ->where('product_id', $item['id'])
-                    ->where('color_id', $item['colorId'] ?? null)
-                    ->where('size_id', $item['sizeId'] ?? null)
-                    ->first();
-
-                if ($existingItem) {
-                    $existingItem->increment('quantity', $item['quantity']);
-                } else {
-                    $cart->items()->create([
-                        'product_id' => $item['id'],
-                        'color_id' => $item['colorId'] ?? null,
-                        'size_id' => $item['sizeId'] ?? null,
-                        'quantity' => $item['quantity'],
-                    ]);
+            $rawProductIds = collect($wishlistItems)->pluck('id')->filter()->toArray();
+            if (!empty($rawProductIds)) {
+                $validProductIds = \App\Models\Product::whereIn('id', $rawProductIds)->pluck('id')->toArray();
+                if (!empty($validProductIds)) {
+                    $user->wishlists()->syncWithoutDetaching($validProductIds);
                 }
             }
-            $cart->update(['last_activity_at' => now()]);
+        }
+
+        // 2. Sync Cart (filtering out non-existent product IDs)
+        if (!empty($cartItems)) {
+            $rawProductIds = collect($cartItems)->pluck('id')->filter()->toArray();
+            if (!empty($rawProductIds)) {
+                $validProductIds = \App\Models\Product::whereIn('id', $rawProductIds)->pluck('id')->toArray();
+
+                if (!empty($validProductIds)) {
+                    $cart = $user->carts()->firstOrCreate(['session_id' => session()->getId()]);
+                    
+                    foreach ($cartItems as $item) {
+                        if (empty($item['id']) || empty($item['quantity'])) continue;
+                        if (!in_array($item['id'], $validProductIds)) continue;
+                        
+                        $existingItem = $cart->items()
+                            ->where('product_id', $item['id'])
+                            ->where('color_id', $item['colorId'] ?? null)
+                            ->where('size_id', $item['sizeId'] ?? null)
+                            ->first();
+
+                        if ($existingItem) {
+                            $existingItem->increment('quantity', $item['quantity']);
+                        } else {
+                            $cart->items()->create([
+                                'product_id' => $item['id'],
+                                'color_id' => $item['colorId'] ?? null,
+                                'size_id' => $item['sizeId'] ?? null,
+                                'quantity' => $item['quantity'],
+                            ]);
+                        }
+                    }
+                    $cart->update(['last_activity_at' => now()]);
+                }
+            }
         }
     }
 }

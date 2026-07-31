@@ -18,6 +18,86 @@ if (typeof window !== 'undefined') {
   })
 }
 
+// Order details modal
+const selectedOrder = ref<any>(null)
+const showOrderModal = ref(false)
+
+function openOrderModal(order: any) {
+  selectedOrder.value = order
+  showOrderModal.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+function closeOrderModal() {
+  showOrderModal.value = false
+  selectedOrder.value = null
+  document.body.style.overflow = ''
+}
+
+function getStatusLabel(status: string) {
+  if (activeLocale.value === 'ar') {
+    switch (status) {
+      case 'pending': return 'قيد الانتظار'
+      case 'processing': return 'جاري التجهيز'
+      case 'shipped': return 'تم الشحن'
+      case 'delivered': return 'تم التوصيل'
+      case 'completed': return 'مكتمل'
+      case 'cancelled': return 'ملغي'
+      case 'refunded': return 'مسترجع'
+      default: return status
+    }
+  }
+  return status
+}
+
+function getStatusClass(status: string) {
+  return {
+    'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400': status === 'pending',
+    'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': status === 'processing',
+    'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400': status === 'shipped',
+    'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400': status === 'delivered' || status === 'completed',
+    'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400': status === 'cancelled',
+    'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400': status === 'refunded',
+  }
+}
+
+function getPaymentMethodLabel(method: string) {
+  if (!method) return ''
+  if (activeLocale.value === 'ar') {
+    switch (method.toLowerCase()) {
+      case 'cash_on_delivery':
+      case 'cod':
+        return 'الدفع عند الاستلام'
+      case 'credit_card':
+        return 'بطاقة ائتمانية'
+      case 'mada':
+        return 'بطاقة مدى'
+      case 'paypal':
+        return 'بايبال'
+      case 'palpay':
+        return 'بال باي'
+      case 'stripe':
+        return 'سترايب'
+      default:
+        return method.replace(/_/g, ' ')
+    }
+  }
+  return method.replace(/_/g, ' ').toUpperCase()
+}
+
+function getPaymentStatusLabel(paymentStatus: string, method?: string) {
+  if (paymentStatus === 'paid') {
+    return activeLocale.value === 'ar' ? 'تم الدفع ✔' : 'Paid ✔'
+  }
+  if (activeLocale.value === 'ar') {
+    if (method === 'cash_on_delivery' || method === 'cod') {
+      return 'بانتظار التحصيل عند الاستلام'
+    }
+    return 'بانتظار الدفع'
+  }
+  return 'Awaiting Payment'
+}
+
 // Account info form
 const infoForm = useForm({
   _method: 'POST',
@@ -260,18 +340,9 @@ function updatePassword() {
                   <span class="text-sm font-black text-wisal-charcoal dark:text-wisal-ivory">#{{ order.order_number }}</span>
                   <span 
                     class="px-2.5 py-1 text-[10px] font-black rounded-lg"
-                    :class="{
-                      'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400': order.status === 'pending',
-                      'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': order.status === 'processing',
-                      'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': order.status === 'completed',
-                      'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400': order.status === 'cancelled',
-                    }"
+                    :class="getStatusClass(order.status)"
                   >
-                    {{ activeLocale === 'ar' ? (
-                      order.status === 'pending' ? 'قيد الانتظار' :
-                      order.status === 'processing' ? 'قيد التنفيذ' :
-                      order.status === 'completed' ? 'مكتمل' : 'ملغي'
-                    ) : order.status }}
+                    {{ getStatusLabel(order.status) }}
                   </span>
                 </div>
                 <p class="text-xs font-bold text-gray-400">{{ new Date(order.created_at).toLocaleDateString() }}</p>
@@ -279,9 +350,18 @@ function updatePassword() {
 
               <div class="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-2">
                 <span class="text-lg font-black text-wisal-aqua">{{ ((order.total_cents / 100) * (page.props.currency?.exchange_rate || 1)).toFixed(2) }} {{ page.props.currency?.symbol || '₪' }}</span>
-                <a :href="`/checkout/success/${order.id}`" class="text-xs font-bold text-gray-500 hover:text-wisal-charcoal dark:hover:text-wisal-ivory underline transition-colors">
-                  {{ activeLocale === 'ar' ? 'عرض الفاتورة' : 'View Invoice' }}
-                </a>
+                <div class="flex items-center gap-3">
+                  <a :href="`/checkout/invoice/${order.id}`" target="_blank" class="text-xs font-bold text-wisal-aqua hover:underline transition-colors flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    PDF
+                  </a>
+                  <button
+                    @click="openOrderModal(order)"
+                    class="text-xs font-bold text-gray-500 hover:text-wisal-charcoal dark:hover:text-wisal-ivory underline transition-colors cursor-pointer"
+                  >
+                    {{ activeLocale === 'ar' ? 'التفاصيل' : 'Details' }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -289,4 +369,154 @@ function updatePassword() {
       </div>
     </div>
   </div>
+
+  <!-- ========= Order Details Modal ========= -->
+  <Teleport to="body">
+    <Transition name="modal-fade">
+      <div
+        v-if="showOrderModal && selectedOrder"
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+        @click.self="closeOrderModal"
+      >
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeOrderModal"></div>
+
+        <!-- Modal Card -->
+        <div
+          class="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-wisal-charcoal rounded-3xl shadow-2xl"
+          dir="rtl"
+        >
+          <!-- Header -->
+          <div class="sticky top-0 z-10 bg-white dark:bg-wisal-charcoal flex items-center justify-between px-6 py-4 border-b border-wisal-beige/20 dark:border-gray-700 rounded-t-3xl">
+            <div>
+              <h3 class="text-lg font-black text-wisal-charcoal dark:text-wisal-ivory">
+                {{ activeLocale === 'ar' ? 'تفاصيل الطلب' : 'Order Details' }}
+              </h3>
+              <p class="text-xs font-bold text-gray-400 mt-0.5">#{{ selectedOrder.order_number }}</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <!-- PDF Download -->
+              <a
+                :href="`/checkout/invoice/${selectedOrder.id}`"
+                target="_blank"
+                class="flex items-center gap-1.5 text-xs font-bold text-wisal-aqua hover:underline transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                PDF
+              </a>
+              <!-- Close -->
+              <button
+                @click="closeOrderModal"
+                class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="px-6 py-5 space-y-5">
+
+            <!-- Status + Date Row -->
+            <div class="flex items-center justify-between">
+              <span
+                class="px-3 py-1.5 text-xs font-black rounded-xl"
+                :class="getStatusClass(selectedOrder.status)"
+              >{{ getStatusLabel(selectedOrder.status) }}</span>
+              <span class="text-xs font-bold text-gray-400">{{ new Date(selectedOrder.created_at).toLocaleDateString() }}</span>
+            </div>
+
+            <!-- Payment & Shipping Info Grid -->
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-wisal-beige/5 dark:bg-gray-800/20 rounded-2xl p-4 border border-wisal-beige/20 dark:border-gray-700">
+                <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-wider">{{ activeLocale === 'ar' ? 'معلومات التوصيل' : 'Shipping Info' }}</p>
+                <p class="text-sm font-bold text-wisal-charcoal dark:text-wisal-ivory">{{ selectedOrder.shipping_name }}</p>
+                <p class="text-xs text-gray-500 mt-1">{{ selectedOrder.shipping_phone }}</p>
+                <p class="text-xs text-gray-500 mt-0.5">{{ selectedOrder.shipping_city }} - {{ selectedOrder.shipping_address }}</p>
+              </div>
+              <div class="bg-wisal-beige/5 dark:bg-gray-800/20 rounded-2xl p-4 border border-wisal-beige/20 dark:border-gray-700">
+                <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-wider">{{ activeLocale === 'ar' ? 'طريقة وحالة الدفع' : 'Payment Details' }}</p>
+                <p class="text-sm font-bold text-wisal-charcoal dark:text-wisal-ivory">{{ getPaymentMethodLabel(selectedOrder.payment_method) }}</p>
+                <p class="text-xs mt-1" :class="selectedOrder.payment_status === 'paid' ? 'text-green-500 font-bold' : 'text-amber-600 dark:text-amber-400 font-bold'">
+                  {{ getPaymentStatusLabel(selectedOrder.payment_status, selectedOrder.payment_method) }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Order Items -->
+            <div>
+              <p class="text-xs font-black text-wisal-charcoal dark:text-wisal-ivory mb-3 uppercase tracking-wider">{{ activeLocale === 'ar' ? 'المنتجات' : 'Items' }}</p>
+              <div class="space-y-3">
+                <div
+                  v-for="item in selectedOrder.items"
+                  :key="item.id"
+                  class="flex items-center gap-3 bg-wisal-beige/5 dark:bg-gray-800/20 rounded-xl p-3 border border-wisal-beige/15 dark:border-gray-700"
+                >
+                  <!-- Product image -->
+                  <img
+                    v-if="item.product?.image_url"
+                    :src="item.product.image_url"
+                    class="w-12 h-12 rounded-xl object-cover flex-shrink-0 border border-wisal-beige/20"
+                    :alt="item.product?.name"
+                  />
+                  <div v-else class="w-12 h-12 rounded-xl bg-wisal-beige/20 flex-shrink-0 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14" /></svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-wisal-charcoal dark:text-wisal-ivory truncate">{{ item.product?.name }}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">
+                      {{ item.color?.name ? item.color.name : '' }}{{ item.color?.name && item.size?.name ? ' · ' : '' }}{{ item.size?.name ? item.size.name : '' }}
+                    </p>
+                  </div>
+                  <div class="text-right flex-shrink-0">
+                    <p class="text-sm font-black text-wisal-aqua">
+                      {{ ((item.price_cents / 100) * (page.props.currency?.exchange_rate || 1) * item.quantity).toFixed(2) }} {{ page.props.currency?.symbol || '₪' }}
+                    </p>
+                    <p class="text-xs text-gray-400 mt-0.5">× {{ item.quantity }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Totals Summary -->
+            <div class="border-t border-wisal-beige/20 dark:border-gray-700 pt-4 space-y-2">
+              <div class="flex justify-between text-sm">
+                <span class="text-wisal-aqua font-black text-base">
+                  {{ ((selectedOrder.total_cents / 100) * (page.props.currency?.exchange_rate || 1)).toFixed(2) }} {{ page.props.currency?.symbol || '₪' }}
+                </span>
+                <span class="font-bold text-gray-400">{{ activeLocale === 'ar' ? 'الإجمالي الكلي' : 'Grand Total' }}</span>
+              </div>
+              <div v-if="selectedOrder.discount_cents > 0" class="flex justify-between text-xs">
+                <span class="font-bold text-red-500">- {{ ((selectedOrder.discount_cents / 100) * (page.props.currency?.exchange_rate || 1)).toFixed(2) }} {{ page.props.currency?.symbol || '₪' }}</span>
+                <span class="font-bold text-gray-400">{{ activeLocale === 'ar' ? 'خصم' : 'Discount' }}</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="font-bold text-gray-500">
+                  {{ selectedOrder.shipping_cents === 0 ? (activeLocale === 'ar' ? 'مجاني' : 'Free') : ((selectedOrder.shipping_cents / 100) * (page.props.currency?.exchange_rate || 1)).toFixed(2) + ' ' + (page.props.currency?.symbol || '₪') }}
+                </span>
+                <span class="font-bold text-gray-400">{{ activeLocale === 'ar' ? 'الشحن' : 'Shipping' }}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
+
+<style scoped>
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+.modal-fade-enter-active .relative,
+.modal-fade-enter-from .relative {
+  transform: scale(0.95);
+  transition: transform 0.25s ease;
+}
+</style>

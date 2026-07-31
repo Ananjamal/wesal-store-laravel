@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('checkout', [\App\Http\Controllers\Web\OrderController::class, 'checkout'])->name('checkout');
     Route::post('checkout', [\App\Http\Controllers\Web\OrderController::class, 'store'])->name('checkout.store');
     Route::get('checkout/success/{order}', [\App\Http\Controllers\Web\OrderController::class, 'success'])->name('checkout.success');
+    Route::get('checkout/invoice/{order}', [\App\Http\Controllers\Web\OrderController::class, 'invoice'])->name('checkout.invoice');
     Route::post('cart/sync', [\App\Http\Controllers\Api\CartController::class, 'sync'])->name('cart.sync');
 });
 
