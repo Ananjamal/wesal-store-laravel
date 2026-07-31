@@ -28,6 +28,9 @@ class CurrencyService
      */
     public function current(): ?Currency
     {
+        if (!$this->current) {
+            $this->boot();
+        }
         return $this->current;
     }
 
@@ -36,7 +39,7 @@ class CurrencyService
      */
     public function code(): string
     {
-        return $this->current?->code ?? 'SAR';
+        return $this->current()?->code ?? 'ILS';
     }
 
     /**
@@ -44,7 +47,7 @@ class CurrencyService
      */
     public function symbol(): string
     {
-        return $this->current?->symbol ?? 'ر.س';
+        return $this->current()?->symbol ?? '₪';
     }
 
     /**

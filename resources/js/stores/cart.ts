@@ -29,7 +29,13 @@ export const useCartStore = defineStore('cart', () => {
     return items.value.reduce((sum, item) => sum + item.quantity, 0)
   })
 
-  const coupon = ref<{ code: string, discount_amount: number, type: string } | null>(
+  const coupon = ref<{
+    code: string
+    discount_amount: number
+    type: string
+    formatted_value?: string
+    formula_text?: string
+  } | null>(
     JSON.parse(localStorage.getItem('cart_coupon') || 'null')
   )
 
@@ -51,8 +57,8 @@ export const useCartStore = defineStore('cart', () => {
     localStorage.setItem('cart_coupon', JSON.stringify(coupon.value))
   }
 
-  function setCoupon(code: string, discount: number, type: string) {
-    coupon.value = { code, discount_amount: discount, type }
+  function setCoupon(couponData: { code: string, discount_amount: number, type: string, formatted_value?: string, formula_text?: string }) {
+    coupon.value = couponData
     saveCart()
   }
 

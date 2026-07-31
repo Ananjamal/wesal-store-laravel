@@ -1,0 +1,10 @@
+{
+    "cairo": {
+        "normal": "C:\\laragon\\www\\wesal-store\\storage\\fonts\/cairo_normal_a5cea5fc45f6bf5f483d9f082575cfe3",
+        "500": "C:\\laragon\\www\\wesal-store\\storage\\fonts\/cairo_500_8bd8e266e92e31ff0d7c63ee36ed7b93",
+        "600": "C:\\laragon\\www\\wesal-store\\storage\\fonts\/cairo_600_dc01825879fa79a7c51dfcd1e797822b",
+        "bold": "C:\\laragon\\www\\wesal-store\\storage\\fonts\/cairo_bold_23a9b2dc30935e892c606fbbafd14072",
+        "800": "C:\\laragon\\www\\wesal-store\\storage\\fonts\/cairo_800_8aad9479b2962017426195f271033cb3",
+        "900": "cairo_900_171b8956cc309a0fcf7f3b3a7c70c655"
+    }
+}

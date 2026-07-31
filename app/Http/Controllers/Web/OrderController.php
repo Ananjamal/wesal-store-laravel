@@ -9,6 +9,7 @@ use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Services\PaymentService;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -38,13 +39,20 @@ class OrderController extends Controller
             'shipping_address' => 'required|string|max:1000',
             'shipping_landmark' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'payment_method' => 'required|string|in:cash_on_delivery,credit_card,mada',
+            'payment_method' => 'required|string|in:cash_on_delivery,credit_card,mada,stripe,paypal,palpay',
             'coupon_code' => 'nullable|string',
         ]);
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $cart = $user->carts()->with(['items.product'])->latest('last_activity_at')->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            if ($request->has('cart_items') && is_array($request->input('cart_items'))) {
+                app(\App\Http\Controllers\Api\CartController::class)->sync($request);
+                $cart = $user->carts()->with(['items.product'])->latest('last_activity_at')->first();
+            }
+        }
 
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->route('cart')->with('error', __('سلتك فارغة!'));
@@ -64,15 +72,7 @@ class OrderController extends Controller
             if ($coupon && $coupon->is_active && !$coupon->isExpired() && !$coupon->hasLimitReached()) {
                 if (!$coupon->min_spend_cents || $subtotalCents >= $coupon->min_spend_cents) {
                     $couponId = $coupon->id;
-                    if ($coupon->type->value === 'percentage') {
-                        $discount = ($subtotalCents * $coupon->value) / 100;
-                        if ($coupon->max_discount_cents && $discount > $coupon->max_discount_cents) {
-                            $discount = $coupon->max_discount_cents;
-                        }
-                        $discountCents = (int) $discount;
-                    } else {
-                        $discountCents = $coupon->value * 100;
-                    }
+                    $discountCents = $coupon->calculateDiscountCents($subtotalCents);
                 }
             }
         }
@@ -133,6 +133,18 @@ class OrderController extends Controller
 
             DB::commit();
 
+            $paymentService = new \App\Services\PaymentService();
+            $paymentResult = $paymentService->process($order);
+
+            if ($request->expectsJson() && !$request->header('X-Inertia')) {
+                return response()->json([
+                    'success' => true,
+                    'order' => $order,
+                    'payment' => $paymentResult,
+                    'redirect_url' => route('checkout.success', $order->id)
+                ]);
+            }
+
             return redirect()->route('checkout.success', $order->id);
 
         } catch (\Exception $e) {
@@ -143,12 +155,34 @@ class OrderController extends Controller
 
     public function success(Order $order)
     {
-        if ($order->user_id !== Auth::id()) {
+        if (Auth::check() && $order->user_id && $order->user_id !== Auth::id()) {
             abort(403);
         }
 
+        $order->load(['items.product.media', 'items.color', 'items.size', 'coupon']);
+
+        // Attach Spatie media URL to each product
+        foreach ($order->items as $item) {
+            if ($item->product) {
+                $item->product->image_url = $item->product->getFirstMediaUrl('product-images')
+                    ?: $item->product->getFirstMediaUrl('product-cover');
+            }
+        }
+
         return Inertia::render('CheckoutSuccess', [
-            'order' => $order->load(['items.product.images', 'items.color', 'items.size', 'coupon'])
+            'order' => $order
         ]);
+    }
+
+    public function invoice(Order $order)
+    {
+        if (Auth::check() && $order->user_id && $order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $invoiceService = new \App\Services\InvoiceService();
+        $pdf = $invoiceService->generate($order);
+
+        return $pdf->download("invoice-{$order->order_number}.pdf");
     }
 }

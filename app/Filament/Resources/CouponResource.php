@@ -98,7 +98,7 @@ class CouponResource extends Resource
                 Tables\Columns\TextColumn::make('value')
                     ->label(__('field.value'))
                     ->formatStateUsing(fn($state, Coupon $record) => match ($record->type) {
-                        CouponType::Fixed        => app(\App\Services\CurrencyService::class)->format($state),
+                        CouponType::Fixed        => app(\App\Services\CurrencyService::class)->format($state >= 100 ? $state : $state * 100),
                         CouponType::Percentage   => $state . '%',
                         CouponType::FreeShipping => __('messages.coupon_free_shipping_hint'),
                     }),
