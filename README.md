@@ -1,66 +1,230 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <h1 align="center">✦ متجر وِصال | WISAL STORE ✦</h1>
+  <p align="center">
+    <strong>A Premium Full-Stack E-Commerce Platform</strong><br>
+    Built for Gaza Sky Geeks × Chingu Solo Project Evaluation (Tier 3)
+  </p>
+  <p align="center">
+    <img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 11" />
+    <img src="https://img.shields.io/badge/Vue.js-3.x-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="Vue 3" />
+    <img src="https://img.shields.io/badge/Inertia.js-1.x-9553E9?style=for-the-badge&logo=inertia&logoColor=white" alt="Inertia.js" />
+    <img src="https://img.shields.io/badge/Filament-v3-FDAE4B?style=for-the-badge&logo=laravel&logoColor=black" alt="Filament v3" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/Pest-v3.0-8B5CF6?style=for-the-badge&logo=pest&logoColor=white" alt="Pest PHP" />
+  </p>
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 Project Overview | نبذة عن المشروع
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Wisal Store (متجر وِصال)** is a full-featured, modern E-Commerce web application engineered to deliver a seamless shopping experience for customers and a robust management suite for store administrators.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The project blends cultural heritage aesthetics with modern user interfaces (Optimistic UI, Skeleton Loaders, Smooth View Transitions) powered by **Laravel 11**, **Inertia.js**, **Vue 3**, and **Filament v3**.
 
-## Learning Laravel
+> 🎓 **Submitted for**: GSG × Chingu: Team Project Experience Program — Developer Track (Solo Project Evaluation).  
+> 🏷️ **Tier**: Tier 3 (Full-Stack Advanced E-Commerce Application).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🎨 Brand Identity & Design System
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The visual identity of **Wisal Store** is governed by standard brand design tokens representing modern elegance merged with Palestinian cultural warmth:
 
-## Laravel Sponsors
+| Color Name | Hex Code | Variable Name | Role & Usage |
+|---|---|---|---|
+| **Beige Heritage** | `#D1CBB4` | `wisal-beige` | Warm heritage accents, subtle badges & secondary borders |
+| **Aqua Blue** | `#467389` | `wisal-aqua` | Primary brand color, key calls-to-action & interactive states |
+| **Ivory** | `#FFFBF5` | `wisal-ivory` | Main light background, ultra-clean surface container |
+| **Charcoal** | `#323232` | `wisal-charcoal` | Primary typography, headers & high-contrast dark UI elements |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## ✨ Key Features & Capability Matrix
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 🛒 Storefront & Customer Experience (Vue 3 + Inertia)
+- **Product Catalog & Variant Management**: Dynamic color/size selector with real-time stock updates.
+- **Instant Search & Filtering (Meilisearch)**: High-speed fuzzy search, category filtering, and price range sliders.
+- **Flash Sales & Promotional Banners**: Countdown timers for special sales and campaign offers.
+- **Cart & Dynamic Checkout**: Guest & authenticated cart sync, optimistic cart updates, coupon validation.
+- **Wishlist & Customer Dashboard**: Order history, order tracking, address book management, and user profile updates.
+- **Interactive Reviews & Ratings**: Verified purchaser reviews with star ratings and media uploads.
+- **Bilingual Support (i18n)**: Seamless language switching between Arabic (RTL) and English (LTR).
 
-## Contributing
+### ⚙️ Back-Office Administration (Filament v3)
+- **Resource Management**: Products, Categories, Collections, Coupons, and Customer Management.
+- **Order Lifecycle Management**: Order processing pipeline (Pending $\rightarrow$ Processing $\rightarrow$ Shipped $\rightarrow$ Completed / Cancelled).
+- **Abandoned Cart Recovery**: Automated queue jobs (`AbandonedCartReminderJob`) sending reminders to visitors.
+- **Role-Based Access Control (RBAC)**: Fine-grained permissions powered by `spatie/laravel-permission`.
+- **Invoicing & QR Code**: Automated PDF invoice generation (`barryvdh/laravel-dompdf`) with QR codes.
+- **Analytics & Telemetry**: Integrated performance dashboard with `laravel/pulse`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🛠️ Technology Stack
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Layer | Technologies Used |
+|---|---|
+| **Backend Framework** | Laravel 11.x (PHP 8.2+) |
+| **Frontend Framework** | Vue 3 (Composition API) + Inertia.js |
+| **Admin Panel** | Filament v3 (Livewire 3 + Alpine.js) |
+| **State & Localization** | Pinia, Vue-i18n, Ziggy (Route Helper) |
+| **Styling & UI** | Tailwind CSS 3.4, PostCSS, Canvas Confetti |
+| **Database & Cache** | MySQL 8.0 / PostgreSQL, Redis |
+| **Search Engine** | Meilisearch + Laravel Scout |
+| **Authentication** | Laravel Sanctum + Laravel Socialite |
+| **Media & PDF** | Spatie Media Library, DomPDF, SimpleSoftwareIO QR Code |
+| **Testing & Code Quality**| Pest PHP 3.0, Laravel Pint |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📁 Directory Structure
 
-## License
+```text
+wesal-store/
+├── app/
+│   ├── Filament/            # Admin Panel Resources, Pages & Widgets
+│   ├── Http/
+│   │   ├── Controllers/     # API & Inertia Controllers
+│   │   └── Requests/        # Input Validation Requests
+│   ├── Jobs/                # Queue Jobs (e.g., AbandonedCartReminderJob)
+│   ├── Models/              # Eloquent Models (Order, Product, Coupon, etc.)
+│   └── Services/            # Business Logic Services
+├── database/
+│   ├── factories/           # Model Factories
+│   ├── migrations/          # Schema Migrations
+│   └── seeders/             # Database Seeders
+├── resources/
+│   ├── js/
+│   │   ├── Components/      # Reusable Vue Components (WButton, WCard, etc.)
+│   │   ├── Layouts/         # Inertia Layouts (AppLayout, StoreLayout)
+│   │   └── Pages/           # Vue Page Views (Home, Shop, Checkout, Dashboard)
+│   └── css/                 # Tailwind & Custom Design Tokens
+├── routes/
+│   ├── api.php              # Sanctum API Routes
+│   └── web.php              # Inertia Web Routes
+└── tests/                   # Pest Automated Test Suite
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🚀 Local Installation & Setup Guide
+
+Follow these step-by-step instructions to get a local development environment running:
+
+### 1. Prerequisites
+Ensure your machine has the following tools installed:
+- **PHP** $\ge$ 8.2
+- **Composer** $\ge$ 2.5
+- **Node.js** $\ge$ 20.x & **npm** / **pnpm**
+- **MySQL** $\ge$ 8.0
+- **Meilisearch** (Optional for search features)
+
+### 2. Clone the Repository
+```bash
+git clone https://github.com/Ananjamal/wesal-store-laravel.git
+cd wesal-store-laravel
+```
+
+### 3. Backend Dependencies & Environment Setup
+```bash
+# Install PHP packages
+composer install
+
+# Copy environment template
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+```
+
+### 4. Database Setup & Migrations
+Configure your `.env` database connection:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=wesal_store
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Run database migrations and seeders:
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 5. Frontend Dependencies & Build
+```bash
+# Install Node dependencies
+npm install
+
+# Start Vite dev server
+npm run dev
+```
+
+### 6. Storage Link & Server Execution
+```bash
+# Create symbolic link for uploaded media
+php artisan storage:link
+
+# Launch local PHP development server
+php artisan serve
+```
+
+Access the applications locally:
+- **Storefront Application**: `http://localhost:8000`
+- **Admin Panel**: `http://localhost:8000/admin`
+
+---
+
+## 🔑 Demo Credentials | بيانات الدخول التجريبية
+
+After running `php artisan migrate:fresh --seed`, the following accounts are seeded automatically and ready to use:
+
+| Role | Panel | Email | Password |
+|---|---|---|---|
+| 🔴 **Super Admin** (مدير النظام) | `/admin` | `admin@wisal-store.com` | `1234567890` |
+| 🟡 **Manager** (مدير العمليات) | `/admin` | `manager@wisal-store.com` | `password123` |
+| 🟢 **Customer** (عميل) | `/login` | *(register from storefront)* | *(self-registered)* |
+
+> ⚠️ **For evaluators**: Please use the Super Admin credentials to access the Filament admin panel and explore the full management capabilities.
+
+---
+
+## 🧪 Testing & Code Quality
+
+Run automated tests and code style checks with the following commands:
+
+```bash
+# Run test suite with Pest
+vendor/bin/pest
+
+# Run code style formatting with Laravel Pint
+vendor/bin/pint
+```
+
+---
+
+## 🌿 Git Branching & Submission Strategy
+
+The project adheres to a **3-Tier Git Branching Model**:
+- `main`: Production-ready stable release code.
+- `staging`: Pre-production integration & acceptance testing.
+- `develop`: Primary integration branch for active features.
+- `features/*`: Modular feature branches (e.g., `features/frontend/checkout`, `features/admin/coupons`).
+
+---
+
+## 👨‍💻 Author & Submission Details
+
+- **Author Name**: Anan Jamal Abed Al-Aziz Abo Tawahena (عنان جمال عبد العزيز أبو طواحينة)
+- **Program**: Gaza Sky Geeks × Chingu: Team Project Experience Program
+- **Track**: Developer Track (Solo Project)
+- **Repository**: [wesal-store-laravel](https://github.com/Ananjamal/wesal-store-laravel)
+
+---
+
+<p align="center">
+  Crafted with ❤️ for Palestinian craftsmanship and modern web development.
+</p>
